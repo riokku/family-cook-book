@@ -1,0 +1,22 @@
+.info-container{
+  p{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.tag-list{
+  li{
+    background-color: #0078d4;
+    color: #fff;
+    padding: .35rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+  }
+}
+
+hr{
+  border-top: 2px solid #e6e6e6;
+}
