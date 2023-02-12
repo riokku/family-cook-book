@@ -9,7 +9,7 @@
 
 .tag-list{
   li{
-    background-color: #0078d4;
+    background-color: #d63031;
     color: #fff;
     padding: .35rem;
     border-radius: 0.25rem;
@@ -20,3 +20,24 @@
 hr{
   border-top: 2px solid #e6e6e6;
 }
+
+.card{
+  .image-container {
+    overflow: hidden;
+    img {
+      transition: transform .75s ease;
+    }
+  }
+  &:hover{
+    border: 1px solid #e17055;
+    .image-container {
+      img{
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+
+
+
