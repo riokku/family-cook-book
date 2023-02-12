@@ -1,0 +1,17 @@
+.site-wrapper{
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.header{
+  flex: 0 1 auto;
+}
+
+.body-content{
+  flex: 1 1 auto;
+}
+
+.footer{
+  flex: 0 1 40px;
+}
