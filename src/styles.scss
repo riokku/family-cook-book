@@ -10,3 +10,47 @@
 html, body {
   height: 100%;
 }
+
+.card{
+  .image-container {
+    overflow: hidden;
+    img {
+      transition: transform .75s ease;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+    }
+  }
+  &:hover{
+    border: 1px solid #e17055;
+    .image-container {
+      img{
+        transform: scale(1.2);
+      }
+    }
+  }
+  .info-container{
+    p{
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+  .tag-list{
+    li{
+      background-color: #d63031;
+      color: #fff;
+      padding: .35rem;
+      border-radius: 0.25rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+  &:hover{
+    color: inherit;
+  }
+}

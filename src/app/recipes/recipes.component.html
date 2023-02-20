@@ -1,1 +1,66 @@
-<p>recipes works!</p>
+<section>
+  <div class="container pt-4">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="fw-bold mb-5">
+          Find a recipe
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <h3>
+          What are you interested in?
+        </h3>
+        <hr class="my-4 me-4" />
+        <div class="filter-container">
+          <input class="me-3" type="checkbox" name="dessert" id="dessert">
+          <label for="dessert">Dessert</label>
+        </div>
+        <div class="filter-container">
+          <input class="me-3" type="checkbox" name="quickMeals" id="quickMeals">
+          <label for="quickMeals">Quick meals</label>
+        </div>
+        <div class="filter-container">
+          <input class="me-3" type="checkbox" name="crockpot" id="crockpot">
+          <label for="crockpot">Crockpot</label>
+        </div>
+        <hr class="my-4 me-4" />
+      </div>
+      <div class="col-12 col-md-9">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let recipe of testRecipes">
+            <a href="#">
+              <div class="card mb-4">
+                <div class="image-container">
+                  <img class="mw-100" src="{{recipe.imagePath}}" alt="{{recipe.name}}">
+                </div>
+                <div class="info-container p-4">
+                  <h5 class="fw-bold mb-3">
+                    {{ recipe.name }}
+                  </h5>
+                  <ul class="list-inline mb-3">
+                    <li class="list-inline-item cook-time">
+                      <i class="bi bi-clock"></i> {{ recipe.cookTime }}
+                    </li>
+                    <li class="list-inline-item servings">
+                      <i class="bi bi-person"></i> {{ recipe.servingSize }}
+                    </li>
+                  </ul>
+                  <p class="mb-3">
+                    {{ recipe.description }}
+                  </p>
+                  <ul class="tag-list list-inline mb-0">
+                    <li class="list-inline-item" *ngFor="let tag of recipe.tags">
+                      {{ tag }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
