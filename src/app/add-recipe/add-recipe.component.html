@@ -10,108 +10,155 @@
     <div class="row">
       <div class="col-12">
         <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-          <div class="row">
-            <div class="col-12">
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  formControlName="name"
-                  class="form-control">
+          <div class="form-group-wrapper">
+            <h3>
+              Overview:
+            </h3>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    formControlName="name"
+                    class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea
+                    type="text"
+                    id="description"
+                    class="form-control"
+                    formControlName="description"
+                    rows="6"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6 col-md-2">
+                <div class="form-group">
+                  <label for="cookTime">Cook time</label>
+                  <input
+                    type="number"
+                    id="cookTime"
+                    formControlName="cookTime"
+                    class="form-control">
+                </div>
+              </div>
+              <div class="col-6 col-md-2">
+                <div class="form-group">
+                  <label for="servingSize">Serving size</label>
+                  <input
+                    type="number"
+                    id="servingSize"
+                    formControlName="servingSize"
+                    class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label for="imagePath">Link to recipe image</label>
+                  <input
+                    type="text"
+                    id="imagePath"
+                    formControlName="imagePath"
+                    class="form-control"
+                    #recipeImagePath>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h5>
+                  Image preview:
+                </h5>
+                <img [src]="recipeImagePath.value" class="img-responsive">
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12">
-              <div class="form-group">
-                <label for="description">Description</label>
-                <textarea
-                  type="text"
-                  id="description"
-                  class="form-control"
-                  formControlName="description"
-                  rows="6"></textarea>
+          <div class="form-group-wrapper">
+            <h3>
+              Ingredients:
+            </h3>
+            <div class="row">
+              <div class="col-12" formArrayName="ingredients">
+                <div
+                  class="row"
+                  *ngFor="let ingredientCtrl of recipeControls; let i = index"
+                  [formGroupName]="i">
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="name">
+                  </div>
+                  <div class="col-sm-2">
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="amount">
+                  </div>
+                  <div class="col-sm-2">
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="measurementType">
+                  </div>
+                  <div class="col-sm-2">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      (click)="onDeleteIngredient(i)">X</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <button
+                      type="button"
+                      class="btn btn-success mt-3"
+                      (click)="onAddIngredient()">Add another ingredient</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-6 col-md-2">
-              <div class="form-group">
-                <label for="cookTime">Cook time</label>
-                <input
-                  type="number"
-                  id="cookTime"
-                  formControlName="cookTime"
-                  class="form-control">
-              </div>
-            </div>
-            <div class="col-6 col-md-2">
-              <div class="form-group">
-                <label for="servingSize">Serving size</label>
-                <input
-                  type="number"
-                  id="servingSize"
-                  formControlName="servingSize"
-                  class="form-control">
+          <div class="form-group-wrapper mb-4">
+            <h3>
+              Steps:
+            </h3>
+            <div class="row">
+              <div class="col-12">
+                <ol class="mb-0">
+                  <li>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores recusandae necessitatibus mollitia vel laudantium debitis dolorum? Sit aut inventore numquam officia, error veniam eius esse, autem eaque delectus optio perferendis.
+                  </li>
+                  <li>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores recusandae necessitatibus mollitia vel laudantium debitis dolorum? Sit aut inventore numquam officia, error veniam eius esse, autem eaque delectus optio perferendis.
+                  </li>
+                  <li>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores recusandae necessitatibus mollitia vel laudantium debitis dolorum? Sit aut inventore numquam officia, error veniam eius esse, autem eaque delectus optio perferendis.
+                  </li>
+                </ol>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group">
-                <label for="recipeImagePath">Link to recipe image</label>
-                <input
-                  type="text"
-                  id="recipeImagePath"
-                  formControlName="recipeImagePath"
-                  class="form-control"
-                  #recipeImagePath>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <h5>
-                Image preview:
-              </h5>
-              <img [src]="recipeImagePath.value" class="img-responsive">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12" formArrayName="ingredients">
-              <div
-                class="row"
-                *ngFor="let ingredientCtrl of recipeControls; let i = index"
-                [formGroupName]="i"
-                style="margin-top: 10px;">
-                <div class="col-xs-8">
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="name">
-                </div>
-                <div class="col-xs-2">
-                  <input
-                    type="number"
-                    class="form-control"
-                    formControlName="amount">
-                </div>
-                <div class="col-xs-2">
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    (click)="onDeleteIngredient(i)">X</button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <button
-                    type="button"
-                    class="btn btn-success"
-                    (click)="onAddIngredient()">Add Ingredient</button>
-                </div>
-              </div>
+              <button
+                type="submit"
+                class="btn btn-success me-3"
+                [disabled]="!recipeForm.valid">Save</button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="onCancel()">Cancel</button>
             </div>
           </div>
         </form>

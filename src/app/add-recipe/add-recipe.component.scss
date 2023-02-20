@@ -1,0 +1,8 @@
+.form-group-wrapper{
+  background-color: #f2f2f2;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  &:not(:last-child){
+    margin-bottom: 1rem;
+  }
+}

@@ -12,6 +12,7 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { AuthComponent } from './auth/auth.component';
 import { FeaturedRecipesComponent } from './featured-recipes/featured-recipes.component';
 import { AddRecipeComponent } from './add-recipe/add-recipe.component';
+import { RecipeService } from './shared/services/recipe.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import { AddRecipeComponent } from './add-recipe/add-recipe.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    RecipeService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

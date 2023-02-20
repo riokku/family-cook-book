@@ -22,8 +22,7 @@ export class RecipesComponent {
         }
       ],
       cookTime: 30,
-      servingSize: 6,
-      tags: ["Date night", "30 minute meal"]
+      servingSize: 6
     },
     {
       name: "Doughnuts",
@@ -37,8 +36,7 @@ export class RecipesComponent {
         }
       ],
       cookTime: 45,
-      servingSize: 8,
-      tags: ["Dessert", "30 minute meal"]
+      servingSize: 8
     },
     {
       name: "Salad",
@@ -52,8 +50,7 @@ export class RecipesComponent {
         }
       ],
       cookTime: 15,
-      servingSize: 2,
-      tags: ["Keto", "30 minute meal"]
+      servingSize: 2
     },
     {
       name: "Pizza",
@@ -67,8 +64,7 @@ export class RecipesComponent {
         }
       ],
       cookTime: 30,
-      servingSize: 6,
-      tags: ["Date night", "30 minute meal"]
+      servingSize: 6
     },
     {
       name: "Doughnuts",
@@ -82,8 +78,7 @@ export class RecipesComponent {
         }
       ],
       cookTime: 45,
-      servingSize: 8,
-      tags: ["Dessert", "30 minute meal"]
+      servingSize: 8
     },
     {
       name: "Salad",
@@ -97,8 +92,7 @@ export class RecipesComponent {
         }
       ],
       cookTime: 15,
-      servingSize: 2,
-      tags: ["Keto", "30 minute meal"]
+      servingSize: 2
     }
   ]
 }
