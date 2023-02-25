@@ -17,7 +17,7 @@ export class AddRecipeComponent implements OnInit {
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) {}
 
   get recipeControls() {
-    return (this.recipeForm.get('ingredients') as FormArray).controls
+    return (this.recipeForm.get('ingredients') as FormArray).controls;
   }
 
 
@@ -64,7 +64,6 @@ export class AddRecipeComponent implements OnInit {
   }
 
   onSubmit() {
-    alert('working')
     this.recipeService.submitRecipe(this.recipeForm.value);
     this.recipeForm.reset();
   }

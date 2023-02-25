@@ -1,13 +1,30 @@
-import { getLocaleEraNames } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
 import { Recipe } from '../shared/models/recipe.model';
+
+
+import { RecipeService } from '../shared/services/recipe.service';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.scss']
 })
-export class RecipesComponent {
+export class RecipesComponent implements OnInit {
+
+  recipes: any[] = [];
+
+  constructor(private http: HttpClient, private recipeService: RecipeService) {}
+
+
+  ngOnInit(): void {
+
+
+    this.recipeService.fetchRecipes().subscribe((resRecipes) => {
+      this.recipes = resRecipes;
+    });
+
+  }
 
   testRecipes: Recipe[] = [
     {

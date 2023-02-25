@@ -18,10 +18,16 @@ h5{
     &:checked + label{
       font-weight: bold;
     }
+    &:hover{
+      cursor: pointer;
+    }
   }
 
   label{
     font-size: 1.35rem;
+    &:hover{
+      cursor: pointer;
+    }
   }
 
   &:not(:last-child){
@@ -30,6 +36,10 @@ h5{
 
   &:last-child{
     margin-bottom: 3rem;
+  }
+
+  &:hover{
+    cursor: pointer;
   }
 
 }

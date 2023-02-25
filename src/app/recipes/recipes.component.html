@@ -29,9 +29,9 @@
       </div>
       <div class="col-12 col-md-9">
         <div class="row">
-          <div class="col-12 col-sm-12 col-md-6 col-lg-4" *ngFor="let recipe of testRecipes">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 d-flex" *ngFor="let recipe of recipes">
             <a href="#">
-              <div class="card mb-4">
+              <div class="card mb-4 h-100">
                 <div class="image-container">
                   <img class="mw-100" src="{{recipe.imagePath}}" alt="{{recipe.name}}">
                 </div>
