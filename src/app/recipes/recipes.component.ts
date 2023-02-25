@@ -22,7 +22,8 @@ export class RecipesComponent {
         }
       ],
       cookTime: 30,
-      servingSize: 6
+      servingSize: 6,
+      featured: true
     },
     {
       name: "Doughnuts",
@@ -36,7 +37,8 @@ export class RecipesComponent {
         }
       ],
       cookTime: 45,
-      servingSize: 8
+      servingSize: 8,
+      featured: true
     },
     {
       name: "Salad",
@@ -50,7 +52,8 @@ export class RecipesComponent {
         }
       ],
       cookTime: 15,
-      servingSize: 2
+      servingSize: 2,
+      featured: true
     },
     {
       name: "Pizza",
@@ -64,7 +67,8 @@ export class RecipesComponent {
         }
       ],
       cookTime: 30,
-      servingSize: 6
+      servingSize: 6,
+      featured: false
     },
     {
       name: "Doughnuts",
@@ -78,7 +82,8 @@ export class RecipesComponent {
         }
       ],
       cookTime: 45,
-      servingSize: 8
+      servingSize: 8,
+      featured: true
     },
     {
       name: "Salad",
@@ -92,7 +97,8 @@ export class RecipesComponent {
         }
       ],
       cookTime: 15,
-      servingSize: 2
+      servingSize: 2,
+      featured: true
     }
   ]
 }

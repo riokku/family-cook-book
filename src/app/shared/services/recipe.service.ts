@@ -3,9 +3,14 @@ import { Ingredient } from "../models/ingredient.model";
 import { Recipe } from "../models/recipe.model";
 
 
+import { HttpClient } from "@angular/common/http";
+
+
 
 @Injectable()
 export class RecipeService{
+
+  constructor(private http: HttpClient){}
 
   private recipes: Recipe[] = [
     new Recipe(
@@ -16,7 +21,8 @@ export class RecipeService{
           new Ingredient("Crust", 1, "Quantity")
         ],
         30,
-        6
+        6,
+        true
     ),
     new Recipe(
        "Doughnuts",
@@ -26,7 +32,8 @@ export class RecipeService{
           new Ingredient("Flour", 2, "Cups")
         ],
         45,
-        8
+        8,
+        true
     ),
     new Recipe(
        "Salad",
@@ -36,7 +43,8 @@ export class RecipeService{
           new Ingredient("Lettuce", 2, "Heads")
         ],
         15,
-        2
+        2,
+        true
     ),
     new Recipe(
       "Pizza2",
@@ -46,7 +54,8 @@ export class RecipeService{
          new Ingredient("Crust", 1, "Quantity")
        ],
        30,
-       6
+       6,
+       false
    ),
    new Recipe(
       "Doughnuts2",
@@ -56,7 +65,8 @@ export class RecipeService{
          new Ingredient("Flour", 2, "Cups")
        ],
        45,
-       8
+       8,
+       false
    ),
    new Recipe(
       "Salad2",
@@ -66,7 +76,8 @@ export class RecipeService{
          new Ingredient("Lettuce", 2, "Heads")
        ],
        15,
-       2
+       2,
+       false
    )
   ]
 
@@ -79,8 +90,16 @@ export class RecipeService{
   }
 
   submitRecipe(recipe: Recipe){
+    console.log(this.recipes);
     this.recipes.push(recipe);
+
+    return this.http.post('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes.json', recipe).subscribe(response => {
+      console.log(response)
+    });
+
+
   }
+
 
 
 }

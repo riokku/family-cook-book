@@ -30,6 +30,7 @@ export class AddRecipeComponent implements OnInit {
     let recipeDescription = '';
     let recipeCookTime;
     let recipeServingSize;
+    let recipeFeatured;
     let recipeImagePath = '';
     let recipeIngredientsArray = new FormArray([]);
 
@@ -38,6 +39,7 @@ export class AddRecipeComponent implements OnInit {
       'description': new FormControl(recipeDescription, Validators.required),
       'cookTime': new FormControl(recipeCookTime, Validators.required),
       'servingSize': new FormControl(recipeServingSize, Validators.required),
+      'featured': new FormControl(recipeFeatured, Validators.required),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'ingredients': recipeIngredientsArray
     });
@@ -62,7 +64,9 @@ export class AddRecipeComponent implements OnInit {
   }
 
   onSubmit() {
+    alert('working')
     this.recipeService.submitRecipe(this.recipeForm.value);
+    this.recipeForm.reset();
   }
 
   onCancel() {

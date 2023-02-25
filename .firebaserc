@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "family-cook-book-b02f5": {
+      "hosting": {
+        "family-cook-book": [
+          "family-cook-book-b02f5"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "family-cook-book-b02f5"
+  }
+}

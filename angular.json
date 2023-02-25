@@ -105,6 +105,16 @@
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "family-cook-book:build:production",
+            "firebaseProject": "family-cook-book-b02f5",
+            "firebaseHostingSite": "family-cook-book-b02f5"
+          }
         }
       }
     }

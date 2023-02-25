@@ -60,6 +60,12 @@
                     class="form-control">
                 </div>
               </div>
+              <div class="col-6 col-md-2">
+                <div class="form-group">
+                  <label for="featured">Featured</label><br />
+                  <input class="form-check-input mt-0" type="checkbox" value="" id="featured" formControlName="featured">
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-xs-12">
@@ -123,7 +129,7 @@
                     <button
                       type="button"
                       class="btn btn-success mt-3"
-                      (click)="onAddIngredient()">Add another ingredient</button>
+                      (click)="onAddIngredient()">Add ingredient</button>
                   </div>
                 </div>
               </div>
@@ -151,14 +157,8 @@
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button
-                type="submit"
-                class="btn btn-success me-3"
-                [disabled]="!recipeForm.valid">Save</button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                (click)="onCancel()">Cancel</button>
+              <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid">Save</button>
+              <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
             </div>
           </div>
         </form>

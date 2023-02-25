@@ -8,6 +8,7 @@ export class Recipe {
   public ingredients: Ingredient[];
   public cookTime: number;
   public servingSize: number;
+  public featured: boolean;
 
   constructor(
     name: string,
@@ -15,14 +16,16 @@ export class Recipe {
     imagePath: string,
     ingredients: Ingredient[],
     cookTime: number,
-    servingSize: number
+    servingSize: number,
+    featured: boolean
     ){
     this.name = name;
     this.description = description;
     this.imagePath = imagePath;
     this.ingredients = ingredients;
     this.cookTime = cookTime;
-    this.servingSize = servingSize
+    this.servingSize = servingSize;
+    this.featured = featured;
   }
 
 }
