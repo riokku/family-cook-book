@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './home/home.component';
-import { RecipesComponent } from './recipes/recipes.component';
 
 const routes: Routes = [
   {
@@ -12,11 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'recipes',
-    component: RecipesComponent
-  },
-  {
-    path: 'add-recipe',
-    component: AddRecipeComponent
+    loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule)
   },
   {
     path: 'sign-in',
@@ -26,7 +20,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/'
   }
-
 ];
 
 @NgModule({

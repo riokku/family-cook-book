@@ -9,11 +9,10 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
-import { RecipesComponent } from './recipes/recipes.component';
 import { AuthComponent } from './auth/auth.component';
-import { FeaturedRecipesComponent } from './featured-recipes/featured-recipes.component';
-import { AddRecipeComponent } from './add-recipe/add-recipe.component';
 import { RecipeService } from './shared/services/recipe.service';
+import { RecipesRoutingModule } from './recipes/recipes-routing.module';
+import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recipes.component';
 
 @NgModule({
   declarations: [
@@ -21,10 +20,8 @@ import { RecipeService } from './shared/services/recipe.service';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    RecipesComponent,
     AuthComponent,
-    FeaturedRecipesComponent,
-    AddRecipeComponent
+    FeaturedRecipesComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +29,8 @@ import { RecipeService } from './shared/services/recipe.service';
     HttpClientModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RecipesRoutingModule
   ],
   providers: [
     RecipeService

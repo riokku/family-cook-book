@@ -1,0 +1,43 @@
+<section>
+  <div class="container pt-4">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="fw-bold mb-5">
+          Find a recipe
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <h3>
+          What are you interested in?
+        </h3>
+        <hr class="my-4 me-4" />
+        <div class="filter-container">
+          <input type="checkbox" name="all" id="all">
+          <label class="ps-3" for="all">All</label>
+        </div>
+        <div class="filter-container">
+          <input type="checkbox" name="dessert" id="dessert">
+          <label class="ps-3" for="dessert">Dessert</label>
+        </div>
+        <div class="filter-container">
+          <input type="checkbox" name="quickMeals" id="quickMeals">
+          <label class="ps-3" for="quickMeals">Quick meals</label>
+        </div>
+        <div class="filter-container">
+          <input type="checkbox" name="crockpot" id="crockpot">
+          <label class="ps-3" for="crockpot">Crockpot</label>
+        </div>
+        <hr class="my-4 me-4" />
+      </div>
+      <div class="col-12 col-md-9">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 d-flex mb-4" *ngFor="let recipe of recipes; let i = index">
+            <app-recipe-card [recipe]="recipe" [index]="i"></app-recipe-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

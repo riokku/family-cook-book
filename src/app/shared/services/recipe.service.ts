@@ -28,10 +28,12 @@ export class RecipeService{
             })
           }
           return newRecipes;
+        }),
+        tap((response) => {
+          this.setRecipes(response);
         })
       )
   }
-
 
   setRecipes(recipes: Recipe[]){
     this.recipes = recipes;
@@ -39,8 +41,11 @@ export class RecipeService{
   }
 
   getRecipes(){
-    console.log("get recipes");
-    return this.recipes;
+    return this.recipes.slice();
+  }
+
+  getRecipe(index: number){
+    return this.recipes[index];
   }
 
   selectRecipe(index: number){

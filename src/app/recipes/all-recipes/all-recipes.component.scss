@@ -1,0 +1,42 @@
+h5{
+  font-size: 1rem;
+}
+
+.list-inline-item{
+  &:not(:last-child){
+    margin-bottom: 0.25rem;
+  }
+}
+
+.filter-container{
+  display: flex;
+  input{
+    height: 2rem;
+    width: 2rem;
+    accent-color: #d63031;
+    border-radius: 50%;
+    &:checked + label{
+      font-weight: bold;
+    }
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  label{
+    font-size: 1.35rem;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  &:not(:last-child){
+    margin-bottom: 1rem;
+  }
+
+  &:last-child{
+    margin-bottom: 3rem;
+  }
+
+}
+

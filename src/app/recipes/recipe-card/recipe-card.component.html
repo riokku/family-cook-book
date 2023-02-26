@@ -1,0 +1,23 @@
+<a [routerLink]="[index]">
+  <div class="card mb-4 h-100">
+    <div class="image-container">
+      <img class="mw-100" src="{{recipe.imagePath}}" alt="{{recipe.name}}">
+    </div>
+    <div class="info-container p-4">
+      <h5 class="fw-bold mb-3">
+        {{ recipe.name }}
+      </h5>
+      <ul class="list-inline mb-3">
+        <li class="list-inline-item cook-time">
+          <i class="bi bi-clock"></i> {{ recipe.cookTime }}
+        </li>
+        <li class="list-inline-item servings">
+          <i class="bi bi-person"></i> {{ recipe.servingSize }}
+        </li>
+      </ul>
+      <p class="mb-3">
+        {{ recipe.description }}
+      </p>
+    </div>
+  </div>
+</a>
