@@ -37,11 +37,11 @@ export class RecipeService{
 
   setRecipes(recipes: Recipe[]){
     this.recipes = recipes;
-    console.log('set recipes ' + typeof(recipes));
+    console.log(`Recipes are set. There are ${recipes.length} recipes registered.`);
   }
 
   getRecipes(){
-    return this.recipes.slice();
+    return this.recipes;
   }
 
   getRecipe(index: number){

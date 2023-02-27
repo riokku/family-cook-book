@@ -4,6 +4,7 @@ import { AddRecipeComponent } from "./add-recipe/add-recipe.component";
 import { RecipeComponent } from "./recipe/recipe.component";
 import { RecipesComponent } from "./recipes.component";
 import { AllRecipesComponent } from "./all-recipes/all-recipes.component";
+import { RecipesResolverService } from "../shared/resolvers/recipe-resolve.service";
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
       },
       {
         path: ':id',
-        component: RecipeComponent
+        component: RecipeComponent,
+        resolve: [RecipesResolverService]
       }
     ]
   },
