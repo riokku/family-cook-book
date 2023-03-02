@@ -9,10 +9,12 @@ import { RecipesRoutingModule } from "./recipes-routing.module";
 import { RecipesComponent } from "./recipes.component";
 import { CommonModule } from "@angular/common";
 import { AllRecipesComponent } from './all-recipes/all-recipes.component';
+import { RecipeComponent } from "./recipe/recipe.component";
 
 @NgModule(
   {
     declarations: [
+      RecipeComponent,
       RecipesComponent,
       AddRecipeComponent,
       RecipeCardComponent,
