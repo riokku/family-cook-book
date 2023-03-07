@@ -39,7 +39,7 @@ export class AddRecipeComponent implements OnInit {
       'description': new FormControl(recipeDescription, Validators.required),
       'cookTime': new FormControl(recipeCookTime, Validators.required),
       'servingSize': new FormControl(recipeServingSize, Validators.required),
-      'featured': new FormControl(recipeFeatured, Validators.required),
+      'featured': new FormControl(recipeFeatured),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'ingredients': recipeIngredientsArray
     });

@@ -1,0 +1,17 @@
+ol{
+  list-style-type: none;
+  margin-bottom: 0;
+  li{
+    &:not(:last-child){
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.ingredient-pane{
+  background-color: #f2f2f2;
+}
+
+hr{
+  border-top: 3px solid #d63031;
+}

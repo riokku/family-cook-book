@@ -10,6 +10,9 @@
 
 .body-content{
   flex: 1 1 auto;
+  background: url('../assets/images/hero-background.jpg');
+  background-size: cover;
+  background-repeat: repeat;
 }
 
 .footer{

@@ -47,7 +47,8 @@
                     type="number"
                     id="cookTime"
                     formControlName="cookTime"
-                    class="form-control">
+                    class="form-control"
+                    placeholder="Time in minutes">
                 </div>
               </div>
               <div class="col-6 col-md-2">
@@ -57,7 +58,8 @@
                     type="number"
                     id="servingSize"
                     formControlName="servingSize"
-                    class="form-control">
+                    class="form-control"
+                    placeholder="Total servings">
                 </div>
               </div>
               <div class="col-6 col-md-2">
@@ -80,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="recipeImagePath.value">
               <div class="col-12">
                 <h5>
                   Image preview:

@@ -1,5 +1,8 @@
 <a [routerLink]="[index]">
   <div class="card mb-4 h-100">
+    <div class="featured" *ngIf="recipe.featured">
+      Featured
+    </div>
     <div class="image-container">
       <img class="mw-100" src="{{recipe.imagePath}}" alt="{{recipe.name}}">
     </div>

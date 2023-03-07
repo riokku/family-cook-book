@@ -15,20 +15,23 @@
         </ul>
       </div>
     </div>
+    <hr class="mb-4" />
     <div class="row">
       <div class="col-4">
-        <h3>
-          Ingredients:
-        </h3>
-        <ol>
-          <li *ngFor="let ingredientSet of recipe.ingredients">
-              {{ ingredientSet.amount }}
-              {{ ingredientSet.measurementType }}
-              {{ ingredientSet.name }}
-          </li>
-        </ol>
+        <div class="ingredient-pane p-4">
+          <h3 class="mb-4">
+            Ingredients:
+          </h3>
+          <ol class="ps-1">
+            <li *ngFor="let ingredientSet of recipe.ingredients">
+                {{ ingredientSet.amount }}
+                {{ ingredientSet.measurementType }}
+                {{ ingredientSet.name }}
+            </li>
+          </ol>
+        </div>
       </div>
-      <div class="col-8">
+      <div class="col-8 p-4">
         {{ recipe.description }}
       </div>
     </div>
