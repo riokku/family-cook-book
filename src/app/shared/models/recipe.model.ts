@@ -9,6 +9,7 @@ export class Recipe {
   public cookTime: number;
   public servingSize: number;
   public featured: boolean;
+  public steps: string[];
 
   constructor(
     name: string,
@@ -17,7 +18,8 @@ export class Recipe {
     ingredients: Ingredient[],
     cookTime: number,
     servingSize: number,
-    featured: boolean
+    featured: boolean,
+    steps: string[]
     ){
     this.name = name;
     this.description = description;
@@ -26,6 +28,7 @@ export class Recipe {
     this.cookTime = cookTime;
     this.servingSize = servingSize;
     this.featured = featured;
+    this.steps = steps;
   }
 
 }

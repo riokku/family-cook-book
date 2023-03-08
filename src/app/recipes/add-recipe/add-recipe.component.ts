@@ -16,8 +16,12 @@ export class AddRecipeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) {}
 
-  get recipeControls() {
+  get recipeIngredientControls() {
     return (this.recipeForm.get('ingredients') as FormArray).controls;
+  }
+
+  get recipeStepsControls() {
+    return (this.recipeForm.get('steps') as FormArray).controls;
   }
 
 
@@ -33,6 +37,7 @@ export class AddRecipeComponent implements OnInit {
     let recipeFeatured;
     let recipeImagePath = '';
     let recipeIngredientsArray = new FormArray([]);
+    let recipeStepsArray = new FormArray([]);
 
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, Validators.required),
@@ -41,7 +46,8 @@ export class AddRecipeComponent implements OnInit {
       'servingSize': new FormControl(recipeServingSize, Validators.required),
       'featured': new FormControl(recipeFeatured),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
-      'ingredients': recipeIngredientsArray
+      'ingredients': recipeIngredientsArray,
+      'steps': recipeStepsArray
     });
 
   }
@@ -59,8 +65,20 @@ export class AddRecipeComponent implements OnInit {
     );
   }
 
+  onAddStep() {
+    (<FormArray>this.recipeForm.get('steps')).push(
+      new FormGroup({
+        'step': new FormControl(null, Validators.required)
+      })
+    );
+  }
+
   onDeleteIngredient(index: number) {
     (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+  }
+
+  onDeleteStep(index: number) {
+    (<FormArray>this.recipeForm.get('steps')).removeAt(index);
   }
 
   onSubmit() {

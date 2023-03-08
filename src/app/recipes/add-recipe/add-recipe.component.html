@@ -99,7 +99,7 @@
               <div class="col-12" formArrayName="ingredients">
                 <div
                   class="row"
-                  *ngFor="let ingredientCtrl of recipeControls; let i = index"
+                  *ngFor="let ingredientCtrl of recipeIngredientControls; let i = index"
                   [formGroupName]="i">
                   <div class="col-sm-6">
                     <input
@@ -142,24 +142,39 @@
               Steps:
             </h3>
             <div class="row">
-              <div class="col-12">
-                <ol class="mb-0">
-                  <li>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores recusandae necessitatibus mollitia vel laudantium debitis dolorum? Sit aut inventore numquam officia, error veniam eius esse, autem eaque delectus optio perferendis.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores recusandae necessitatibus mollitia vel laudantium debitis dolorum? Sit aut inventore numquam officia, error veniam eius esse, autem eaque delectus optio perferendis.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores recusandae necessitatibus mollitia vel laudantium debitis dolorum? Sit aut inventore numquam officia, error veniam eius esse, autem eaque delectus optio perferendis.
+              <div class="col-12" formArrayName="steps">
+                <ol class="m-0">
+                  <li *ngFor="let stepControl of recipeStepsControls; let i = index" [formGroupName]="i">
+                    <div class="row">
+                      <div class="col-sm-10">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="step">
+                      </div>
+                      <div class="col-sm-2">
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          (click)="onDeleteStep(i)">X</button>
+                      </div>
+                    </div>
                   </li>
                 </ol>
+                <div class="row">
+                  <div class="col-12">
+                    <button
+                      type="button"
+                      class="btn btn-success mt-3"
+                      (click)="onAddStep()">Add Step</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid">Save</button>
+              <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid">Submit</button>
               <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
             </div>
           </div>
