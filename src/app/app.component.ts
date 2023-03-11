@@ -7,6 +7,7 @@ import { RecipeService } from './shared/services/recipe.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
   title = 'family-cook-book';
 
   constructor(private recipeService: RecipeService) {}

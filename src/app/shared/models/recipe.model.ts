@@ -1,4 +1,5 @@
 import { Ingredient } from "./ingredient.model";
+import { Step } from "./step.model";
 
 
 export class Recipe {
@@ -9,7 +10,7 @@ export class Recipe {
   public cookTime: number;
   public servingSize: number;
   public featured: boolean;
-  public steps: string[];
+  public steps: Step[];
 
   constructor(
     name: string,
@@ -19,7 +20,7 @@ export class Recipe {
     cookTime: number,
     servingSize: number,
     featured: boolean,
-    steps: string[]
+    steps: Step[]
     ){
     this.name = name;
     this.description = description;

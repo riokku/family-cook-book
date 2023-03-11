@@ -15,3 +15,28 @@ ol{
 hr{
   border-top: 3px solid #d63031;
 }
+
+
+.breadcrumb{
+  i{
+    transition: transform .25s ease-in-out;
+  }
+  &:hover{
+    color: #d63031;
+    i{
+      transform: translateX(-4px);
+    }
+  }
+}
+
+
+
+.recipe-header-wrapper{
+
+  .recipe-header-info{
+    background-color: rgba(0, 0, 0, 0.7);
+    display: inline-block;
+    color: #fff;
+  }
+
+}

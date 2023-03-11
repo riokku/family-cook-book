@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-
 import { Recipe } from '../../shared/models/recipe.model';
-
 import { RecipeService } from '../../shared/services/recipe.service';
 
 @Component({
@@ -9,6 +7,7 @@ import { RecipeService } from '../../shared/services/recipe.service';
   templateUrl: './all-recipes.component.html',
   styleUrls: ['./all-recipes.component.scss']
 })
+
 export class AllRecipesComponent {
 
   recipes: Recipe[] = [];
@@ -19,8 +18,6 @@ export class AllRecipesComponent {
     setTimeout(() => {
       this.recipes = this.recipeService.getRecipes();
     }, 20);
-
   }
-
 
 }
