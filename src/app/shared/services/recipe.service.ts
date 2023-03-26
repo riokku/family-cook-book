@@ -48,6 +48,10 @@ export class RecipeService{
     return this.recipes[index];
   }
 
+  getFeaturedRecipes(){
+    return this.recipes.filter(recipe => recipe.featured);
+  }
+
   selectRecipe(index: number){
     return this.recipes[index];
   }

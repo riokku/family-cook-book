@@ -4,6 +4,7 @@ import { Step } from "./step.model";
 
 export class Recipe {
   public name: string;
+  public slug: string;
   public description: string;
   public imagePath: string;
   public ingredients: Ingredient[];
@@ -14,6 +15,7 @@ export class Recipe {
 
   constructor(
     name: string,
+    slug: string,
     description: string,
     imagePath: string,
     ingredients: Ingredient[],
@@ -23,6 +25,7 @@ export class Recipe {
     steps: Step[]
     ){
     this.name = name;
+    this.slug = slug;
     this.description = description;
     this.imagePath = imagePath;
     this.ingredients = ingredients;

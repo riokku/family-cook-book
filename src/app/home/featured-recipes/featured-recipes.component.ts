@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Recipe } from 'src/app/shared/models/recipe.model';
+import { RecipeService } from 'src/app/shared/services/recipe.service';
+
 
 @Component({
   selector: 'app-featured-recipes',
@@ -6,5 +9,22 @@ import { Component } from '@angular/core';
   styleUrls: ['./featured-recipes.component.scss']
 })
 export class FeaturedRecipesComponent {
+
+  @Input() index: number;
+
+  recipes: Recipe[] = [];
+
+
+  recipeTags = ["Date night", "Easy meal", "Dessert", "Dinner", "Breakfast"];
+
+  constructor(private recipeService: RecipeService) {}
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.recipes = this.recipeService.getFeaturedRecipes();
+      console.log(this.recipes);
+    }, 20);
+
+  }
 
 }

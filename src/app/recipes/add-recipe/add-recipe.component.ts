@@ -12,6 +12,9 @@ import { RecipeService } from '../../shared/services/recipe.service';
 
 export class AddRecipeComponent implements OnInit {
 
+  generatedSlug: string;
+  isDisabled = true;
+
   recipeForm: FormGroup;
 
   constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) {}
@@ -24,13 +27,13 @@ export class AddRecipeComponent implements OnInit {
     return (this.recipeForm.get('steps') as FormArray).controls;
   }
 
-
   ngOnInit(): void {
     this.initializeForm();
   }
 
   private initializeForm(){
     let recipeName = '';
+    let recipeSlug = '';
     let recipeDescription = '';
     let recipeCookTime;
     let recipeServingSize;
@@ -41,6 +44,7 @@ export class AddRecipeComponent implements OnInit {
 
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, Validators.required),
+      'slug': new FormControl(recipeSlug, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
       'cookTime': new FormControl(recipeCookTime, Validators.required),
       'servingSize': new FormControl(recipeServingSize, Validators.required),

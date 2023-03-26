@@ -41,13 +41,13 @@
           <h3 class="mb-4">
             Ingredients:
           </h3>
-          <ol class="ps-1">
+          <ul class="ps-1">
             <li *ngFor="let ingredientSet of recipe.ingredients">
               {{ ingredientSet.amount }}
               {{ ingredientSet.measurementType }}
               {{ ingredientSet.name }}
             </li>
-          </ol>
+          </ul>
         </div>
       </div>
       <div class="col-8 p-4">

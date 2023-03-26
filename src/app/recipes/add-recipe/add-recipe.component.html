@@ -16,13 +16,28 @@
             </h3>
             <div class="row">
               <div class="col-12">
-                <div class="form-group">
+                <div class="form-group mb-3">
                   <label for="name">Name</label>
                   <input
                     type="text"
                     id="name"
                     formControlName="name"
-                    class="form-control">
+                    class="form-control mb-1"
+                    [(ngModel)]="generatedSlug">
+                  <div class="form-group mb-3 slug-wrapper" *ngIf="generatedSlug">
+                    <label class="d-inline" for="slug">Slug:</label>
+                    <p class="d-inline">
+                      {{ generatedSlug | slugGenerator}}
+                    </p>
+                    <input
+                      type="text"
+                      id="slug"
+                      formControlName="slug"
+                      class="form-control"
+                      [value]="generatedSlug | slugGenerator"
+                      *ngIf="false"
+                      >
+                  </div>
                 </div>
               </div>
             </div>
@@ -45,6 +60,7 @@
                   <label for="cookTime">Cook time</label>
                   <input
                     type="number"
+                    min="5"
                     id="cookTime"
                     formControlName="cookTime"
                     class="form-control"
@@ -57,6 +73,7 @@
                   <input
                     type="number"
                     id="servingSize"
+                    min="1"
                     formControlName="servingSize"
                     class="form-control"
                     placeholder="Total servings">

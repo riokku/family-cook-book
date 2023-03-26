@@ -1,4 +1,4 @@
-ol{
+ul{
   list-style-type: none;
   margin-bottom: 0;
   li{
@@ -7,16 +7,12 @@ ol{
     }
   }
 }
-
 .ingredient-pane{
   background-color: #f2f2f2;
 }
-
 hr{
   border-top: 3px solid #d63031;
 }
-
-
 .breadcrumb{
   i{
     transition: transform .25s ease-in-out;
@@ -28,15 +24,10 @@ hr{
     }
   }
 }
-
-
-
 .recipe-header-wrapper{
-
   .recipe-header-info{
     background-color: rgba(0, 0, 0, 0.7);
     display: inline-block;
     color: #fff;
   }
-
 }
