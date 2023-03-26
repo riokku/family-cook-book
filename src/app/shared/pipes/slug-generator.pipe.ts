@@ -5,11 +5,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class SlugGeneratorPipe implements PipeTransform{
 
   transform(incomingString: string) {
-    //return incomingString.toUpperCase();
-
     return incomingString.replaceAll(" ", "-").toLowerCase().trim();
-
-
   }
 
 }

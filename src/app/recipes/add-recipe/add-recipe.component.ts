@@ -12,8 +12,8 @@ import { RecipeService } from '../../shared/services/recipe.service';
 
 export class AddRecipeComponent implements OnInit {
 
-  generatedSlug: string;
-  isDisabled = true;
+  slugInput: string;
+  slugOutput: string;
 
   recipeForm: FormGroup;
 
@@ -29,6 +29,10 @@ export class AddRecipeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+  }
+
+  updateSlug(){
+    this.slugOutput = this.slugInput.replaceAll(" ", "-").toLowerCase().trim();
   }
 
   private initializeForm(){
