@@ -26,6 +26,12 @@ input[type=checkbox]{
   }
 }
 
+input{
+  &::placeholder{
+    font-size: 0.8rem;
+  }
+}
+
 img{
   aspect-ratio: 16/9;
   object-fit: contain;

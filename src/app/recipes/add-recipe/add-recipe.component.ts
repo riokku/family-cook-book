@@ -17,7 +17,14 @@ export class AddRecipeComponent implements OnInit {
 
   recipeForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) {}
+  ingredientAmountOptions: string[] = ["1/4", "1/2", "3/4", "1", "1 1/4", "1 1/2", "1 3/4", "2", "2 1/4", "2 1/2", "2 3/4", "3"];
+  ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons (tsp)", "Tablespoons (tbsp)", "Fluid ounces (fl oz)", "Pints (pt)", "Quarts (qt)", "Milliliters (ml)", "Liters (l)", "Grams (g)", "Kilograms (kg)", "Ounces (oz)", "Pounds (lb)", "Count"];
+
+  constructor(
+    private route: ActivatedRoute,
+    private recipeService: RecipeService,
+    private router: Router,
+  ) {}
 
   get recipeIngredientControls() {
     return (this.recipeForm.get('ingredients') as FormArray).controls;
@@ -63,12 +70,9 @@ export class AddRecipeComponent implements OnInit {
   onAddIngredient() {
     (<FormArray>this.recipeForm.get('ingredients')).push(
       new FormGroup({
-        'name': new FormControl(null, Validators.required),
-        'amount': new FormControl(null, [
-          Validators.required,
-          Validators.pattern(/^[1-9]+[0-9]*$/)
-        ]),
-        'measurementType': new FormControl(null, Validators.required),
+        'ingredientName': new FormControl(null, Validators.required),
+        'ingredientAmount': new FormControl(null, Validators.required),
+        'ingredientMeasurementType': new FormControl(null, Validators.required)
       })
     );
   }

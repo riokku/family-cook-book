@@ -64,7 +64,7 @@
                     id="cookTime"
                     formControlName="cookTime"
                     class="form-control"
-                    placeholder="Time in minutes">
+                    placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
@@ -82,7 +82,7 @@
               <div class="col-6 col-md-2">
                 <div class="form-group">
                   <label for="featured">Featured</label><br />
-                  <input class="form-check-input mt-0" type="checkbox" value="" id="featured" formControlName="featured">
+                  <input class="form-check-input mt-0" type="checkbox" id="featured" formControlName="featured">
                 </div>
               </div>
             </div>
@@ -122,22 +122,24 @@
                     <input
                       type="text"
                       class="form-control"
-                      formControlName="name"
+                      formControlName="ingredientName"
                       placeholder="Ingredient name">
                   </div>
                   <div class="col-sm-2">
-                    <input
-                      type="number"
-                      class="form-control"
-                      formControlName="amount"
-                      placeholder="Amount">
+                    <select name="ingredientAmount" id="ingredientAmount" formControlName="ingredientAmount" class="form-select">
+                      <option [ngValue]="null" [disabled]="true">Amount</option>
+                      <option *ngFor="let ingredientAmount of ingredientAmountOptions" [value]="ingredientAmount">
+                        {{ ingredientAmount }}
+                      </option>
+                    </select>
                   </div>
                   <div class="col-sm-2">
-                    <input
-                      type="number"
-                      class="form-control"
-                      formControlName="measurementType"
-                      placeholder="Amount type">
+                    <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
+                      <option [ngValue]="null" [disabled]="true">Amount type</option>
+                      <option *ngFor="let ingredientMeasurementType of ingredientAmountTypeOptions" [value]="ingredientMeasurementType">
+                        {{ ingredientMeasurementType }}
+                      </option>
+                    </select>
                   </div>
                   <div class="col-sm-2">
                     <button
@@ -163,7 +165,7 @@
             </h3>
             <div class="row">
               <div class="col-12" formArrayName="steps">
-                <ol class="m-0">
+                <ol class="m-0 ps-3">
                   <li *ngFor="let stepControl of recipeStepsControls; let i = index" [formGroupName]="i">
                     <div class="row">
                       <div class="col-sm-10">
