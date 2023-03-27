@@ -42,3 +42,22 @@ img{
   color: #999;
   font-size: 0.8rem;
 }
+
+#recipeTags{
+  gap: 1rem;
+  .tag-option{
+    float: left;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    &:hover{
+      font-weight: 900;
+    }
+    &:checked{
+      font-weight: 900;
+    }
+    &:not(:last-child){
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem
+    }
+  }
+}

@@ -116,7 +116,7 @@
               <div class="col-12" formArrayName="ingredients">
                 <div
                   class="row"
-                  *ngFor="let ingredientCtrl of recipeIngredientControls; let i = index"
+                  *ngFor="let ingredientControl of recipeIngredientControls; let i = index"
                   [formGroupName]="i">
                   <div class="col-sm-6">
                     <input
@@ -190,6 +190,22 @@
                       class="btn btn-success mt-3"
                       (click)="onAddStep()">Add Step</button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-wrapper mb-4">
+            <h3>
+              Tags:
+            </h3>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <select name="recipeTags" id="recipeTags" formControlName="tags" class="form-select" multiple>
+                    <option *ngFor="let tag of recipeTagOptions" [value]="tag" class="tag-option">
+                      {{ tag }}
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
