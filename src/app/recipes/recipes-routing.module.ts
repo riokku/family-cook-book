@@ -20,7 +20,7 @@ const routes: Routes = [
         component: AddRecipeComponent
       },
       {
-        path: ':id',
+        path: ':slug',
         component: RecipeComponent,
         resolve: [RecipesResolverService]
       }

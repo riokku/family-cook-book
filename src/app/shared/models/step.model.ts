@@ -1,5 +1,5 @@
 export class Step{
   constructor(
-    public step: string,
+    public step: string
   ){}
 }

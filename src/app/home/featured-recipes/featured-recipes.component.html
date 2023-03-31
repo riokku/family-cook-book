@@ -139,8 +139,11 @@
     </div>
     <div class="row">
       <div class="col-12 col-sm-12 col-md-6 col-xl-3 d-flex mb-4" *ngFor="let recipe of recipes; let i = index">
-        <a [routerLink]="['recipes/'+i]">
+        <a [routerLink]="['recipes/'+recipe.slug]">
           <div class="card mb-4 h-100">
+            <div class="featured" *ngIf="recipe.featured">
+              Featured
+            </div>
             <div class="image-container">
               <img class="mw-100" src="{{recipe.imagePath}}" alt="{{recipe.name}}">
             </div>
@@ -157,7 +160,7 @@
                 </li>
               </ul>
               <ul class="list-inline tag-list mb-0">
-                <li *ngFor="let tag of recipeTags">
+                <li *ngFor="let tag of recipe.tags">
                   {{ tag }}
                 </li>
               </ul>

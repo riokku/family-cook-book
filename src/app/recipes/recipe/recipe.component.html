@@ -7,58 +7,59 @@
         </a>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="recipe-header-wrapper p-5" [ngStyle]="{
-          'background': 'url('+recipe.imagePath+')',
-          'background-size': 'cover',
-          'background-position-x': 'center',
-          'background-position-y': 'center'
-        }">
-          <div class="recipe-header-info p-4">
-            <h1>
-              {{ recipe.name }}
-            </h1>
-            <ul class="list-inline mb-3">
-              <li class="list-inline-item">
-                <i class="bi bi-clock"></i> {{ recipe.cookTime }} mins.
-              </li>
-              <li class="list-inline-item servings">
-                <i class="bi bi-person"></i> {{ recipe.servingSize }} servings
-              </li>
-            </ul>
-            <p>
-              {{ recipe.description }}
-            </p>
+    <div class="recipe-wrapper">
+      <div class="row">
+        <div class="col-12">
+          <div class="recipe-header-wrapper p-5" [ngStyle]="{
+            'background': 'url('+recipe.imagePath+')',
+            'background-size': 'cover',
+            'background-position-x': 'center',
+            'background-position-y': 'center'
+          }">
+            <div class="recipe-header-info p-4">
+              <h1>
+                {{ recipe.name }}
+              </h1>
+              <ul class="list-inline mb-3">
+                <li class="list-inline-item">
+                  <i class="bi bi-clock"></i> {{ recipe.cookTime }} mins.
+                </li>
+                <li class="list-inline-item servings">
+                  <i class="bi bi-person"></i> {{ recipe.servingSize }} servings
+                </li>
+              </ul>
+              <p>
+                {{ recipe.description }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <hr class="mb-4" />
-    <div class="row">
-      <div class="col-4">
-        <div class="ingredient-pane p-4">
-          <h3 class="mb-4">
-            Ingredients:
-          </h3>
-          <ul class="ps-1">
-            <li *ngFor="let ingredientSet of recipe.ingredients">
-              {{ ingredientSet.amount }}
-              {{ ingredientSet.measurementType }}
-              {{ ingredientSet.name }}
-            </li>
-          </ul>
+      <div class="row">
+        <div class="col-4">
+          <div class="ingredient-pane p-4">
+            <h3 class="mb-4">
+              Ingredients:
+            </h3>
+            <ul class="ps-1">
+              <li *ngFor="let ingredientSet of recipe.ingredients">
+                {{ ingredientSet.ingredientAmount }}
+                {{ ingredientSet.ingredientMeasurementType }}
+                {{ ingredientSet.ingredientName }}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="col-8 p-4">
-        <h3 class="mb-4">
-          Steps:
-        </h3>
-        <ol class="ps-1">
-          <li *ngFor="let step of recipe.steps">
-            {{ step.step }}
-          </li>
-        </ol>
+        <div class="col-8 p-4">
+          <h3 class="mb-4">
+            Steps:
+          </h3>
+          <ol class="ps-3 pe-3">
+            <li *ngFor="let step of recipe.steps">
+              {{ step.step }}
+            </li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>

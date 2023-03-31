@@ -14,9 +14,6 @@ export class FeaturedRecipesComponent {
 
   recipes: Recipe[] = [];
 
-
-  recipeTags = ["Date night", "Easy meal", "Dessert", "Dinner", "Breakfast"];
-
   constructor(private recipeService: RecipeService) {}
 
   ngOnInit(): void {

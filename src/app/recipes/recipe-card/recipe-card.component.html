@@ -1,4 +1,4 @@
-<a [routerLink]="[index]">
+<a [routerLink]="[recipe.slug]">
   <div class="card mb-4 h-100">
     <div class="featured" *ngIf="recipe.featured">
       Featured
@@ -21,6 +21,7 @@
       <p class="mb-3">
         {{ recipe.description }}
       </p>
+
     </div>
   </div>
 </a>

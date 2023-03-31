@@ -12,6 +12,7 @@ export class Recipe {
   public servingSize: number;
   public featured: boolean;
   public steps: Step[];
+  public tags: string[];
 
   constructor(
     name: string,
@@ -22,7 +23,8 @@ export class Recipe {
     cookTime: number,
     servingSize: number,
     featured: boolean,
-    steps: Step[]
+    steps: Step[],
+    tags: string[]
     ){
     this.name = name;
     this.slug = slug;
@@ -33,6 +35,7 @@ export class Recipe {
     this.servingSize = servingSize;
     this.featured = featured;
     this.steps = steps;
+    this.tags = tags;
   }
 
 }

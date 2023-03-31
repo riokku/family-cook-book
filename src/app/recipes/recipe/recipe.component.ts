@@ -12,7 +12,8 @@ import { RecipeService } from 'src/app/shared/services/recipe.service';
 export class RecipeComponent implements OnInit {
 
     recipe: Recipe;
-    id: number;
+    slug: string;
+
 
     constructor(
       private recipeService: RecipeService,
@@ -20,10 +21,11 @@ export class RecipeComponent implements OnInit {
     ){}
 
     ngOnInit(): void {
-      const id = this.route.params.subscribe(
+      const slug = this.route.params.subscribe(
         (params: Params) => {
-          this.id = +params['id'];
-          this.recipe = this.recipeService.getRecipe(this.id);
+           this.slug = params['slug'];
+           this.recipe = this.recipeService.getRecipe(this.slug);
+           //this.recipeService.getRecipe(this.slug);
         }
       )
     }
