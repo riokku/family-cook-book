@@ -48,6 +48,16 @@ nav{
         transform: scaleX(1);
         transform-origin: bottom left;
       }
+      @media (max-width: 991px){
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+    @media (max-width: 991px){
+      width: fit-content;
+      &:first-child{
+        margin-top: 1rem;
+      }
     }
   }
 

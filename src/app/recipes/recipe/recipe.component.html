@@ -10,7 +10,7 @@
     <div class="recipe-wrapper">
       <div class="row">
         <div class="col-12">
-          <div class="recipe-header-wrapper p-5" [ngStyle]="{
+          <div class="recipe-header-wrapper" [ngStyle]="{
             'background': 'url('+recipe.imagePath+')',
             'background-size': 'cover',
             'background-position-x': 'center',
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-4">
+        <div class="col-12 col-sm-12 col-md-4">
           <div class="ingredient-pane p-4">
             <h3 class="mb-4">
               Ingredients:
@@ -50,7 +50,7 @@
             </ul>
           </div>
         </div>
-        <div class="col-8 p-4">
+        <div class="col-12 col-sm-12 col-md-8 p-4">
           <h3 class="mb-4">
             Steps:
           </h3>

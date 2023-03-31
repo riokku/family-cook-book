@@ -38,9 +38,13 @@ hr{
   border-radius: 0.5rem;
 }
 .recipe-header-wrapper{
+  padding: 2rem;
   .recipe-header-info{
     background-color: rgba(0, 0, 0, 0.7);
     display: inline-block;
     color: #fff;
+  }
+  @media (max-width: 991px){
+    padding: 0;
   }
 }
