@@ -14,11 +14,13 @@
         </h3>
         <hr class="my-4 me-4" />
         <div class="filter-container">
-          <input type="checkbox" name="all" id="all">
-          <label class="ps-3" for="all">All</label>
+          <input #allCheckbox type="checkbox" name="all" id="all" (click)="resetRecipes()">
+          <label class="ps-3" for="all">
+            All
+          </label>
         </div>
         <div class="filter-container" *ngFor="let category of recipeCategories">
-          <input type="checkbox" name="{{category | lowercase}}" id="{{category | lowercase}}">
+          <input #checkboxes type="checkbox" name="{{category | lowercase}}" id="{{category | lowercase}}">
           <label class="ps-3" for="{{category | lowercase}}" (click)="filterRecipes(category)">
             {{category}}
           </label>
@@ -27,7 +29,7 @@
       </div>
       <div class="col-12 col-md-9">
         <div class="row">
-          <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4" *ngFor="let recipe of recipes; let i = index">
+          <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4" *ngFor="let recipe of selectedRecipes; let i = index">
             <app-recipe-card [recipe]="recipe" [index]="i"></app-recipe-card>
           </div>
         </div>

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Recipe } from '../../shared/models/recipe.model';
 import { RecipeService } from '../../shared/services/recipe.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-all-recipes',
@@ -10,7 +11,11 @@ import { RecipeService } from '../../shared/services/recipe.service';
 
 export class AllRecipesComponent {
 
-  recipes: Recipe[] = [];
+  @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
+  @ViewChild("allCheckbox") allCheckbox: ElementRef;
+
+  allRecipes: Recipe[] = [];
+  selectedRecipes: Recipe[] = [];
 
   recipeCategories: any [];
 
@@ -18,17 +23,34 @@ export class AllRecipesComponent {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.recipes = this.recipeService.getRecipes();
-      let fullCategoryList = this.recipes.map(el => {
+      this.allRecipes = this.recipeService.getRecipes();
+      this.selectedRecipes = this.allRecipes;
+      let fullCategoryList = this.allRecipes.map(el => {
         return el.tags;
       })
-      this.recipeCategories = [...new Set(fullCategoryList.flat(1))];
-    }, 20);
+      this.recipeCategories = [...new Set(fullCategoryList.flat(1).sort())];
+      this.allCheckbox.nativeElement.checked = true;
+    }, 100);
   }
 
+  resetRecipes(){
+    this.uncheckAll();
+    this.selectedRecipes = this.allRecipes;
+    this.allCheckbox.nativeElement.checked = true;
+  }
 
   filterRecipes(category: string){
-    alert(category);
+    this.uncheckAll();
+    this.selectedRecipes = this.allRecipes.filter(recipe => recipe.tags.includes(category));
+  }
+
+  uncheckAll(){
+    this.checkboxes.forEach((element) => {
+      element.nativeElement.checked = false;
+    });
+    if(this.allCheckbox.nativeElement.checked === true){
+      this.allCheckbox.nativeElement.checked = false;
+    }
   }
 
 }
