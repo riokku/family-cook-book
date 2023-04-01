@@ -26,8 +26,11 @@
     }
   }
   .tag-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
     li{
-      background-color: #d63031;
+      background-color: #e17055;
       color: #fff;
       padding: .35rem;
       border-radius: 0.25rem;

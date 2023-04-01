@@ -10,6 +10,7 @@ h5{
 
 .filter-container{
   display: flex;
+  width: fit-content;
   input{
     height: 2rem;
     width: 2rem;
@@ -37,6 +38,7 @@ h5{
   &:last-child{
     margin-bottom: 3rem;
   }
+
 
 }
 

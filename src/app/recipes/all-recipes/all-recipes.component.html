@@ -17,17 +17,11 @@
           <input type="checkbox" name="all" id="all">
           <label class="ps-3" for="all">All</label>
         </div>
-        <div class="filter-container">
-          <input type="checkbox" name="dessert" id="dessert">
-          <label class="ps-3" for="dessert">Dessert</label>
-        </div>
-        <div class="filter-container">
-          <input type="checkbox" name="quickMeals" id="quickMeals">
-          <label class="ps-3" for="quickMeals">Quick meals</label>
-        </div>
-        <div class="filter-container">
-          <input type="checkbox" name="crockpot" id="crockpot">
-          <label class="ps-3" for="crockpot">Crockpot</label>
+        <div class="filter-container" *ngFor="let category of recipeCategories">
+          <input type="checkbox" name="{{category | lowercase}}" id="{{category | lowercase}}">
+          <label class="ps-3" for="{{category | lowercase}}" (click)="filterRecipes(category)">
+            {{category}}
+          </label>
         </div>
         <hr class="my-4 me-4" />
       </div>
