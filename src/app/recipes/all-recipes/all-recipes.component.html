@@ -13,18 +13,23 @@
           What are you interested in?
         </h3>
         <hr class="my-4 me-4" />
-        <div class="filter-container">
-          <input #allCheckbox type="checkbox" name="all" id="all" (click)="resetRecipes()">
-          <label class="ps-3" for="all">
-            All
-          </label>
+        <div id="filter-wrapper">
+          <div class="filter-container">
+            <input #allCheckbox type="checkbox" name="all" id="all" (click)="resetRecipes()">
+            <label class="ps-3" for="all">
+              All
+            </label>
+          </div>
+          <div class="filter-container" *ngFor="let category of recipeCategories">
+            <input #checkboxes type="checkbox" name="{{category | lowercase}}" id="{{category | lowercase}}">
+            <label class="ps-3" for="{{category | lowercase}}" (click)="filterRecipes(category)">
+              {{category}}
+            </label>
+          </div>
         </div>
-        <div class="filter-container" *ngFor="let category of recipeCategories">
-          <input #checkboxes type="checkbox" name="{{category | lowercase}}" id="{{category | lowercase}}">
-          <label class="ps-3" for="{{category | lowercase}}" (click)="filterRecipes(category)">
-            {{category}}
-          </label>
-        </div>
+        <button id="expandButton" type="button" (click)="expandCategoryList()">
+          {{expandButtonText}}
+        </button>
         <hr class="my-4 me-4" />
       </div>
       <div class="col-12 col-md-9">

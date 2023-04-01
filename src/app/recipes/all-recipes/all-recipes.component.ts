@@ -16,6 +16,8 @@ export class AllRecipesComponent {
 
   allRecipes: Recipe[] = [];
   selectedRecipes: Recipe[] = [];
+  expandButtonSetting: boolean = false;
+  expandButtonText: string = "Show more";
 
   recipeCategories: any [];
 
@@ -50,6 +52,18 @@ export class AllRecipesComponent {
     });
     if(this.allCheckbox.nativeElement.checked === true){
       this.allCheckbox.nativeElement.checked = false;
+    }
+  }
+
+  expandCategoryList(){
+    const filterWrapper = document.getElementById("filter-wrapper");
+    filterWrapper?.classList.toggle("expanded");
+
+    this.expandButtonSetting = !this.expandButtonSetting;
+    if(!this.expandButtonSetting){
+      this.expandButtonText = "Show more";
+    } else {
+      this.expandButtonText = "Show less";
     }
   }
 

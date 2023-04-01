@@ -8,9 +8,36 @@ h5{
   }
 }
 
+#filter-wrapper{
+  max-height: 300px;
+  overflow: hidden;
+  width: fit-content;
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+  &.expanded{
+    max-height: 1000px;
+    transition: max-height 1s ease-in-out;
+  }
+  @media (max-width: 991px){
+    max-height: none;
+    display: flex;
+    flex-wrap: wrap;
+    .filter-container{
+      margin-right: 2rem;
+      label{
+        padding-left: 0.5rem !important;
+      }
+      &:first-child{
+        width: 100%;
+      }
+    }
+  }
+}
+
+
 .filter-container{
   display: flex;
   width: fit-content;
+  margin-bottom: 1rem;
   input{
     height: 2rem;
     width: 2rem;
@@ -31,14 +58,25 @@ h5{
     }
   }
 
-  &:not(:last-child){
-    margin-bottom: 1rem;
+  @media (max-width: 991px){
+    &:last-child{
+      margin-bottom: 0;
+    }
   }
 
-  &:last-child{
-    margin-bottom: 3rem;
+}
+
+#expandButton{
+  color: #fff;
+  background-color: #d63031;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  &:hover{
+    background-color: #e17055;
   }
-
-
+  @media (max-width: 991px){
+    display: none;
+  }
 }
 
