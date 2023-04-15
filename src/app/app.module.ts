@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
-import { AuthComponent } from './auth/auth.component';
+import { AdminComponent } from './admin/admin.component';
 import { RecipeService } from './shared/services/recipe.service';
 import { RecipesRoutingModule } from './recipes/recipes-routing.module';
 import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recipes.component';
@@ -20,7 +20,7 @@ import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recip
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    AuthComponent,
+    AdminComponent,
     FeaturedRecipesComponent
   ],
   imports: [

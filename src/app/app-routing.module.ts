@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthComponent } from './auth/auth.component';
+import { AdminComponent } from './admin/admin.component';
 import { HomeComponent } from './home/home.component';
 import { RecipesResolverService } from './shared/resolvers/recipe-resolve.service';
 
@@ -15,8 +15,9 @@ const routes: Routes = [
     loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule)
   },
   {
-    path: 'sign-in',
-    component: AuthComponent
+    path: 'admin',
+    component: AdminComponent,
+    resolve: [RecipesResolverService]
   },
   {
     path: '**',
