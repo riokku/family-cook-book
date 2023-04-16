@@ -23,7 +23,16 @@ export class AdminComponent implements OnInit{
   }
 
   updateResults(){
-    this.recipeResults = this.allRecipes.filter(recipe => recipe.name.includes(this.searchInput));
+    this.recipeResults = this.allRecipes.filter(recipe => recipe.name.toLowerCase().includes(this.searchInput.toLowerCase()));
+  }
+
+  clearSearchInput(){
+    this.searchInput = '';
+    this.updateResults();
+  }
+
+  editCheck(index: any){
+    console.log(index)
   }
 
 }

@@ -12,21 +12,44 @@
     <div class="row">
       <div class="col-12">
         <h4>
-          Search:
+          Search recipes:
         </h4>
-        <input type="text" class="mb-5" [(ngModel)]="searchInput" (input)="updateResults()">
-        {{searchInput}}
+        <div class="search-input-wrapper mb-5">
+          <input class="me-2" type="text" [(ngModel)]="searchInput" (input)="updateResults()" placeholder="Search by recipe name...">
+          <button type="button" (click)="clearSearchInput()" *ngIf="searchInput">
+            <i class="bi bi-x-circle"></i>
+          </button>
+        </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <h5>
-          Results ({{recipeResults.length}}):
-        </h5>
-        <div class="recipe-blade" *ngFor="let recipe of recipeResults">
-          <a [routerLink]="'/recipes/' + [recipe.slug]">
-            {{ recipe.name }}
+        <div class="results-header mb-2">
+          <h5>
+            Results ({{recipeResults.length}}):
+          </h5>
+          <a routerLink="/recipes/add-recipe">
+            <i class="bi bi-plus-square-fill"></i> Add recipe
           </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="recipe-blade" *ngFor="let recipe of recipeResults; let i = index">
+          <div class="recipe-name">
+            <a [routerLink]="'/recipes/' + [recipe.slug]">
+              {{ recipe.name }}
+            </a>
+          </div>
+          <div class="recipe-actions">
+            <button type="button" class="btn edit me-2" (click)="editCheck(recipe.slug)">
+              <i class="bi bi-pencil"></i> Edit
+            </button>
+            <button type="button" class="btn delete">
+              <i class="bi bi-trash3"></i> Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>
