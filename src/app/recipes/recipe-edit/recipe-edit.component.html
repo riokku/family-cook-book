@@ -11,14 +11,14 @@
       <div class="col-12">
         <div class="banner mb-4">
           <h1>
-            <i class="bi bi-plus-square-fill"></i> Add a recipe:
+            <i class="bi bi-pencil"></i> Edit recipe:
           </h1>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="editRecipeForm" (ngSubmit)="onSubmit()">
           <div class="form-group-wrapper">
             <h3>
               Overview:
@@ -176,14 +176,14 @@
               <div class="col-12" formArrayName="steps">
                 <ol class="m-0 ps-3">
                   <li *ngFor="let stepControl of recipeStepsControls; let i = index" [formGroupName]="i">
-                    <div class="row">
+                    <div class="row mb-3">
                       <div class="col-sm-10">
-                        <input
+                        <textarea
                           type="text"
-                          class="form-control"
-                          formControlName="step">
+                          class="form-control mb-0"
+                          formControlName="step"></textarea>
                       </div>
-                      <div class="col-sm-2">
+                      <div class="col-sm-2 d-flex align-items-center">
                         <button
                           type="button"
                           class="btn btn-danger"
@@ -221,7 +221,7 @@
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid">Submit</button>
+              <button type="submit" class="btn btn-success me-3" [disabled]="!editRecipeForm.valid">Submit</button>
               <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
             </div>
           </div>

@@ -11,6 +11,7 @@ import { CommonModule } from "@angular/common";
 import { AllRecipesComponent } from './all-recipes/all-recipes.component';
 import { RecipeComponent } from "./recipe/recipe.component";
 import { SlugGeneratorPipe } from "../shared/pipes/slug-generator.pipe";
+import { RecipeEditComponent } from "./recipe-edit/recipe-edit.component";
 
 @NgModule(
   {
@@ -20,6 +21,7 @@ import { SlugGeneratorPipe } from "../shared/pipes/slug-generator.pipe";
       AddRecipeComponent,
       RecipeCardComponent,
       AllRecipesComponent,
+      RecipeEditComponent,
       SlugGeneratorPipe
     ],
     imports: [

@@ -13,6 +13,7 @@ import { AdminComponent } from './admin/admin.component';
 import { RecipeService } from './shared/services/recipe.service';
 import { RecipesRoutingModule } from './recipes/recipes-routing.module';
 import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recipes.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recip
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    RecipesRoutingModule
+    RecipesRoutingModule,
+    RouterModule
   ],
   providers: [
     RecipeService
