@@ -24,6 +24,7 @@ export class RecipeService{
           const newRecipes =  [];
           for(const key in response){
             newRecipes.push({
+              id: key,
               ...response[key]
             })
           }
@@ -61,6 +62,10 @@ export class RecipeService{
     return this.http.post('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes.json', recipe).subscribe(response => {
       console.log(response)
     });
+  }
+
+  deleteRecipe(id: string){
+    this.http.delete('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json').subscribe();
   }
 
 }

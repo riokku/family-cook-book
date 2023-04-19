@@ -12,6 +12,8 @@ export class AdminComponent implements OnInit{
   allRecipes: Recipe[] = [];
   recipeResults: Recipe[] = [];
   searchInput: string;
+  toBeDeletedRecipe: Recipe;
+  toBeDeletedRecipeName: string;
 
   constructor(private recipeService: RecipeService) {}
 
@@ -19,7 +21,8 @@ export class AdminComponent implements OnInit{
     setTimeout(() => {
       this.allRecipes = this.recipeService.getRecipes();
       this.recipeResults = this.allRecipes;
-    }, 100);
+      console.log(this.allRecipes);
+    }, 200);
   }
 
   updateResults(){
@@ -31,8 +34,18 @@ export class AdminComponent implements OnInit{
     this.updateResults();
   }
 
-  editCheck(index: any){
-    console.log(index)
+  setToBeDeletedRecipe(readyToDeleteRecipe: Recipe){
+    this.toBeDeletedRecipe = readyToDeleteRecipe;
+    this.toBeDeletedRecipeName = this.toBeDeletedRecipe.name;
+  }
+
+  deleteRecipe(deletedRecipeID:any){
+    this.recipeService.deleteRecipe(deletedRecipeID);
+    this.recipeResults = this.recipeResults.filter(recipe => recipe.id != deletedRecipeID);
+  }
+
+  recipeTrackBy(index: number, recipe: Recipe){
+    return recipe.id;
   }
 
 }

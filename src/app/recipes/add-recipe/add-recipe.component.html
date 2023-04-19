@@ -51,6 +51,19 @@
               </div>
             </div>
             <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label for="author">Author</label>
+                  <input
+                    type="text"
+                    id="author"
+                    formControlName="author"
+                    class="form-control"
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-12">
                 <div class="form-group">
                   <label for="description">Description</label>
@@ -219,10 +232,25 @@
               </div>
             </div>
           </div>
+          <div class="row d-none">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="created">Created</label>
+                <input
+                  type="date"
+                  id="created"
+                  class="form-control"
+                  formControlName="created" value="">
+              </div>
+            </div>
+          </div>
           <div class="row">
             <div class="col-xs-12">
               <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid">Submit</button>
               <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+              <span class="recipe-date">
+                Recipe created: {{recipeCreatedDate | date:'medium' }}
+              </span>
             </div>
           </div>
         </form>

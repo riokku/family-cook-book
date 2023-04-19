@@ -22,6 +22,7 @@ export class RecipeEditComponent implements OnInit {
 
   recipeName: string;
   recipeSlug: string;
+  recipeAuthor: string;
   recipeDescription: string;
   recipeCookTime: string;
   recipeServingSize: string;
@@ -70,6 +71,7 @@ export class RecipeEditComponent implements OnInit {
     this.slugInput = editingRecipe.name;
     this.updateSlug();
     this.recipeSlug = editingRecipe.slug;
+    this.recipeAuthor = editingRecipe.author;
     this.recipeDescription = editingRecipe.description;
     this.recipeCookTime = editingRecipe.cookTime;
     this.recipeServingSize = editingRecipe.servingSize;
@@ -84,6 +86,7 @@ export class RecipeEditComponent implements OnInit {
     this.editRecipeForm = new FormGroup({
       'name': new FormControl(this.recipeName, Validators.required),
       'slug': new FormControl(this.recipeSlug, Validators.required),
+      'author': new FormControl(this.recipeAuthor, Validators.required),
       'description': new FormControl(this.recipeDescription, Validators.required),
       'cookTime': new FormControl(this.recipeCookTime, Validators.required),
       'servingSize': new FormControl(this.recipeServingSize, Validators.required),

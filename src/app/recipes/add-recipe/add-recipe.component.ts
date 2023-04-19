@@ -15,6 +15,9 @@ export class AddRecipeComponent implements OnInit {
   slugInput: string;
   slugOutput: string;
 
+  recipeCreatedDate: Date;
+
+
   recipeForm: FormGroup;
 
   ingredientAmountOptions: string[] = ["1/4", "1/2", "3/4", "1", "1 1/4", "1 1/2", "1 3/4", "2", "2 1/4", "2 1/2", "2 3/4", "3"];
@@ -46,6 +49,7 @@ export class AddRecipeComponent implements OnInit {
   private initializeForm(){
     let recipeName = '';
     let recipeSlug = '';
+    let recipeAuthor = '';
     let recipeDescription = '';
     let recipeCookTime;
     let recipeServingSize;
@@ -54,20 +58,22 @@ export class AddRecipeComponent implements OnInit {
     let recipeIngredientsArray = new FormArray([]);
     let recipeStepsArray = new FormArray([]);
     let recipeTags: string[] = [];
+    this.recipeCreatedDate = new Date();
 
     this.recipeForm = new FormGroup({
       'name': new FormControl(recipeName, Validators.required),
       'slug': new FormControl(recipeSlug, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
+      'author': new FormControl(recipeAuthor, Validators.required),
       'cookTime': new FormControl(recipeCookTime, Validators.required),
       'servingSize': new FormControl(recipeServingSize, Validators.required),
       'featured': new FormControl(recipeFeatured),
       'imagePath': new FormControl(recipeImagePath, Validators.required),
       'ingredients': recipeIngredientsArray,
       'steps': recipeStepsArray,
-      'tags': new FormControl(recipeTags, Validators.required)
+      'tags': new FormControl(recipeTags, Validators.required),
+      'created': new FormControl(this.recipeCreatedDate, Validators.required)
     });
-
   }
 
   onAddIngredient() {
