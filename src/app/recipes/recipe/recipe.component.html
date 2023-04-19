@@ -10,16 +10,21 @@
     <div class="recipe-wrapper">
       <div class="row">
         <div class="col-12">
-          <div class="recipe-header-wrapper" [ngStyle]="{
+          <div class="recipe-header-wrapper" [ngStyle]="recipe.imagePath ? {
             'background': 'url('+recipe.imagePath+')',
             'background-size': 'cover',
             'background-position-x': 'center',
             'background-position-y': 'center'
+          } : {
+            'background': 'orange'
           }">
             <div class="recipe-header-info p-4">
               <h1>
                 {{ recipe.name }}
               </h1>
+              <p>
+                Author: {{ recipe.author }}
+              </p>
               <ul class="list-inline mb-3">
                 <li class="list-inline-item">
                   <i class="bi bi-clock"></i> {{ recipe.cookTime }} mins.

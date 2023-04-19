@@ -31,6 +31,17 @@
 
 label{
   margin-bottom: 0.5rem;
+  &:before{
+    content: '*';
+    color: #d63031;
+  }
+}
+
+h3{
+  &:before{
+    content: '*';
+    color: #d63031;
+  }
 }
 
 input, textarea{

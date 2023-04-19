@@ -14,7 +14,6 @@ export class RecipeComponent implements OnInit {
     recipe: Recipe;
     slug: string;
 
-
     constructor(
       private recipeService: RecipeService,
       private route: ActivatedRoute
@@ -25,7 +24,6 @@ export class RecipeComponent implements OnInit {
         (params: Params) => {
            this.slug = params['slug'];
            this.recipe = this.recipeService.getRecipe(this.slug);
-           //this.recipeService.getRecipe(this.slug);
         }
       )
     }
