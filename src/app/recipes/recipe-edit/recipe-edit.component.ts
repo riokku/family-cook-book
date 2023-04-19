@@ -5,6 +5,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../../shared/services/recipe.service';
 import { Ingredient } from 'src/app/shared/models/ingredient.model';
 import { Step } from 'src/app/shared/models/step.model';
+import { Recipe } from 'src/app/shared/models/recipe.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -19,18 +20,20 @@ export class RecipeEditComponent implements OnInit {
 
   editRecipeForm: FormGroup;
   editedSlug: string;
+  editingRecipe: Recipe;
 
   recipeName: string;
   recipeSlug: string;
   recipeAuthor: string;
   recipeDescription: string;
-  recipeCookTime: string;
-  recipeServingSize: string;
+  recipeCookTime: number;
+  recipeServingSize: number;
   recipeFeatured: boolean;
   recipeImagePath: string;
   recipeIngredientsArray: Ingredient[];
   recipeStepsArray: Step[];
   recipeTags: string[];
+  recipeCreated: Date;
 
   ingredientAmountOptions: string[] = ["1/4", "1/2", "3/4", "1", "1 1/4", "1 1/2", "1 3/4", "2", "2 1/4", "2 1/2", "2 3/4", "3"];
   ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons (tsp)", "Tablespoons (tbsp)", "Fluid ounces (fl oz)", "Pints (pt)", "Quarts (qt)", "Milliliters (ml)", "Liters (l)", "Grams (g)", "Kilograms (kg)", "Ounces (oz)", "Pounds (lb)", "Count"];
@@ -65,23 +68,24 @@ export class RecipeEditComponent implements OnInit {
 
   private initializeForm(){
 
-    const editingRecipe = this.recipeService.getRecipe(this.editedSlug);
+    this.editingRecipe = this.recipeService.getRecipe(this.editedSlug);
 
-    this.recipeName = editingRecipe.name;
-    this.slugInput = editingRecipe.name;
+    console.log(this.editingRecipe.id);
+
+    this.recipeName = this.editingRecipe.name;
+    this.slugInput = this.editingRecipe.name;
     this.updateSlug();
-    this.recipeSlug = editingRecipe.slug;
-    this.recipeAuthor = editingRecipe.author;
-    this.recipeDescription = editingRecipe.description;
-    this.recipeCookTime = editingRecipe.cookTime;
-    this.recipeServingSize = editingRecipe.servingSize;
-    this.recipeFeatured = editingRecipe.featured;
-    this.recipeImagePath = editingRecipe.imagePath;
-    this.recipeIngredientsArray = editingRecipe.ingredients;
-    this.recipeStepsArray = editingRecipe.steps;
-    this.recipeTags = editingRecipe.tags;
-
-    console.log(this.recipeName);
+    this.recipeSlug = this.editingRecipe.slug;
+    this.recipeAuthor = this.editingRecipe.author;
+    this.recipeDescription = this.editingRecipe.description;
+    this.recipeCookTime = this.editingRecipe.cookTime;
+    this.recipeServingSize = this.editingRecipe.servingSize;
+    this.recipeFeatured = this.editingRecipe.featured;
+    this.recipeImagePath = this.editingRecipe.imagePath;
+    this.recipeIngredientsArray = this.editingRecipe.ingredients;
+    this.recipeStepsArray = this.editingRecipe.steps;
+    this.recipeTags = this.editingRecipe.tags;
+    this.recipeCreated = this.editingRecipe.created;
 
     this.editRecipeForm = new FormGroup({
       'name': new FormControl(this.recipeName, Validators.required),
@@ -100,7 +104,8 @@ export class RecipeEditComponent implements OnInit {
       'steps':  new FormArray(this.recipeStepsArray.map(step => new FormGroup({
         'step': new FormControl(step.step, Validators.required)
       }))),
-      'tags': new FormControl(this.recipeTags, Validators.required)
+      'tags': new FormControl(this.recipeTags, Validators.required),
+      'created': new FormControl(this.recipeCreated, Validators.required),
     });
 
   }
@@ -131,12 +136,13 @@ export class RecipeEditComponent implements OnInit {
     (<FormArray>this.editRecipeForm.get('steps')).removeAt(index);
   }
 
-  onSubmit() {
-    this.recipeService.submitRecipe(this.editRecipeForm.value);
+  onSaveChanges() {
+    this.recipeService.saveRecipeChanges(this.editRecipeForm.value, this.editingRecipe.id);
     this.editRecipeForm.reset();
+    //this.router.navigate(['/admin']);
   }
 
   onCancel() {
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['/admin']);
   }
 }

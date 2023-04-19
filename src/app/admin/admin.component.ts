@@ -18,11 +18,9 @@ export class AdminComponent implements OnInit{
   constructor(private recipeService: RecipeService) {}
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.allRecipes = this.recipeService.getRecipes();
-      this.recipeResults = this.allRecipes;
-      console.log(this.allRecipes);
-    }, 200);
+    this.allRecipes = this.recipeService.getRecipes();
+    this.recipeResults = this.allRecipes;
+    console.log(this.allRecipes);
   }
 
   updateResults(){

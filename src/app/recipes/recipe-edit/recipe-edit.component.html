@@ -18,7 +18,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <form [formGroup]="editRecipeForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="editRecipeForm" (ngSubmit)="onSaveChanges()">
           <div class="form-group-wrapper">
             <h3>
               Overview:
@@ -231,10 +231,22 @@
                 </div>
               </div>
             </div>
+            <div class="row d-none">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="created">Created</label>
+                  <input
+                    type="date"
+                    id="created"
+                    class="form-control"
+                    formControlName="created" value="">
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button type="submit" class="btn btn-success me-3" [disabled]="!editRecipeForm.valid">Submit</button>
+              <button type="submit" class="btn btn-success me-3" [disabled]="!editRecipeForm.valid">Save changes</button>
               <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
             </div>
           </div>

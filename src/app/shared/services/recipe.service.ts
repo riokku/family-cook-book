@@ -64,6 +64,13 @@ export class RecipeService{
     });
   }
 
+  saveRecipeChanges(recipe: Recipe, id: any){
+    console.log(recipe, id);
+    return this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe).subscribe(response => {
+      window.location.href = "/admin";
+    });
+  }
+
   deleteRecipe(id: string){
     this.http.delete('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json').subscribe();
   }

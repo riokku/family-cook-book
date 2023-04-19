@@ -37,6 +37,14 @@ label{
   }
 }
 
+.slug-wrapper{
+  label{
+    &:before{
+      content: none;
+    }
+  }
+}
+
 h3{
   &:before{
     content: '*';
