@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../shared/models/recipe.model';
 import { RecipeService } from '../shared/services/recipe.service';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -15,7 +16,10 @@ export class AdminComponent implements OnInit{
   toBeDeletedRecipe: Recipe;
   toBeDeletedRecipeName: string;
 
-  constructor(private recipeService: RecipeService) {}
+  loggedInUserInfo: any;
+  userApproved: any = localStorage.getItem('userApproved');
+
+  constructor(private recipeService: RecipeService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.allRecipes = this.recipeService.getRecipes();
@@ -45,5 +49,23 @@ export class AdminComponent implements OnInit{
   recipeTrackBy(index: number, recipe: Recipe){
     return recipe.id;
   }
+
+  async signInWithGoogle() {
+    try {
+      await this.authService.googleSignIn();
+      this.loggedInUserInfo = localStorage.getItem('loggedInUserID');
+      console.log(this.loggedInUserInfo);
+
+      await this.authService.getApprovedUsersList();
+      this.userApproved = localStorage.getItem('userApproved');
+      console.log(this.userApproved);
+      return;
+
+    } catch (error) {
+      console.error("Error:", error);
+      return;
+    }
+  }
+
 
 }

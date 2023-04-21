@@ -1,3 +1,33 @@
+
+.google-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  color: #2d3436;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  transition: box-shadow 0.25s;
+  &:hover{
+    box-shadow: 2px 2px 2px #999;
+  }
+}
+
+.google-logo {
+  float: left;
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.google-text {
+  display: inline-block;
+}
+
+
 .banner{
   background-color: #2d3436;
   border-radius: 0.25rem;
@@ -73,7 +103,7 @@ a{
   }
   .recipe-actions{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     a{
       line-height: 24px;
       padding: 0.375rem 0.75rem;
@@ -117,3 +147,5 @@ button{
   padding: 0.5rem 1rem;
   background-color: #f2f2f2;
 }
+
+
