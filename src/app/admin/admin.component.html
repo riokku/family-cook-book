@@ -19,9 +19,17 @@
     <div class="restricted-content" *ngIf="userApproved">
       <div class="row">
         <div class="col-12">
+          <div class="user-name-wrapper">
+            <p class="mb-0">
+              Welcome, {{ loggedInUserName }}!
+              <button type="button" (click)="signOut()">
+                <i class="bi bi-box-arrow-left"></i> Log out
+              </button>
+            </p>
+          </div>
           <div class="banner mb-4">
             <h1>
-              Admin Dashboard
+              <i class="bi bi-card-checklist"></i> Admin Dashboard
             </h1>
           </div>
         </div>
@@ -58,7 +66,7 @@
               <div class="col-12 col-sm-12 col-md-8 d-flex align-items-center">
                 <p class="recipe-name mb-0">
                   {{ recipe.name }}<br />
-                  <span><i class="bi bi-calendar"></i> {{recipe.created | date:'medium'}}</span>
+                  <span><i class="bi bi-calendar"></i> {{recipe.created | date:'mediumDate'}}</span>
                 </p>
               </div>
               <div class="col-12 col-sm-12 col-md-4">

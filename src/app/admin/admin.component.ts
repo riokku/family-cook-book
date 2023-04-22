@@ -16,7 +16,8 @@ export class AdminComponent implements OnInit{
   toBeDeletedRecipe: Recipe;
   toBeDeletedRecipeName: string;
 
-  loggedInUserInfo: any;
+  loggedInUserID: any;
+  loggedInUserName: any;
   userApproved: any = localStorage.getItem('userApproved');
 
   constructor(private recipeService: RecipeService, private authService: AuthService) {}
@@ -53,11 +54,12 @@ export class AdminComponent implements OnInit{
   async signInWithGoogle() {
     try {
       await this.authService.googleSignIn();
-      this.loggedInUserInfo = localStorage.getItem('loggedInUserID');
-      console.log(this.loggedInUserInfo);
+      this.loggedInUserID = localStorage.getItem("loggedInUserID");
+      this.loggedInUserName = localStorage.getItem("userName")?.split(" ")[0].slice(1);
+      console.log(this.loggedInUserID, this.loggedInUserName);
 
       await this.authService.getApprovedUsersList();
-      this.userApproved = localStorage.getItem('userApproved');
+      this.userApproved = localStorage.getItem("userApproved");
       console.log(this.userApproved);
       return;
 
@@ -67,5 +69,8 @@ export class AdminComponent implements OnInit{
     }
   }
 
+  signOut(){
+    this.authService.googleSignOut();
+  }
 
 }
