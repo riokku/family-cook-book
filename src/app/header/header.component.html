@@ -3,22 +3,22 @@
     <a href="#">
       <img class="hero me-2" src="../../assets/icons/hero.svg" alt="Happy Recipes">
     </a>
-    <h1 href="#" class="site-title m-0">
+    <h1 class="site-title m-0">
       Happy Recipes
     </h1>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ms-auto">
+      <ul id="navbarUl" class="navbar-nav ms-auto">
         <li class="nav-item me-3">
-          <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Home</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="closeNavOnClick()">Home</a>
         </li>
         <li class="nav-item me-3">
-          <a class="nav-link" routerLink="/recipes" routerLinkActive="active-link">Recipes</a>
+          <a class="nav-link" routerLink="/recipes" routerLinkActive="active-link" (click)="closeNavOnClick()">Recipes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/admin" routerLinkActive="active-link">Admin</a>
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active-link" (click)="closeNavOnClick()">Admin</a>
         </li>
       </ul>
     </div>
