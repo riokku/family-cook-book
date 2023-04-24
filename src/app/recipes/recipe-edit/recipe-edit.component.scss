@@ -84,3 +84,39 @@ img{
     }
   }
 }
+
+@media (max-width: 390px){
+  .page-wrapper{
+    padding: 0 !important;
+  }
+  .form-group-wrapper{
+    padding: 0.75rem;
+  }
+  .recipe-date{
+    margin-top: 1rem;
+    float: left;
+  }
+  .ingredients-wrapper, .steps-wrapper{
+    textarea{
+      margin-bottom: 0.5rem;
+    }
+    button{
+      &.btn-danger{
+        float: right;
+        margin-bottom: 0.5rem;
+        padding: 0.15rem 0.55rem;
+      }
+    }
+  }
+  .ingredients-wrapper{
+    input, select{
+      margin-bottom: 0.5rem;
+    }
+    .form-select{
+      width: fit-content;
+    }
+    select{
+      font-size: 0.75rem;
+    }
+  }
+}

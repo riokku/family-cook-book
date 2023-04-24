@@ -27,6 +27,14 @@
   display: inline-block;
 }
 
+.unauthorized-error-message{
+  padding: 0.5rem 1rem;
+  background-color: #d63031;
+  color: #fff;
+  border-radius: 0.25rem;
+  width: fit-content;
+}
+
 .user-name-wrapper{
   padding: 0.5rem 1rem;
   background-color: #d63031;
@@ -163,3 +171,24 @@ button{
 }
 
 
+@media (max-width: 390px){
+  .page-wrapper{
+    padding: 0 !important;
+  }
+  input{
+    min-width: 90%;
+  }
+  .recipe-blade{
+    padding: 0.5rem 1rem;
+    .recipe-actions{
+      margin-top: 0.5rem;
+      justify-content: left;
+    }
+    a{
+      &.view-link{
+        background-color: #e6e6e6;
+      }
+    }
+  }
+
+}

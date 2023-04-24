@@ -19,12 +19,14 @@ export class AdminComponent implements OnInit{
   loggedInUserID: any;
   loggedInUserName: any;
   userApproved: any = localStorage.getItem('userApproved');
+  unAuthorizedUserError: boolean;
 
   constructor(private recipeService: RecipeService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.allRecipes = this.recipeService.getRecipes();
     this.recipeResults = this.allRecipes;
+    this.loggedInUserName = localStorage.getItem("userName")?.split(" ")[0].slice(1);
     console.log(this.allRecipes);
   }
 
@@ -60,6 +62,9 @@ export class AdminComponent implements OnInit{
 
       await this.authService.getApprovedUsersList();
       this.userApproved = localStorage.getItem("userApproved");
+      if(!this.userApproved){
+        this.unAuthorizedUserError = true;
+      }
       console.log(this.userApproved);
       return;
 

@@ -1,5 +1,5 @@
 <section>
-  <div class="container pt-4">
+  <div class="container pt-4 page-wrapper">
     <div class="row">
       <div class="col-12">
         <a class="breadcrumb" [routerLink]="['/admin']">
@@ -123,14 +123,14 @@
             </div>
             <div class="row" *ngIf="recipeImagePath.value">
               <div class="col-12">
-                <h5>
+                <h6>
                   Image preview:
-                </h5>
+                </h6>
                 <img [src]="recipeImagePath.value" class="img-responsive">
               </div>
             </div>
           </div>
-          <div class="form-group-wrapper">
+          <div class="form-group-wrapper ingredients-wrapper">
             <h3>
               Ingredients:
             </h3>
@@ -181,7 +181,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group-wrapper mb-4">
+          <div class="form-group-wrapper steps-wrapper mb-4">
             <h3>
               Steps:
             </h3>
@@ -189,14 +189,14 @@
               <div class="col-12" formArrayName="steps">
                 <ol class="m-0 ps-3">
                   <li *ngFor="let stepControl of recipeStepsControls; let i = index" [formGroupName]="i">
-                    <div class="row mb-3">
+                    <div class="row">
                       <div class="col-sm-10">
                         <textarea
                           type="text"
-                          class="form-control mb-0"
+                          class="form-control"
                           formControlName="step"></textarea>
                       </div>
-                      <div class="col-sm-2 d-flex align-items-center">
+                      <div class="col-sm-2">
                         <button
                           type="button"
                           class="btn btn-danger"
@@ -221,7 +221,7 @@
               Tags:
             </h3>
             <div class="row">
-              <div class="col-6">
+              <div class="col-12 col-md-6">
                 <div class="form-group">
                   <select name="recipeTags" id="recipeTags" formControlName="tags" class="form-select" multiple>
                     <option *ngFor="let tag of recipeTagOptions" [value]="tag" class="tag-option">
