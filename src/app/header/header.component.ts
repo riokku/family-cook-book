@@ -9,7 +9,7 @@ export class HeaderComponent {
 
   closeNavOnClick() {
     let element: HTMLElement = document.getElementsByClassName("navbar-toggler")[0] as HTMLElement;
-    if (element.getAttribute('aria-expanded') == 'true' ) {
+    if (element.getAttribute("aria-expanded") == "true" ) {
         element.click();
     }
   }

@@ -55,15 +55,17 @@
             </ul>
           </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-8 p-4">
-          <h3 class="mb-4">
-            Steps:
-          </h3>
-          <ol class="ps-3 pe-3">
-            <li *ngFor="let step of recipe.steps">
-              {{ step.step }}
-            </li>
-          </ol>
+        <div class="col-12 col-sm-12 col-md-8">
+          <div class="steps-pane p-4">
+            <h3 class="mb-4">
+              Steps:
+            </h3>
+            <ol class="ps-3 pe-3">
+              <li *ngFor="let step of recipe.steps">
+                {{ step.step }}
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>

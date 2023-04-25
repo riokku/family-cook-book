@@ -10,7 +10,7 @@
             Please sign in to access the admin dashboard. Only approved users will be able to add/modify/delete recipes.
           </p>
           <p class="unauthorized-error-message" *ngIf="unAuthorizedUserError">
-            Your account is not authorized. Please try another account.
+            <i class="bi bi-exclamation-circle me-1"></i> Your account is not authorized. Please try another account.
           </p>
           <button class="google-btn" (click)="signInWithGoogle()">
             <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" class="google-logo">
