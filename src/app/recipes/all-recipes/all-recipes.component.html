@@ -7,7 +7,7 @@
             Find a recipe
           </h1>
         </div>
-        <div class="search-wrapper mb-4">
+        <div class="search-wrapper">
           <h4>
             Search recipes:
           </h4>
@@ -57,6 +57,42 @@
     </div>
     <div class="row">
       <div class="col-12">
+        <div class="row">
+          <div class="col-12">
+            <div class="sort-wrapper-group mt-4 mb-4">
+              <div class="sort-wrapper me-3">
+                <button type="button" (click)="sortByCookTime()" [ngClass]="
+                {
+                  'filter-default': cookTimeSortText === cookTimeSortTextOptions[0],
+                  'filter-lowest-highest': cookTimeSortText === cookTimeSortTextOptions[1],
+                  'filter-highest-lowest': cookTimeSortText === cookTimeSortTextOptions[2]
+                }">
+                  <i class="bi" [ngClass]="
+                  {
+                    'bi-clock': cookTimeSortText === cookTimeSortTextOptions[0],
+                    'bi-sort-numeric-up': cookTimeSortText === cookTimeSortTextOptions[1],
+                    'bi-sort-numeric-down-alt': cookTimeSortText === cookTimeSortTextOptions[2]
+                  }"></i> {{ cookTimeSortText }}
+                </button>
+              </div>
+              <div class="sort-wrapper">
+                <button type="button" (click)="sortByServingSize()" [ngClass]="
+                {
+                  'filter-default': servingSizeSortText === servingSizeSortTextOptions[0],
+                  'filter-lowest-highest': servingSizeSortText === servingSizeSortTextOptions[1],
+                  'filter-highest-lowest': servingSizeSortText === servingSizeSortTextOptions[2]
+                }">
+                  <i class="bi" [ngClass]="
+                  {
+                    'bi-person': servingSizeSortText === servingSizeSortTextOptions[0],
+                    'bi-sort-numeric-up': servingSizeSortText === servingSizeSortTextOptions[1],
+                    'bi-sort-numeric-down-alt': servingSizeSortText === servingSizeSortTextOptions[2]
+                  }"></i> {{ servingSizeSortText }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4" *ngFor="let recipe of selectedRecipes; let i = index">
             <app-recipe-card [recipe]="recipe" [index]="i"></app-recipe-card>

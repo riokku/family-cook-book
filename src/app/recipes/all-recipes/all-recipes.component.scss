@@ -150,3 +150,27 @@ h5{
   }
 }
 
+.sort-wrapper-group{
+  display: flex;
+  flex-wrap: wrap;
+  button{
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+  }
+}
+
+
+.filter-default{
+  background-color: #f2f2f2;
+}
+
+.filter-lowest-highest{
+  background-color: #666;
+  color: #fff;
+}
+
+.filter-highest-lowest{
+  background-color: #333;
+  color: #fff;
+}

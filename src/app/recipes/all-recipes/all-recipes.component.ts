@@ -24,12 +24,17 @@ export class AllRecipesComponent {
   recipeCategories: string[];
   recipeCookTimes: number[];
   recipeServingSizes: number[];
-  recipeResults: Recipe[] = [];
 
   filterLabel: string = "Filter";
   filtersShowing: boolean = false;
 
   recipesFiltered: boolean = false;
+
+  cookTimeSortTextOptions: string[] = ["Sort by cook time", "Shortest to longest", "Longest to shortest"];
+  servingSizeSortTextOptions: string[] = ["Sort by serving size", "Shortest to longest", "Longest to shortest"];
+
+  cookTimeSortText: string = this.cookTimeSortTextOptions[0];
+  servingSizeSortText: string = this.servingSizeSortTextOptions[0];
 
 
   constructor(private recipeService: RecipeService) {}
@@ -37,17 +42,18 @@ export class AllRecipesComponent {
   ngOnInit(): void {
     setTimeout(() => {
       this.allRecipes = this.recipeService.getRecipes();
-      this.selectedRecipes = this.allRecipes;
+      this.selectedRecipes = this.allRecipes.sort((a:Recipe, b:Recipe) => {
+        return Number(b.featured) - Number(a.featured);
+      });
+
       let fullCategoryList = this.allRecipes.map(el => {
         return el.tags;
       })
       this.recipeCategories = [...new Set(fullCategoryList.flat(1).sort())];
-
       let fullCookTImes =  this.allRecipes.map(el => {
         return el.cookTime;
       })
       this.recipeCookTimes = [...new Set(fullCookTImes.flat(1).sort())];
-
       let fullServingSizes =  this.allRecipes.map(el => {
         return el.servingSize;
       })
@@ -55,8 +61,6 @@ export class AllRecipesComponent {
 
       console.log(this.recipeCategories, this.recipeCookTimes, this.recipeServingSizes);
 
-      //this.allCheckbox.nativeElement.checked = true;
-      this.recipeResults = this.allRecipes;
     }, 100);
   }
 
@@ -106,6 +110,26 @@ export class AllRecipesComponent {
     this.recipesFiltered = false;
   }
 
+
+  sortByCookTime(){
+    if(this.cookTimeSortText == this.cookTimeSortTextOptions[0]){
+      this.cookTimeSortText = this.cookTimeSortTextOptions[1];
+    } else if (this.cookTimeSortText == this.cookTimeSortTextOptions[1]){
+      this.cookTimeSortText = this.cookTimeSortTextOptions[2];
+    } else {
+      this.cookTimeSortText = this.cookTimeSortTextOptions[0];
+    }
+  }
+
+  sortByServingSize(){
+    if(this.servingSizeSortText == this.servingSizeSortTextOptions[0]){
+      this.servingSizeSortText = this.servingSizeSortTextOptions[1];
+    } else if (this.servingSizeSortText == this.servingSizeSortTextOptions[1]){
+      this.servingSizeSortText = this.servingSizeSortTextOptions[2];
+    } else {
+      this.servingSizeSortText = this.servingSizeSortTextOptions[0];
+    }
+  }
 
   //Old TS for left-side filters
   uncheckAll(){
