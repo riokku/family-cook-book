@@ -41,6 +41,8 @@
   .filter-sets{
     padding: 0.75rem 1rem;
     display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
   .filter-wrapper{
     margin-right: 2rem;
