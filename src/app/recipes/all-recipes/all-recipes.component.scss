@@ -1,10 +1,65 @@
 .banner{
   background-color: #2d3436;
-  border-radius: 0.25rem;
+  border-radius: 0.25rem 0.25rem 0 0;
   h1 {
     color: #fff;
     margin: 0;
-    padding: 0.5em;
+    padding: 1.5rem;
+  }
+}
+
+.search-wrapper{
+  background-color: #d63031;
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 0 0 0.25rem 0.25rem;
+  button{
+    background-color: transparent;
+    border: none;
+  }
+  .search-input-wrapper{
+    display: flex;
+    align-items: center;
+    input{
+      padding: 0.25rem 0.5rem;
+      min-width: 30%;
+    }
+    .bi-x-circle{
+      font-size: 1.5rem;
+      color: #fff;
+    }
+  }
+  .filter-group-wrapper{
+    button{
+      color: #fff;
+    }
+  }
+  .filter-sets-wrapper{
+    background-color: #e17055;
+    border-radius: 0.25rem;
+  }
+  .filter-sets{
+    padding: 0.75rem 1rem;
+    display: flex;
+  }
+  .filter-wrapper{
+    margin-right: 2rem;
+    label{
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    select{
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+    }
+    option{
+      &:hover{
+        background-color: #2d3436;
+      }
+    }
+  }
+  .reset-filter-wrapper{
+    padding: 0 1rem 1rem 1rem;
   }
 }
 

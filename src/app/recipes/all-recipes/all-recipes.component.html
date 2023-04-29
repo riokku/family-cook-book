@@ -2,41 +2,61 @@
   <div class="container pt-4">
     <div class="row">
       <div class="col-12">
-        <div class="banner mb-4">
+        <div class="banner">
           <h1>
             Find a recipe
           </h1>
         </div>
+        <div class="search-wrapper mb-4">
+          <h4>
+            Search recipes:
+          </h4>
+          <div class="search-input-wrapper mb-4">
+            <input class="me-2" type="text" [(ngModel)]="searchInput" (input)="updateResults()" placeholder="Search by recipe name...">
+            <button type="button" (click)="clearSearchInput()" *ngIf="searchInput">
+              <i class="bi bi-x-circle"></i>
+            </button>
+          </div>
+          <div class="filter-group-wrapper">
+            <button type="button" (click)="showFilters()">
+              <i class="bi bi-filter-circle"></i> {{ filterLabel }}
+            </button>
+            <div class="mt-3 filter-sets-wrapper" *ngIf="filtersShowing">
+              <div class="filter-sets">
+                <div class="filter-wrapper">
+                  <label for="categories"><i class="bi bi-grid"></i> Category:</label>
+                  <select id="categories" class="filterSelects" name="categories" (change)="filterByCategory($event)">
+                    <option value="" disabled selected>Select one</option>
+                    <option value="{{ category }}" *ngFor="let category of recipeCategories">{{ category }}</option>
+                  </select>
+                </div>
+                <div class="filter-wrapper">
+                  <label for="cookTime"><i class="bi bi-clock"></i> Cook Time:</label>
+                  <select id="cookTime" class="filterSelects" name="cookTime">
+                    <option value="" disabled selected>Select one</option>
+                    <option value="{{ cookTime }}" *ngFor="let cookTime of recipeCookTimes">{{ cookTime }} minutes</option>
+                  </select>
+                </div>
+                <div class="filter-wrapper">
+                  <label for="servingSize"><i class="bi bi-person"></i> Serving Size:</label>
+                  <select id="servingSize" class="filterSelects" name="servingSize">
+                    <option value="" disabled selected>Select one</option>
+                    <option value="{{ servingSize }}" *ngFor="let servingSize of recipeServingSizes">{{ servingSize }} servings</option>
+                  </select>
+                </div>
+              </div>
+              <div class="reset-filter-wrapper" *ngIf="recipesFiltered">
+                <button type="button" (click)="resetFilters()">
+                  <i class="bi bi-x-circle"></i> Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-3">
-        <div class="filter-section">
-          <h3>
-            What are you interested in?
-          </h3>
-          <hr class="my-4 me-4" />
-          <div id="filter-wrapper">
-            <div class="filter-container">
-              <input #allCheckbox type="checkbox" name="all" id="all" (click)="resetRecipes()">
-              <label class="ps-3" for="all">
-                All
-              </label>
-            </div>
-            <div class="filter-container" *ngFor="let category of recipeCategories">
-              <input #checkboxes type="checkbox" name="{{category | lowercase}}" id="{{category | lowercase}}">
-              <label class="ps-3" for="{{category | lowercase}}" (click)="filterRecipes(category)">
-                {{category}}
-              </label>
-            </div>
-          </div>
-          <button id="expandButton" type="button" (click)="expandCategoryList()">
-            {{expandButtonText}}
-          </button>
-          <hr class="my-4 me-4" />
-        </div>
-      </div>
-      <div class="col-12 col-md-9">
+      <div class="col-12">
         <div class="row">
           <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4" *ngFor="let recipe of selectedRecipes; let i = index">
             <app-recipe-card [recipe]="recipe" [index]="i"></app-recipe-card>
