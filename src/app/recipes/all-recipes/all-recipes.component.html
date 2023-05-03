@@ -18,38 +18,17 @@
             </button>
           </div>
           <div class="filter-group-wrapper">
-            <button type="button" (click)="showFilters()">
+            <button type="button" class="ps-0" (click)="showFilters()">
               <i class="bi bi-filter-circle"></i> {{ filterLabel }}
             </button>
-            <div class="mt-3 filter-sets-wrapper" *ngIf="filtersShowing">
-              <div class="filter-sets">
-                <div class="filter-wrapper">
-                  <label for="categories"><i class="bi bi-grid"></i> Category:</label>
-                  <select id="categories" class="filterSelects" name="categories" (change)="filterByCategory($event)">
-                    <option value="" disabled selected>Select one</option>
-                    <option value="{{ category }}" *ngFor="let category of recipeCategories">{{ category }}</option>
-                  </select>
-                </div>
-                <div class="filter-wrapper">
-                  <label for="cookTime"><i class="bi bi-clock"></i> Cook Time:</label>
-                  <select id="cookTime" class="filterSelects" name="cookTime">
-                    <option value="" disabled selected>Select one</option>
-                    <option value="{{ cookTime }}" *ngFor="let cookTime of recipeCookTimes">{{ cookTime }} minutes</option>
-                  </select>
-                </div>
-                <div class="filter-wrapper">
-                  <label for="servingSize"><i class="bi bi-person"></i> Serving Size:</label>
-                  <select id="servingSize" class="filterSelects" name="servingSize">
-                    <option value="" disabled selected>Select one</option>
-                    <option value="{{ servingSize }}" *ngFor="let servingSize of recipeServingSizes">{{ servingSize }} servings</option>
-                  </select>
-                </div>
-              </div>
-              <div class="reset-filter-wrapper" *ngIf="recipesFiltered">
-                <button type="button" (click)="resetFilters()">
-                  <i class="bi bi-x-circle"></i> Reset
-                </button>
-              </div>
+            <button type="button" class="ms-3 reset-filter" (click)="resetFilter()" *ngIf="chosenFilter != 'All'">
+              <i class="bi bi-x-circle"></i> Reset filter
+            </button>
+            <div class="mt-3 filter-wrapper" *ngIf="filtersShowing">
+              <button class="filter-option" *ngFor="let category of recipeCategories" (click)="filterByCategory($event, category)" [ngClass]="{'active': chosenFilter == category}">
+                <img class="mw-100" [src]="'../../../assets/icons/categories/' + category + '.png'" alt="">
+                {{ category }}
+              </button>
             </div>
           </div>
         </div>
@@ -60,7 +39,7 @@
         <div class="row">
           <div class="col-12">
             <div class="sort-wrapper-group mt-4 mb-4">
-              <div class="sort-wrapper me-3">
+              <div class="sort-wrapper" *ngIf="servingSizeSortText === servingSizeSortTextOptions[0]">
                 <button type="button" (click)="sortByCookTime()" [ngClass]="
                 {
                   'filter-default': cookTimeSortText === cookTimeSortTextOptions[0],
@@ -70,12 +49,12 @@
                   <i class="bi" [ngClass]="
                   {
                     'bi-clock': cookTimeSortText === cookTimeSortTextOptions[0],
-                    'bi-sort-numeric-up': cookTimeSortText === cookTimeSortTextOptions[1],
+                    'bi-sort-numeric-down': cookTimeSortText === cookTimeSortTextOptions[1],
                     'bi-sort-numeric-down-alt': cookTimeSortText === cookTimeSortTextOptions[2]
                   }"></i> {{ cookTimeSortText }}
                 </button>
               </div>
-              <div class="sort-wrapper">
+              <div class="sort-wrapper" *ngIf="cookTimeSortText === cookTimeSortTextOptions[0]">
                 <button type="button" (click)="sortByServingSize()" [ngClass]="
                 {
                   'filter-default': servingSizeSortText === servingSizeSortTextOptions[0],
@@ -85,12 +64,24 @@
                   <i class="bi" [ngClass]="
                   {
                     'bi-person': servingSizeSortText === servingSizeSortTextOptions[0],
-                    'bi-sort-numeric-up': servingSizeSortText === servingSizeSortTextOptions[1],
-                    'bi-sort-numeric-down-alt': servingSizeSortText === servingSizeSortTextOptions[2]
+                    'bi-sort-down-alt': servingSizeSortText === servingSizeSortTextOptions[1],
+                    'bi-sort-down': servingSizeSortText === servingSizeSortTextOptions[2]
                   }"></i> {{ servingSizeSortText }}
                 </button>
               </div>
+              <div class="sort-wrapper" *ngIf="cookTimeSortText != cookTimeSortTextOptions[0] || servingSizeSortText != servingSizeSortTextOptions[0]">
+                <button class="reset-sort-button" type="button" (click)="resetSort()">
+                  <i class="bi bi-x-circle"></i> Reset
+                </button>
+              </div>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p>
+              Showing <u><strong>{{ selectedRecipes.length }}</strong></u> results for <u><strong>{{ chosenFilter }}</strong></u> recipes:
+            </p>
           </div>
         </div>
         <div class="row">

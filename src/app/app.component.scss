@@ -12,8 +12,15 @@
   flex: 1 1 auto;
   background: url('../assets/images/hero-background.png');
   background-repeat: repeat;
+  padding: 1.5rem;
 }
 
 .footer{
   flex: 0 1 40px;
+}
+
+@media (max-width: 390px){
+  .body-content{
+    padding: 0;
+  }
 }

@@ -37,7 +37,7 @@ export class RecipeEditComponent implements OnInit {
 
   ingredientAmountOptions: string[] = ["1/4", "1/2", "3/4", "1", "1 1/4", "1 1/2", "1 3/4", "2", "2 1/4", "2 1/2", "2 3/4", "3"];
   ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons (tsp)", "Tablespoons (tbsp)", "Fluid ounces (fl oz)", "Pints (pt)", "Quarts (qt)", "Milliliters (ml)", "Liters (l)", "Grams (g)", "Kilograms (kg)", "Ounces (oz)", "Pounds (lb)", "Count"];
-  recipeTagOptions: string[] = ["Appetizers", "Beverages", "Breakfast", "Brunch", "Desserts", "Dinner", "Grilling", "Healthy", "Italian", "Mexican", "Salad", "Seafood", "Soup", "Vegan", "Vegetarian"];
+  recipeTagOptions: string[] = ["Appetizer", "Beverage", "Breakfast", "Dessert", "Dinner", "Grilling", "Italian", "Mexican", "Salad", "Seafood", "Soup"];
 
   constructor(
     private route: ActivatedRoute,
