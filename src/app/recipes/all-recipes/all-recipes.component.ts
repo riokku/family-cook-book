@@ -20,7 +20,9 @@ export class AllRecipesComponent {
 
   expandButtonSetting: boolean = false;
   expandButtonText: string = "Show more";
+  searchLabel: string = "Search by recipe name";
   searchInput: string;
+  searchShowing: boolean = false;
 
   recipeCategories: string[];
   recipeCookTimes: number[];
@@ -31,8 +33,8 @@ export class AllRecipesComponent {
   recipesFiltered: boolean = false;
   chosenFilter: string = "All";
 
-  cookTimeSortTextOptions: string[] = ["Sort by cook time", "Shortest to longest", "Longest to shortest"];
-  servingSizeSortTextOptions: string[] = ["Sort by serving size", "Fewest to most", "Most to fewest"];
+  cookTimeSortTextOptions: string[] = ["Cook time", "Shortest to longest", "Longest to shortest"];
+  servingSizeSortTextOptions: string[] = ["Serving size", "Fewest to most", "Most to fewest"];
 
   cookTimeSortText: string = this.cookTimeSortTextOptions[0];
   servingSizeSortText: string = this.servingSizeSortTextOptions[0];
@@ -65,6 +67,15 @@ export class AllRecipesComponent {
   clearSearchInput(){
     this.searchInput = '';
     this.updateResults();
+  }
+
+  showSearch(){
+    this.searchShowing = !this.searchShowing;
+    if(this.searchShowing){
+      this.searchLabel = "Hide search"
+    } else {
+      this.searchLabel = "Search by recipe name"
+    }
   }
 
   showFilters(){
