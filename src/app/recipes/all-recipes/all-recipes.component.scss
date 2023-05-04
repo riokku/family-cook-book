@@ -21,12 +21,15 @@
     display: flex;
     align-items: center;
   }
-  .search-group-wrapper{
+  .search-filter-button-wrapper{
     color: #fff;
+    width: 100%;
     button{
       color: #fff;
       padding: 0.25rem 0.5rem;
     }
+  }
+  .filter-group-wrapper{
     .search-wrapper{
       padding: 1rem;
       border-radius: 0.25rem;
@@ -36,9 +39,15 @@
         min-width: 30%;
         font-size: 0.8rem;
       }
+      button{
+        font-size: 0.8rem;
+      }
+      small{
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
     }
-  }
-  .filter-group-wrapper{
     button{
       color: #fff;
       padding: 0.25rem 0.5rem;
@@ -85,6 +94,10 @@
       }
     }
   }
+  small{
+    display: block;
+    width: 100%;
+  }
 }
 
 h5{
@@ -101,18 +114,23 @@ h5{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
-  margin: 1rem 0;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  .sort-button-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: initial;
+  }
   button{
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     &.reset-sort-button{
-      background-color: transparent;
       color: #d63031;
+      background-color: transparent;
     }
   }
-
 }
 
 .filter-default{
@@ -131,19 +149,10 @@ h5{
 
 hr{
   border-top: none;
-  border-bottom: 10px dotted #2d3436;
-  margin-top: 0;
+  border-bottom: 7px double #2d3436;
+  margin-top: 1rem;
   margin-bottom: 1.5rem;
   opacity: 1;
-}
-
-@keyframes separator-width {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 100%;
-  }
 }
 
 @media (max-width: 390px){
@@ -154,5 +163,15 @@ hr{
   }
   .search-filter-wrapper{
     padding: 0.75rem;
+    .filter-group-wrapper{
+      .search-wrapper{
+        input{
+          min-width: 75%;
+        }
+      }
+    }
+  }
+  .sort-wrapper-group{
+    justify-content: space-between;
   }
 }

@@ -20,7 +20,7 @@ export class AllRecipesComponent {
 
   expandButtonSetting: boolean = false;
   expandButtonText: string = "Show more";
-  searchLabel: string = "Search by recipe name";
+  searchLabel: string = "Search";
   searchInput: string;
   searchShowing: boolean = false;
 
@@ -28,13 +28,13 @@ export class AllRecipesComponent {
   recipeCookTimes: number[];
   recipeServingSizes: number[];
 
-  filterLabel: string = "Filter by category";
+  filterLabel: string = "Filter";
   filtersShowing: boolean = false;
   recipesFiltered: boolean = false;
   chosenFilter: string = "All";
 
-  cookTimeSortTextOptions: string[] = ["Cook time", "Shortest to longest", "Longest to shortest"];
-  servingSizeSortTextOptions: string[] = ["Serving size", "Fewest to most", "Most to fewest"];
+  cookTimeSortTextOptions: string[] = ["Time", "Shortest to longest", "Longest to shortest"];
+  servingSizeSortTextOptions: string[] = ["Servings", "Fewest to most", "Most to fewest"];
 
   cookTimeSortText: string = this.cookTimeSortTextOptions[0];
   servingSizeSortText: string = this.servingSizeSortTextOptions[0];
@@ -72,18 +72,18 @@ export class AllRecipesComponent {
   showSearch(){
     this.searchShowing = !this.searchShowing;
     if(this.searchShowing){
-      this.searchLabel = "Hide search"
+      this.searchLabel = "Hide"
     } else {
-      this.searchLabel = "Search by recipe name"
+      this.searchLabel = "Search"
     }
   }
 
   showFilters(){
     this.filtersShowing = !this.filtersShowing;
     if(this.filtersShowing){
-      this.filterLabel = "Hide categories"
+      this.filterLabel = "Hide"
     } else {
-      this.filterLabel = "Filter by category"
+      this.filterLabel = "Filter"
     }
   }
 
@@ -93,7 +93,7 @@ export class AllRecipesComponent {
     this.selectedRecipes = this.allRecipes.filter(recipe => recipe.tags.includes(selectedFilter));
     this.recipesFiltered = true;
     this.chosenFilter = selectedFilter;
-    this.showFilters();
+    //this.showFilters();
   }
 
   resetFilter(){

@@ -8,28 +8,34 @@
           </h1>
         </div>
         <div class="search-filter-wrapper">
-          <div class="search-group-wrapper mb-1">
+          <div class="search-filter-button-wrapper">
             <button type="button" class="ps-0" (click)="showSearch()">
               <i class="bi bi-search"></i> {{ searchLabel }}
             </button>
-            <div class="search-wrapper mb-2" *ngIf="searchShowing">
-              <input class="me-1" type="text" [(ngModel)]="searchInput" (input)="updateResults()" placeholder="Recipe name...">
-              <button type="button" (click)="clearSearchInput()" *ngIf="searchInput">
-                <i class="bi bi-x-circle"></i>
-              </button>
-            </div>
-          </div>
-          <div class="filter-group-wrapper">
-            <button type="button" class="ps-0" (click)="showFilters()">
+            <button type="button" (click)="showFilters()">
               <i class="bi bi-filter-circle"></i> {{ filterLabel }}
             </button>
-            <button type="button" class="ms-3 reset-filter" (click)="resetFilter()" *ngIf="chosenFilter != 'All'">
-              <i class="bi bi-x-circle"></i> Reset filter
-            </button>
+          </div>
+          <div class="filter-group-wrapper">
+            <div class="search-wrapper mb-2" *ngIf="searchShowing">
+              <small>
+                Search by recipe name:
+              </small>
+              <input class="me-1" type="text" [(ngModel)]="searchInput" (input)="updateResults()" placeholder="Recipe name...">
+              <button type="button" (click)="clearSearchInput()" *ngIf="searchInput">
+                <i class="bi bi-x-circle"></i> Clear
+              </button>
+            </div>
             <div class="filter-wrapper" *ngIf="filtersShowing">
+              <small>
+                Filter by category:
+              </small>
               <button class="filter-option" *ngFor="let category of recipeCategories" (click)="filterByCategory($event, category)" [ngClass]="{'active': chosenFilter == category}">
                 <img class="mw-100" [src]="'../../../assets/icons/categories/' + category + '.png'" alt="">
                 {{ category }}
+              </button>
+              <button type="button" class="reset-filter" (click)="resetFilter()" *ngIf="chosenFilter != 'All'">
+                <i class="bi bi-x-circle"></i> Reset
               </button>
             </div>
           </div>
@@ -40,16 +46,12 @@
       <div class="col-12">
         <div class="row">
           <div class="col-12">
-            <p class="mb-0 mt-3">
-              Sort by:
-            </p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
             <div class="sort-wrapper-group">
-              <div class="sort-wrapper" *ngIf="servingSizeSortText === servingSizeSortTextOptions[0]">
-                <button type="button" (click)="sortByCookTime()" [ngClass]="
+              <div class="sort-button-wrapper">
+                <p class="mb-0">
+                  Sort by:
+                </p>
+                <button type="button" (click)="sortByCookTime()" *ngIf="servingSizeSortText === servingSizeSortTextOptions[0]" [ngClass]="
                 {
                   'filter-default': cookTimeSortText === cookTimeSortTextOptions[0],
                   'filter-lowest-highest': cookTimeSortText === cookTimeSortTextOptions[1],
@@ -62,14 +64,7 @@
                     'bi-sort-numeric-down-alt': cookTimeSortText === cookTimeSortTextOptions[2]
                   }"></i> {{ cookTimeSortText }}
                 </button>
-              </div>
-              <div class="sort-wrapper" *ngIf="cookTimeSortText != cookTimeSortTextOptions[0] || servingSizeSortText != servingSizeSortTextOptions[0]">
-                <button class="reset-sort-button" type="button" (click)="resetSort()">
-                  <i class="bi bi-x-circle"></i> Reset
-                </button>
-              </div>
-              <div class="sort-wrapper" *ngIf="cookTimeSortText === cookTimeSortTextOptions[0]">
-                <button type="button" (click)="sortByServingSize()" [ngClass]="
+                <button type="button" (click)="sortByServingSize()" *ngIf="cookTimeSortText === cookTimeSortTextOptions[0]" [ngClass]="
                 {
                   'filter-default': servingSizeSortText === servingSizeSortTextOptions[0],
                   'filter-lowest-highest': servingSizeSortText === servingSizeSortTextOptions[1],
@@ -83,7 +78,15 @@
                   }"></i> {{ servingSizeSortText }}
                 </button>
               </div>
+              <button class="reset-sort-button" type="button" (click)="resetSort()" *ngIf="cookTimeSortText != cookTimeSortTextOptions[0] || servingSizeSortText != servingSizeSortTextOptions[0]">
+                <i class="bi bi-x-circle"></i> Reset
+              </button>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <hr />
           </div>
         </div>
         <div class="row">
@@ -91,11 +94,6 @@
             <p>
               Showing <u><strong>{{ selectedRecipes.length }}</strong></u> results for <u><strong>{{ chosenFilter }}</strong></u> recipes:
             </p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <hr />
           </div>
         </div>
         <div class="row">
