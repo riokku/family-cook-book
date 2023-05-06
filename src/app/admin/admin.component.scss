@@ -1,7 +1,8 @@
 
 .google-btn {
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #e6e6e6;
+  border-radius: 0.25rem;
   cursor: pointer;
   font-size: 14px;
   color: #2d3436;
@@ -123,30 +124,36 @@ a{
       }
     }
   }
-  .recipe-actions{
+  .recipe-actions-wrapper{
     display: flex;
-    justify-content: flex-end;
-    a{
-      line-height: 24px;
-      padding: 0.375rem 0.75rem;
-      border-radius: 0.375rem;
-      transition: background-color 0.15s;
-      &.view-link{
-        &:hover{
-          background-color: #e6e6e6;
+    justify-content: end;
+    align-items: center;
+    .recipe-actions{
+      display: flex;
+      justify-content: flex-end;
+      a{
+        line-height: 24px;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        transition: background-color 0.15s;
+        &.view-link{
+          &:hover{
+            background-color: #e6e6e6;
+          }
         }
-      }
-      &.edit-link{
-        background-color: #fdcb6e;
-        &:hover{
-          background-color: #fddb9b;
+        &.edit-link{
+          background-color: #fdcb6e;
+          &:hover{
+            background-color: #fddb9b;
+          }
         }
-      }
-      &:hover{
-        text-decoration: none;
+        &:hover{
+          text-decoration: none;
+        }
       }
     }
   }
+
 }
 
 .modal-header{
