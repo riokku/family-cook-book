@@ -1,7 +1,11 @@
-footer{
+section{
   background-color: #2d3436;
   color: #fff;
   .footer-info{
-    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+  }
+  small{
+    display: block;
   }
 }

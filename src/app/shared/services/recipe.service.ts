@@ -4,6 +4,7 @@ import { map, tap } from "rxjs";
 
 
 import { HttpClient } from "@angular/common/http";
+import { AuthService } from "src/app/shared/services/auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { HttpClient } from "@angular/common/http";
 
 export class RecipeService{
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private AuthService: AuthService) {}
 
   private recipes: Recipe[] = [];
 
@@ -58,10 +59,15 @@ export class RecipeService{
   }
 
   submitRecipe(recipe: Recipe){
+
+
     console.log(recipe);
+
     return this.http.post('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes.json', recipe).subscribe(response => {
       console.log(response)
     });
+
+
   }
 
   saveRecipeChanges(recipe: Recipe, id: any){

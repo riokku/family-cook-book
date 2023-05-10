@@ -1,0 +1,47 @@
+<section>
+  <div class="container pt-4">
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <div class="unlogged-wrapper" *ngIf="!isLoggedIn">
+          <h1>
+            Login to add/edit/delete recipes
+          </h1>
+          <p class="mb-4">
+            Only approved users will be able to view the admin dashboard and perform the above actions.
+          </p>
+          <h3 class="mb-3">
+            Existing user login:
+          </h3>
+          <div class="alert alert-danger" *ngIf="error">
+            {{ error }}
+          </div>
+          <div *ngIf="isLoading">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
+          <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
+            <div class="form-group mb-3">
+              <label for="email">Email</label>
+              <input type="text" id="email" class="form-control" ngModel name="email" required email>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" class="form-control" ngModel name="password" required minlength="6">
+            </div><br />
+            <div class="button-wrapper">
+              <button class="btn" type="submit" [disabled]="!authForm.valid">
+                {{ isLoginMode ? 'Login' : 'Sign up' }}
+              </button>
+              <button class="btn btn-light" (click)="onSwitchMode()" type="button">{{ isLoginMode ? 'Need a create a new account? Sign up.' : 'Already have an account? Login.' }}</button>
+            </div>
+          </form>
+        </div>
+        <div class="logged-wrapper" *ngIf="isLoggedIn">
+          <h3>
+            <i class="bi bi-exclamation-circle"></i> Looks like you&rsquo;re already logged in.
+          </h3>
+          <button class="btn btn-light" (click)="logout()" type="button">Log out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

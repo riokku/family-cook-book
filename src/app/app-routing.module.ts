@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { HomeComponent } from './home/home.component';
 import { RecipesResolverService } from './shared/resolvers/recipe-resolve.service';
+import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -15,8 +17,13 @@ const routes: Routes = [
     loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipesModule)
   },
   {
+    path: 'auth',
+    component: AuthComponent
+  },
+  {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [AuthGuard],
     resolve: [RecipesResolverService]
   },
   {

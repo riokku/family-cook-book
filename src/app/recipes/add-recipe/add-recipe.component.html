@@ -246,7 +246,7 @@
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid">Submit</button>
+              <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid" data-bs-toggle="modal" data-bs-target="#successModal">Submit</button>
               <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
               <span class="recipe-date">
                 Recipe created: {{recipeCreatedDate | date:'medium' }}
@@ -254,6 +254,32 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                Success! Your recipe has been added.
+              </h5>
+            </div>
+            <div class="modal-body">
+              <p class="mb-0">
+                Latest recipe: <strong>{{ latestRecipeName }}</strong>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn" data-bs-dismiss="modal" (click)="onCancel()">
+                Go to admin
+              </button>
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                <i class="bi bi-plus-square-fill"></i> Add another recipe
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

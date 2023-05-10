@@ -16,9 +16,9 @@ export class AddRecipeComponent implements OnInit {
   slugOutput: string;
 
   recipeCreatedDate: Date;
-
-
   recipeForm: FormGroup;
+
+  latestRecipeName: string;
 
   ingredientAmountOptions: string[] = ["1/4", "1/2", "3/4", "1", "1 1/4", "1 1/2", "1 3/4", "2", "2 1/4", "2 1/2", "2 3/4", "3", "3 1/4", "3 1/2", "3 3/4", "4", "4 1/4", "4 1/2", "4 3/4", "5", "5 1/4", "5 1/2", "5 3/4", "6", "6 1/4", "6 1/2", "6 3/4", "7", "7 1/4", "7 1/2", "7 3/4", "8", "8 1/4", "8 1/2", "8 3/4"];
   ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons (tsp)", "Tablespoons (tbsp)", "Fluid ounces (fl oz)", "Pints (pt)", "Quarts (qt)", "Milliliters (ml)", "Liters (l)", "Grams (g)", "Kilograms (kg)", "Ounces (oz)", "Pounds (lb)", "Count"];
@@ -104,10 +104,15 @@ export class AddRecipeComponent implements OnInit {
 
   onSubmit() {
     this.recipeService.submitRecipe(this.recipeForm.value);
+    this.latestRecipeName = this.recipeForm.value.name;
     this.recipeForm.reset();
   }
 
   onCancel() {
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['/admin'], {relativeTo: this.route});
+  }
+
+  showModal(){
+
   }
 }

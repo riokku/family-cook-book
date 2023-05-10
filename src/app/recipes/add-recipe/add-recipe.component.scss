@@ -151,3 +151,22 @@ img{
     }
   }
 }
+
+.modal-content{
+  background-color: #198754;
+  color: #fff;
+  .modal-body{
+    background-color: #f2f2f2;
+    color: #2d3436;
+  }
+  .modal-footer{
+    button{
+      &:first-child{
+        color: #fff;
+        &:hover{
+          color: #efefef;
+        }
+      }
+    }
+  }
+}

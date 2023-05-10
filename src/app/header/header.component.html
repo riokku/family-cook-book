@@ -17,7 +17,7 @@
         <li class="nav-item me-3">
           <a class="nav-link" routerLink="/recipes" routerLinkActive="active-link" (click)="closeNavOnClick()">Recipes</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="userAuthenticated">
           <a class="nav-link" routerLink="/admin" routerLinkActive="active-link" (click)="closeNavOnClick()">Admin</a>
         </li>
       </ul>

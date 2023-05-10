@@ -1,0 +1,23 @@
+.button-wrapper{
+  display: flex;
+  justify-content: space-between;
+  button{
+    &:not(.btn-light){
+      color: #fff;
+      background-color: #d63031;
+    }
+  }
+}
+
+
+.logged-wrapper{
+  background-color: #e17055;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  h3{
+    margin: 0;
+  }
+}

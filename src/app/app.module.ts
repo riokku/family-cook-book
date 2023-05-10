@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +11,6 @@ import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { RecipeService } from './shared/services/recipe.service';
-import { AuthService } from './shared/services/auth.service';
 import { RecipesRoutingModule } from './recipes/recipes-routing.module';
 import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recipes.component';
 import { RouterModule } from '@angular/router';
@@ -20,6 +19,10 @@ import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { AuthComponent } from './auth/auth.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
+import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,9 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     FooterComponent,
     HomeComponent,
     AdminComponent,
-    FeaturedRecipesComponent
+    FeaturedRecipesComponent,
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,11 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     {
       provide: FIREBASE_OPTIONS,
       useValue: environment.firebase
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
