@@ -1,7 +1,11 @@
+h3{
+  color: #fff;
+}
+
 .card{
-  box-shadow: 4px 4px 4px #f2f2f2;
-  transition: box-shadow 0.75s;
+  border: none;
   .image-container {
+    border-radius: 0.25rem 0.25rem 0 0;
     overflow: hidden;
     img {
       transition: transform .75s ease;
@@ -10,7 +14,6 @@
     }
   }
   &:hover{
-    box-shadow: 4px 4px 4px #999;
     .image-container {
       img{
         transform: scale(1.2);

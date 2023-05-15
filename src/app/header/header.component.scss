@@ -24,6 +24,9 @@ nav{
   .nav-item{
     display: inline-block;
     position: relative;
+    &:not(:last-child){
+      margin-right: 1rem;
+    }
     a{
       &.active-link{
         background-color: #e17055;

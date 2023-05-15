@@ -1,3 +1,9 @@
+.auth-wrapper{
+  height: 100%;
+  background: url('../../assets/images/hero-background.png');
+  background-repeat: no-repeat;
+}
+
 .button-wrapper{
   display: flex;
   justify-content: space-between;
@@ -8,7 +14,6 @@
     }
   }
 }
-
 
 .logged-wrapper{
   background-color: #e17055;
