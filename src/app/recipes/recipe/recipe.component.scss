@@ -19,14 +19,14 @@ ol{
   height: 100%;
 }
 hr{
-  border-top: 3px solid #d63031;
+  border-top: 3px solid #a29bfe;
 }
 .breadcrumb{
   i{
     transition: transform .25s ease-in-out;
   }
   &:hover{
-    color: #d63031;
+    color: #a29bfe;
     i{
       transform: translateX(-4px);
     }

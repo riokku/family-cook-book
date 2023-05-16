@@ -1,7 +1,7 @@
 .auth-wrapper{
   height: 100%;
   background: url('../../assets/images/hero-background.png');
-  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .button-wrapper{
@@ -10,13 +10,13 @@
   button{
     &:not(.btn-light){
       color: #fff;
-      background-color: #d63031;
+      background-color: #a29bfe;
     }
   }
 }
 
 .logged-wrapper{
-  background-color: #e17055;
+  background-color: #b8b3fe;
   color: #fff;
   padding: 1rem;
   border-radius: 0.25rem;

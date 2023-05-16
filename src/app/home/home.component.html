@@ -1,17 +1,21 @@
+<app-intro *ngIf="introSequence"></app-intro>
 <div class="home-wrapper">
-  <section class="pt-5 pb-5">
+  <section class="pt-5 mb-4">
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1 class="fw-bold mb-3">
-            Placeholder Title
+          <h1 class="fw-bold mb-4">
+            Welcome to Gogo&rsquo;s Kitchen!
           </h1>
-          <h4 class="font-weight-bold mb-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          <h4 class="font-weight-bold">
+            Where every meal is a celebration of family, love, and good food.
           </h4>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            We believe that food is a powerful way to connect with loved ones and create lasting memories. From traditional family recipes that have been handed down for generations to modern twists on classic dishes, our menu is a reflection of our love for food and family. We invite you to join us at our virtual table, where you&rsquo;ll experience the warmth and hospitality of our family kitchen and taste the love that goes into every dish.
           </p>
+          <a routerLink="/recipes" class="btn">
+            Explore recipes <i class="bi bi-caret-right-fill"></i>
+          </a>
         </div>
       </div>
     </div>

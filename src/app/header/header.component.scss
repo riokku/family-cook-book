@@ -1,5 +1,10 @@
 nav{
-  background-color: #d63031;
+  background-color: #a29bfe;
+
+  .home-link-wrapper{
+    display: flex;
+    align-items: center;
+  }
 
   img{
     &.hero{
@@ -29,7 +34,7 @@ nav{
     }
     a{
       &.active-link{
-        background-color: #e17055;
+        background-color: #b8b3fe;
         border-radius: 0.25rem;
         &:after{
           content: none;

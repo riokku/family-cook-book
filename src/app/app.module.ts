@@ -23,6 +23,7 @@ import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
 import { AuthService } from './shared/services/auth.service';
+import { IntroComponent } from './home/intro/intro.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AuthService } from './shared/services/auth.service';
     AdminComponent,
     FeaturedRecipesComponent,
     AuthComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    IntroComponent
   ],
   imports: [
     BrowserModule,

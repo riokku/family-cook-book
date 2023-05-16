@@ -1,0 +1,13 @@
+.wrapper{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#a29bfe;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}

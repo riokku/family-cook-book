@@ -1,5 +1,5 @@
-hr{
-  border-top: 2px solid #e6e6e6;
+h1{
+  font-size: 4rem;
 }
 
 .container{
@@ -10,4 +10,13 @@ hr{
   height: 100%;
   background: url('../../assets/images/background-cookies.png');
   background-repeat: no-repeat;
+  background-size: cover;
+}
+
+a{
+  background-color: #a29bfe;
+  color: #fff;
+  &:hover{
+    background-color: #b8b3fe;
+  }
 }

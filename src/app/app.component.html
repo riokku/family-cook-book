@@ -1,11 +1,11 @@
 <div class="site-wrapper">
-  <div class="header">
+  <div class="header" *ngIf="showSite">
     <app-header></app-header>
   </div>
   <main>
     <router-outlet></router-outlet>
   </main>
-  <div class="footer">
+  <div class="footer" *ngIf="showSite">
     <app-footer></app-footer>
   </div>
 </div>
