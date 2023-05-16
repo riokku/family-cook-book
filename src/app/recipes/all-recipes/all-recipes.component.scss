@@ -16,7 +16,7 @@
 }
 
 .search-filter-wrapper{
-  background-color: #a29bfe;
+  background-color: #574b90;
   color: #fff;
   padding: 1rem 1.5rem;
   border-radius: 0 0 0.25rem 0.25rem;
@@ -40,7 +40,7 @@
     .search-wrapper{
       padding: 1rem;
       border-radius: 0.25rem;
-      background-color: #b8b3fe;
+      background-color: #6457a8;
       input{
         padding: 0.25rem 0.5rem;
         min-width: 30%;
@@ -60,7 +60,36 @@
       padding: 0.25rem 0.5rem;
       &.reset-filter{
         border-radius: 0.25rem;
-        background-color: #b8b3fe;
+        background-color: #6457a8;
+      }
+    }
+    .filter-wrapper{
+      padding: 1rem;
+      background-color: #6457a8;
+      border-radius: 0.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      button{
+        &.filter-option{
+          padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+          background-color: #2d3436;
+          border-radius: 0.25rem;
+          img{
+            max-height: 24px;
+          }
+          &:hover{
+            background-color: #3a4345;
+          }
+        }
+        &.active{
+          outline: 2px solid #fff;
+          box-sizing: border-box;
+        }
+      }
+      small{
+        display: block;
+        width: 100%;
       }
     }
   }
@@ -75,37 +104,7 @@
   }
 }
 
-.filter-wrapper{
-  padding: 1rem;
-  background-color: #b8b3fe;
-  border-radius: 0.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  button{
-    &.filter-option{
-      padding: 0.5rem 0.75rem 0.5rem 0.5rem;
-      background-color: #2d3436;
-      border-radius: 0.25rem;
-      img{
-        max-height: 24px;
-      }
-      &:hover{
-        background-color: #3a4345;
-      }
-    }
-    &.active{
-      background-color: #198754;
-      &:hover{
-        background-color: #198754;
-      }
-    }
-  }
-  small{
-    display: block;
-    width: 100%;
-  }
-}
+
 
 h5{
   font-size: 1rem;
@@ -134,7 +133,7 @@ h5{
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     &.reset-sort-button{
-      color: #a29bfe;
+      color: #574b90;
       background-color: transparent;
     }
   }

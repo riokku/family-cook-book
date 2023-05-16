@@ -1,5 +1,5 @@
 nav{
-  background-color: #a29bfe;
+  background-color: #574b90;
 
   .home-link-wrapper{
     display: flex;
@@ -34,7 +34,7 @@ nav{
     }
     a{
       &.active-link{
-        background-color: #b8b3fe;
+        background-color: #6457a8;
         border-radius: 0.25rem;
         &:after{
           content: none;

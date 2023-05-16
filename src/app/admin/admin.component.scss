@@ -36,7 +36,7 @@
 
 .unauthorized-error-message{
   padding: 0.5rem 1rem;
-  background-color: #a29bfe;
+  background-color: #574b90;
   color: #fff;
   border-radius: 0.25rem;
   width: fit-content;
@@ -44,7 +44,7 @@
 
 .user-name-wrapper{
   padding: 0.5rem 1rem;
-  background-color: #a29bfe;
+  background-color: #574b90;
   color: #fff;
   border-radius: 0.25rem 0.25rem 0 0;
   button{
@@ -103,7 +103,7 @@ a{
 
   .bi-x-circle{
     font-size: 1.5rem;
-    color: #a29bfe;
+    color: #574b90;
   }
 }
 
@@ -163,7 +163,7 @@ a{
 }
 
 .modal-header{
-  background-color: #a29bfe;
+  background-color: #574b90;
   color: #fff;
 }
 
@@ -171,9 +171,9 @@ button{
   border: none;
   &.delete-confirmation{
     color: #fff;
-    background-color: #a29bfe;
+    background-color: #574b90;
     &:hover{
-      background-color: #b8b3fe;
+      background-color: #6457a8;
     }
   }
 }
