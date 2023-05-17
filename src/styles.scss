@@ -17,3 +17,10 @@ a{
     color: inherit;
   }
 }
+
+
+@media (max-width: 390px){
+  .pt-5{
+    padding-top: 2rem !important;
+  }
+}

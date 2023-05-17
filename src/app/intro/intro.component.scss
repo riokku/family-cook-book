@@ -10,4 +10,17 @@
   top: 0;
   left: 0;
   overflow: hidden;
+  animation: fadeOut 3s linear;
+}
+
+@keyframes fadeOut {
+  0%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 0.9;
+  }
+  100%{
+    opacity: 0;
+  }
 }

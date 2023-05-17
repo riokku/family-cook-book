@@ -1,8 +1,6 @@
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Recipe } from '../../shared/models/recipe.model';
 import { RecipeService } from '../../shared/services/recipe.service';
-import { filter } from 'rxjs';
-import { SelectControlValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-all-recipes',
@@ -10,7 +8,7 @@ import { SelectControlValueAccessor } from '@angular/forms';
   styleUrls: ['./all-recipes.component.scss']
 })
 
-export class AllRecipesComponent {
+export class AllRecipesComponent implements OnInit {
 
   @ViewChildren("checkboxes") checkboxes: QueryList<ElementRef>;
   @ViewChild("allCheckbox") allCheckbox: ElementRef;
@@ -46,7 +44,13 @@ export class AllRecipesComponent {
     setTimeout(() => {
       this.allRecipes = this.recipeService.getRecipes();
       this.selectedRecipes = this.allRecipes.sort((a:Recipe, b:Recipe) => {
-        return Number(b.featured) - Number(a.featured);
+        if (a.featured && !b.featured) {
+          return -1;
+        } else if (!a.featured && b.featured) {
+          return 1;
+        } else {
+          return 0;
+        }
       });
       this.setFilterOptions();
     }, 100);
@@ -93,7 +97,6 @@ export class AllRecipesComponent {
     this.selectedRecipes = this.allRecipes.filter(recipe => recipe.tags.includes(selectedFilter));
     this.recipesFiltered = true;
     this.chosenFilter = selectedFilter;
-    //this.showFilters();
   }
 
   resetFilter(){
@@ -143,39 +146,6 @@ export class AllRecipesComponent {
   resetSort(){
     this.cookTimeSortText = this.cookTimeSortTextOptions[0];
     this.servingSizeSortText = this.servingSizeSortTextOptions[0];
-  }
-
-  //Old TS for left-side filters
-  uncheckAll(){
-    this.checkboxes.forEach((element) => {
-      element.nativeElement.checked = false;
-    });
-    if(this.allCheckbox.nativeElement.checked === true){
-      this.allCheckbox.nativeElement.checked = false;
-    }
-  }
-
-  expandCategoryList(){
-    const filterWrapper = document.getElementById("filter-wrapper");
-    filterWrapper?.classList.toggle("expanded");
-
-    this.expandButtonSetting = !this.expandButtonSetting;
-    if(!this.expandButtonSetting){
-      this.expandButtonText = "Show more";
-    } else {
-      this.expandButtonText = "Show less";
-    }
-  }
-
-  resetRecipes(){
-    this.uncheckAll();
-    this.selectedRecipes = this.allRecipes;
-    this.allCheckbox.nativeElement.checked = true;
-  }
-
-  filterRecipes(category: string){
-    this.uncheckAll();
-    this.selectedRecipes = this.selectedRecipes.filter(recipe => recipe.tags.includes(category));
   }
 
 }

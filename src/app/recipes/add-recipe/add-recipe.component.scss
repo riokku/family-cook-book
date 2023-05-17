@@ -33,7 +33,7 @@ label{
   margin-bottom: 0.5rem;
   &:before{
     content: '*';
-    color: #574b90;
+    color: red;
   }
 }
 
@@ -48,7 +48,7 @@ label{
 h3{
   &:before{
     content: '*';
-    color: #574b90;
+    color: red;
   }
   &.overview-header{
     &:before{
@@ -117,9 +117,6 @@ img{
 
 
 @media (max-width: 390px){
-  .page-wrapper{
-    padding: 0 !important;
-  }
   .form-group-wrapper{
     padding: 0.75rem;
   }

@@ -1,5 +1,5 @@
 <section>
-  <div class="container pt-4 page-wrapper">
+  <div class="container pt-4 pb-4 page-wrapper">
     <div class="row">
       <div class="col-12">
         <a class="breadcrumb" [routerLink]="['/admin']">
@@ -148,12 +148,17 @@
                       placeholder="Ingredient name">
                   </div>
                   <div class="col-sm-2">
-                    <select name="ingredientAmount" id="ingredientAmount" formControlName="ingredientAmount" class="form-select">
+                    <input
+                    type="number"
+                    class="form-control"
+                    formControlName="ingredientAmount"
+                    placeholder="Ingredient amount">
+                    <!-- <select name="ingredientAmount" id="ingredientAmount" formControlName="ingredientAmount" class="form-select">
                       <option [ngValue]="null" [disabled]="true">Amount</option>
                       <option *ngFor="let ingredientAmount of ingredientAmountOptions" [value]="ingredientAmount">
                         {{ ingredientAmount }}
                       </option>
-                    </select>
+                    </select> -->
                   </div>
                   <div class="col-sm-2">
                     <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
@@ -174,7 +179,7 @@
                   <div class="col-12">
                     <button
                       type="button"
-                      class="btn btn-success mt-3"
+                      class="btn btn-success"
                       (click)="onAddIngredient()">Add ingredient</button>
                   </div>
                 </div>
@@ -209,7 +214,7 @@
                   <div class="col-12">
                     <button
                       type="button"
-                      class="btn btn-success mt-3"
+                      class="btn btn-success"
                       (click)="onAddStep()">Add Step</button>
                   </div>
                 </div>

@@ -5,20 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent{
 
-  introSequence: boolean = true;
-
-  ngOnInit(): void {
-    let introSequenceCheck = localStorage.getItem("hasSeenIntro");
-    if(!introSequenceCheck){
-      setTimeout(() => {
-        this.introSequence = false;
-      }, 3000);
-    } else {
-      this.introSequence = false;
-    }
-
-  }
 
 }

@@ -4,6 +4,10 @@
   height: 100%;
 }
 
+.fade-in{
+  animation: fadeIn 3s linear forwards;
+}
+
 .header{
   flex: 0 1 auto;
 }
@@ -15,6 +19,19 @@ main{
 .footer{
   flex: 0 1 40px;
 }
+
+@keyframes fadeIn {
+  0%{
+    opacity: 0;
+  }
+  80%{
+    opacity: 0.9;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
 
 @media (max-width: 390px){
   .body-content{

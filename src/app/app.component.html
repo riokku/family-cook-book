@@ -1,11 +1,12 @@
-<div class="site-wrapper">
-  <div class="header" *ngIf="showSite">
+<app-intro *ngIf="!showSite"></app-intro>
+<div class="site-wrapper" [ngClass]="{'fade-in': !showSite}">
+  <div class="header">
     <app-header></app-header>
   </div>
   <main>
     <router-outlet></router-outlet>
   </main>
-  <div class="footer" *ngIf="showSite">
+  <div class="footer">
     <app-footer></app-footer>
   </div>
 </div>

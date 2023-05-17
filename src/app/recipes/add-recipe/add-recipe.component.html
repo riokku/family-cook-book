@@ -1,5 +1,5 @@
 <section>
-  <div class="container pt-4 page-wrapper">
+  <div class="container pt-4 pb-4 page-wrapper">
     <div class="row">
       <div class="col-12">
         <a class="breadcrumb" [routerLink]="['/admin']">
@@ -140,22 +140,28 @@
                   class="row"
                   *ngFor="let ingredientControl of recipeIngredientControls; let i = index"
                   [formGroupName]="i">
-                  <div class="col-sm-6">
+                  <div class="col-sm-12 col-md-5">
                     <input
                       type="text"
                       class="form-control"
                       formControlName="ingredientName"
                       placeholder="Ingredient name">
                   </div>
-                  <div class="col-sm-2">
-                    <select name="ingredientAmount" id="ingredientAmount" formControlName="ingredientAmount" class="form-select">
+                  <div class="col-sm-6 col-md-3">
+                    <input
+                    type="number"
+                    class="form-control"
+                    formControlName="ingredientAmount"
+                    placeholder="Ingredient amount">
+
+                    <!-- <select name="ingredientAmount" id="ingredientAmount" formControlName="ingredientAmount" class="form-select">
                       <option [ngValue]="null" [disabled]="true">Amount</option>
                       <option *ngFor="let ingredientAmount of ingredientAmountOptions" [value]="ingredientAmount">
                         {{ ingredientAmount }}
                       </option>
-                    </select>
+                    </select> -->
                   </div>
-                  <div class="col-sm-2">
+                  <div class="col-sm-6 col-md-3">
                     <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
                       <option [ngValue]="null" [disabled]="true">Amount type</option>
                       <option *ngFor="let ingredientMeasurementType of ingredientAmountTypeOptions" [value]="ingredientMeasurementType">
@@ -163,7 +169,7 @@
                       </option>
                     </select>
                   </div>
-                  <div class="col-sm-2">
+                  <div class="col-sm-1">
                     <button
                       type="button"
                       class="btn btn-danger"
@@ -174,8 +180,8 @@
                   <div class="col-12">
                     <button
                       type="button"
-                      class="btn btn-success mt-3"
-                      (click)="onAddIngredient()">Add ingredient</button>
+                      class="btn btn-success"
+                      (click)="onAddIngredient()"><i class="bi bi-plus-square"></i> Add ingredient</button>
                   </div>
                 </div>
               </div>
@@ -209,8 +215,8 @@
                   <div class="col-12">
                     <button
                       type="button"
-                      class="btn btn-success mt-3"
-                      (click)="onAddStep()">Add Step</button>
+                      class="btn btn-success"
+                      (click)="onAddStep()"><i class="bi bi-plus-square"></i> Add Step</button>
                   </div>
                 </div>
               </div>

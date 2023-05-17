@@ -12,6 +12,7 @@ import { AllRecipesComponent } from './all-recipes/all-recipes.component';
 import { RecipeComponent } from "./recipe/recipe.component";
 import { SlugGeneratorPipe } from "../shared/pipes/slug-generator.pipe";
 import { RecipeEditComponent } from "./recipe-edit/recipe-edit.component";
+import { IngredientAmountConverterPipe } from "../shared/pipes/ingredient-amount-converter.pipe";
 
 @NgModule(
   {
@@ -22,7 +23,8 @@ import { RecipeEditComponent } from "./recipe-edit/recipe-edit.component";
       RecipeCardComponent,
       AllRecipesComponent,
       RecipeEditComponent,
-      SlugGeneratorPipe
+      SlugGeneratorPipe,
+      IngredientAmountConverterPipe
     ],
     imports: [
       CommonModule,

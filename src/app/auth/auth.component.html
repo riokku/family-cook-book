@@ -31,7 +31,7 @@
               <button class="btn" type="submit" [disabled]="!authForm.valid">
                 {{ isLoginMode ? 'Login' : 'Sign up' }}
               </button>
-              <button class="btn btn-light" (click)="onSwitchMode()" type="button">{{ isLoginMode ? 'Need a create a new account? Sign up.' : 'Already have an account? Login.' }}</button>
+              <button class="btn btn-light" (click)="onSwitchMode()" type="button">{{ isLoginMode ? 'Need to create a new account? Sign up.' : 'Already have an account? Login.' }}</button>
             </div>
           </form>
         </div>

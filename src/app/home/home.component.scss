@@ -15,8 +15,10 @@ h1{
 }
 
 a{
+  font-size: 1.25rem;
   background-color: #574b90;
   color: #fff;
+  border: 2px solid #fff;
   &:hover{
     background-color: #6457a8;
   }

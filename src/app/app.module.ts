@@ -23,7 +23,7 @@ import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
 import { AuthService } from './shared/services/auth.service';
-import { IntroComponent } from './home/intro/intro.component';
+import { IntroComponent } from './intro/intro.component';
 
 @NgModule({
   declarations: [

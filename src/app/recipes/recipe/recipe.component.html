@@ -1,5 +1,5 @@
 <section>
-  <div class="container pt-4">
+  <div class="container pt-5 pb-5">
     <div class="row">
       <div class="col-12 pb-2">
         <a class="breadcrumb" [routerLink]="['/recipes']">
@@ -48,7 +48,7 @@
             </h3>
             <ul class="ps-1">
               <li *ngFor="let ingredientSet of recipe.ingredients">
-                {{ ingredientSet.ingredientAmount }}
+                {{ ingredientSet.ingredientAmount | ingredientAmountConverter}}
                 {{ ingredientSet.ingredientMeasurementType }}
                 {{ ingredientSet.ingredientName }}
               </li>
