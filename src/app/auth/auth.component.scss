@@ -4,6 +4,13 @@
   background-size: cover;
 }
 
+.offset-md-2{
+  background-color: #fff;
+  padding: 2rem;
+  border: 1px solid #6457a8;
+  border-radius: 0.25rem;
+}
+
 .button-wrapper{
   display: flex;
   justify-content: space-between;
@@ -25,6 +32,10 @@
   h3{
     margin: 0;
   }
+}
+
+.form-control{
+  max-width: 500px;
 }
 
 @media (max-width: 390px){

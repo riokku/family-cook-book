@@ -18,9 +18,14 @@ export class AuthComponent implements OnInit{
 
   constructor(private authService: AuthService, private router: Router){}
 
-
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.user ? false : true;
+    if(localStorage.getItem("userData")){
+      this.isLoggedIn = true;
+    } else {
+      this.isLoggedIn = false;
+    }
+
+    console.log(this.authService.user);
     console.log(this.isLoggedIn);
   }
 
