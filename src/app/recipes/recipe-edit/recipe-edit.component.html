@@ -228,7 +228,7 @@
             <h3>
               Tags:
             </h3>
-            <div class="row">
+            <div class="row mb-4">
               <div class="col-12 col-md-6">
                 <div class="form-group">
                   <select name="recipeTags" id="recipeTags" formControlName="tags" class="form-select" multiple>
@@ -236,6 +236,22 @@
                       {{ tag }}
                     </option>
                   </select>
+                </div>
+              </div>
+            </div>
+            <h3>
+              Additional notes:
+            </h3>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="notes">Helpful notes about ingredients and/or steps</label>
+                  <textarea
+                    type="text"
+                    id="notes"
+                    class="form-control"
+                    formControlName="notes"
+                    rows="4"></textarea>
                 </div>
               </div>
             </div>

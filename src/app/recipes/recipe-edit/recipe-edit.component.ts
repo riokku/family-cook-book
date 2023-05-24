@@ -34,6 +34,7 @@ export class RecipeEditComponent implements OnInit {
   recipeStepsArray: Step[];
   recipeTags: string[];
   recipeCreated: Date;
+  recipeNotes: string;
 
   ingredientAmountOptions: string[] = ["1/4", "1/2", "3/4", "1", "1 1/4", "1 1/2", "1 3/4", "2", "2 1/4", "2 1/2", "2 3/4", "3"];
   ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons (tsp)", "Tablespoons (tbsp)", "Fluid ounces (fl oz)", "Pints (pt)", "Quarts (qt)", "Milliliters (ml)", "Liters (l)", "Grams (g)", "Kilograms (kg)", "Ounces (oz)", "Pounds (lb)", "Count"];
@@ -86,6 +87,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipeStepsArray = this.editingRecipe.steps;
     this.recipeTags = this.editingRecipe.tags;
     this.recipeCreated = this.editingRecipe.created;
+    this.recipeNotes = this.editingRecipe.notes;
 
     this.editRecipeForm = new FormGroup({
       'name': new FormControl(this.recipeName, Validators.required),
@@ -95,7 +97,7 @@ export class RecipeEditComponent implements OnInit {
       'cookTime': new FormControl(this.recipeCookTime, Validators.required),
       'servingSize': new FormControl(this.recipeServingSize, Validators.required),
       'featured': new FormControl(this.recipeFeatured),
-      'imagePath': new FormControl(this.recipeImagePath, Validators.required),
+      'imagePath': new FormControl(this.recipeImagePath),
       'ingredients': new FormArray(this.recipeIngredientsArray.map(ingredient => new FormGroup({
         'ingredientName': new FormControl(ingredient.ingredientName, Validators.required),
         'ingredientAmount': new FormControl(ingredient.ingredientAmount, Validators.required),
@@ -106,6 +108,7 @@ export class RecipeEditComponent implements OnInit {
       }))),
       'tags': new FormControl(this.recipeTags, Validators.required),
       'created': new FormControl(this.recipeCreated, Validators.required),
+      'notes': new FormControl(this.recipeNotes, Validators.required)
     });
 
   }

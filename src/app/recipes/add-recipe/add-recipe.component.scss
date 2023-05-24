@@ -29,28 +29,8 @@
   }
 }
 
-label{
-  margin-bottom: 0.5rem;
-  &:before{
-    content: '*';
-    color: red;
-  }
-}
-
 .slug-wrapper{
   label{
-    &:before{
-      content: none;
-    }
-  }
-}
-
-h3{
-  &:before{
-    content: '*';
-    color: red;
-  }
-  &.overview-header{
     &:before{
       content: none;
     }
