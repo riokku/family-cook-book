@@ -59,8 +59,6 @@ export class RecipeService{
   }
 
   submitRecipe(recipe: Recipe){
-
-
     console.log(recipe);
 
     return this.http.post('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes.json', recipe).subscribe(response => {

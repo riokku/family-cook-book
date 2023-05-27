@@ -9,6 +9,7 @@ import { AuthService } from '../shared/services/auth.service';
 export class HeaderComponent implements OnInit{
 
   userAuthenticated: boolean = false;
+  userIsAdmin: boolean = false;
 
   constructor(private AuthService: AuthService){}
 
@@ -16,6 +17,9 @@ export class HeaderComponent implements OnInit{
     this.AuthService.user.subscribe(user => {
       this.userAuthenticated = !!user
     })
+
+    this.checkAdminStatus();
+
   }
 
   closeNavOnClick() {
@@ -23,6 +27,15 @@ export class HeaderComponent implements OnInit{
     if (element.getAttribute("aria-expanded") == "true" ) {
         element.click();
     }
+  }
+
+  checkAdminStatus(){
+    this.AuthService.fetchData().then((result: boolean) => {
+      if(result){
+        this.userIsAdmin = true;
+        console.log(this.userIsAdmin);
+      }
+    });
   }
 
 }

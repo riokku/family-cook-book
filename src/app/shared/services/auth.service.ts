@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
+import { BehaviorSubject, catchError, map, tap, throwError } from "rxjs";
 import { User } from "../models/user.model";
 import { Router } from "@angular/router";
+import { AdminUser } from "../models/admin.model";
 
 export interface AuthResponseData {
   kind: string;
@@ -22,7 +23,7 @@ export class AuthService {
 
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
-
+  approvedUsers: AdminUser[];
 
   constructor(private http: HttpClient, private router: Router){}
 
@@ -113,6 +114,36 @@ export class AuthService {
         break;
     }
     return throwError(errorMessage);
+  }
+
+
+  responseData: any;
+
+  async getData(): Promise<void> {
+    try {
+      const response = await fetch('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/admins.json');
+      const data = await response.json();
+      this.responseData = data;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async fetchData(): Promise<boolean> {
+    await this.getData();
+
+    let loggedInUser = JSON.parse(localStorage.getItem("userData"));
+
+    console.log(this.responseData);
+    console.log(loggedInUser.id);
+
+    if(this.responseData.includes(loggedInUser.id)){
+      console.log("comparison is true");
+      return true;
+    } else {
+      console.log("comparison is false");
+      return false;
+    }
   }
 
 }
