@@ -134,16 +134,18 @@ export class AuthService {
 
     let loggedInUser = JSON.parse(localStorage.getItem("userData"));
 
-    console.log(this.responseData);
-    console.log(loggedInUser.id);
-
-    if(this.responseData.includes(loggedInUser.id)){
-      console.log("comparison is true");
-      return true;
+    if(loggedInUser){
+      if(this.responseData.includes(loggedInUser.id)){
+        console.log("comparison is true");
+        return true;
+      } else {
+        console.log("comparison is false");
+        return false;
+      }
     } else {
-      console.log("comparison is false");
       return false;
     }
+
   }
 
 }

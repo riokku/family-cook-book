@@ -15,11 +15,8 @@ export class HeaderComponent implements OnInit{
 
   ngOnInit(): void {
     this.AuthService.user.subscribe(user => {
-      this.userAuthenticated = !!user
+      this.checkAdminStatus();
     })
-
-    this.checkAdminStatus();
-
   }
 
   closeNavOnClick() {
@@ -33,7 +30,8 @@ export class HeaderComponent implements OnInit{
     this.AuthService.fetchData().then((result: boolean) => {
       if(result){
         this.userIsAdmin = true;
-        console.log(this.userIsAdmin);
+      } else {
+        this.userIsAdmin = false;
       }
     });
   }

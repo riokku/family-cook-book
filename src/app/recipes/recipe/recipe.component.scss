@@ -36,6 +36,7 @@ hr{
   background-color: #fff;
   border: 1px solid #efefef;
   border-radius: 0.5rem;
+  overflow: hidden;
 }
 .recipe-header-wrapper{
   padding: 2rem;
@@ -43,6 +44,7 @@ hr{
     background-color: rgba(0, 0, 0, 0.7);
     display: inline-block;
     color: #fff;
+    border-radius: 0.5rem;
   }
   @media (max-width: 991px){
     padding: 0;
@@ -53,4 +55,5 @@ hr{
   padding: 1rem;
   background-color: #fff;
   border-top: 3px solid #574b90;
+  border-radius: 0.25rem;
 }

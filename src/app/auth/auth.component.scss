@@ -4,7 +4,7 @@
   background-size: cover;
 }
 
-.offset-md-2{
+.unlogged-wrapper{
   background-color: #fff;
   padding: 2rem;
   border: 1px solid #6457a8;
@@ -14,6 +14,8 @@
 .button-wrapper{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem;
   button{
     &:not(.btn-light){
       color: #fff;

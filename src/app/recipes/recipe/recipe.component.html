@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 col-sm-12 col-md-4">
+        <div class="col-12 col-sm-12 col-md-5 col-lg-4">
           <div class="ingredient-pane p-4">
             <h3 class="mb-3">
               Ingredients:
@@ -54,8 +54,8 @@
               </li>
             </ul>
             <div class="notes-card fst-italic" *ngIf="recipe.notes">
-              <h5>
-                <i class="bi bi-card-text"></i> Notes for this recipe:
+              <h5 class="fw-bold">
+                Notes for this recipe:
               </h5>
               <p class="mb-0">
                 {{ recipe.notes }}
@@ -63,7 +63,7 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-sm-12 col-md-8">
+        <div class="col-12 col-sm-12 col-md-7 col-lg-8">
           <div class="steps-pane p-4">
             <h3 class="mb-3">
               Steps:
