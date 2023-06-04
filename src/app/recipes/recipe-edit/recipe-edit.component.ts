@@ -117,7 +117,7 @@ export class RecipeEditComponent implements OnInit {
       }))),
       'tags': new FormControl(this.recipeTags, Validators.required),
       'created': new FormControl(this.recipeCreated, Validators.required),
-      'notes': new FormControl(this.recipeNotes, Validators.required)
+      'notes': new FormControl(this.recipeNotes)
     });
 
   }

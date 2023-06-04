@@ -5,6 +5,7 @@ import { map, tap } from "rxjs";
 
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from "src/app/shared/services/auth.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { AuthService } from "src/app/shared/services/auth.service";
 
 export class RecipeService{
 
-  constructor(private http: HttpClient, private AuthService: AuthService) {}
+  constructor(private http: HttpClient, private AuthService: AuthService, private router: Router) {}
 
   private recipes: Recipe[] = [];
 
@@ -70,10 +71,9 @@ export class RecipeService{
 
   saveRecipeChanges(recipe: Recipe, id: any){
     console.log(recipe, id);
-    // return this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe).subscribe(response => {
-    //   window.location.href = "/admin";
-    // });
-    this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe);
+    return this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe).subscribe(response => {
+      this.router.navigate(['/admin']);
+    });
   }
 
   deleteRecipe(id: string){

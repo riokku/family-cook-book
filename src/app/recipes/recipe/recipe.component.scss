@@ -18,9 +18,6 @@ ol{
   background-color: #f0eef6;
   height: 100%;
 }
-hr{
-  border-top: 3px solid #574b90;
-}
 .breadcrumb{
   i{
     transition: transform .25s ease-in-out;
@@ -56,4 +53,18 @@ hr{
   background-color: #fff;
   border-top: 3px solid #574b90;
   border-radius: 0.25rem;
+}
+
+.doubled-text{
+  background-color: #fdcb6e;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.double-button{
+  background-color: transparent;
+  border-radius: 0.25rem;
+  border: none;
+  color: #000;
+  padding: 0.3rem 0.5rem 0.3rem 0.25rem;
 }

@@ -13,6 +13,7 @@ export class RecipeComponent implements OnInit {
 
     recipe: Recipe;
     slug: string;
+    isDoubled: boolean = false;
 
     constructor(
       private recipeService: RecipeService,
@@ -29,7 +30,8 @@ export class RecipeComponent implements OnInit {
     }
 
     toggleDouble(){
-      alert('sup');
+      this.isDoubled = !this.isDoubled;
+      console.log(this.isDoubled);
     }
 
 }

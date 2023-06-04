@@ -12,13 +12,13 @@ export class IngredientAmountConverterPipe implements PipeTransform{
     ".75": " 3/4",
   }
 
-  transform(incomingQuantity: number) {
+  transform(incomingQuantity: number, doubled: boolean) {
+
+    if(doubled){
+      incomingQuantity = incomingQuantity * 2;
+    }
 
     let stringQuantity = incomingQuantity.toString().replace(/.25|.33|.5|.66|.75/g, matched => this.quantityAdjustments[matched]);
-
-
-
-
 
     return stringQuantity;
   }
