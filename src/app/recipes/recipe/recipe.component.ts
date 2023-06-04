@@ -28,4 +28,8 @@ export class RecipeComponent implements OnInit {
       )
     }
 
+    toggleDouble(){
+      alert('sup');
+    }
+
 }

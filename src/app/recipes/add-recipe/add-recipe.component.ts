@@ -16,7 +16,6 @@ export class AddRecipeComponent implements OnInit {
   slugOutput: string;
 
   recipeCreatedDate: Date;
-  recipeNotes: string;
   recipeForm: FormGroup;
 
   latestRecipeName: string;
@@ -52,7 +51,10 @@ export class AddRecipeComponent implements OnInit {
     let recipeSlug = '';
     let recipeAuthor = '';
     let recipeDescription = '';
+    let recipePrepTime;
     let recipeCookTime;
+    let recipeChillTime;
+    let recipeTotalTime;
     let recipeServingSize;
     let recipeFeatured;
     let recipeImagePath = '';
@@ -67,7 +69,10 @@ export class AddRecipeComponent implements OnInit {
       'slug': new FormControl(recipeSlug, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
       'author': new FormControl(recipeAuthor, Validators.required),
-      'cookTime': new FormControl(recipeCookTime, Validators.required),
+      'prepTime': new FormControl(recipePrepTime),
+      'cookTime': new FormControl(recipeCookTime),
+      'chillTime': new FormControl(recipeChillTime),
+      'totalTime': new FormControl(recipeTotalTime, Validators.required),
       'servingSize': new FormControl(recipeServingSize, Validators.required),
       'featured': new FormControl(recipeFeatured),
       'imagePath': new FormControl(recipeImagePath),
@@ -75,7 +80,7 @@ export class AddRecipeComponent implements OnInit {
       'steps': recipeStepsArray,
       'tags': new FormControl(recipeTags, Validators.required),
       'created': new FormControl(this.recipeCreatedDate, Validators.required),
-      'notes': new FormControl(this.recipeNotes)
+      'notes': new FormControl(recipeNotes)
     });
   }
 

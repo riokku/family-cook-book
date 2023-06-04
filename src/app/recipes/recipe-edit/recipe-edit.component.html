@@ -20,13 +20,13 @@
       <div class="col-12">
         <form [formGroup]="editRecipeForm" (ngSubmit)="onSaveChanges()">
           <div class="form-group-wrapper">
-            <h3>
-              Overview:
+            <h3 class="mb-3">
+              Recipe information:
             </h3>
             <div class="row">
-              <div class="col-12">
+              <div class="col-12 col-md-9">
                 <div class="form-group mb-3">
-                  <label for="name">Name</label>
+                  <label for="name" class="required">Name</label>
                   <input
                     type="text"
                     id="name"
@@ -49,11 +49,17 @@
                     >
                 </div>
               </div>
+              <div class="col-6 col-md-3">
+                <div class="form-group">
+                  <label for="featured">Featured</label><br />
+                  <input class="form-check-input mt-0" type="checkbox" id="featured" formControlName="featured">
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <label for="author">Author</label>
+                  <label for="author" class="required">Author</label>
                   <input
                     type="text"
                     id="author"
@@ -66,17 +72,29 @@
             <div class="row">
               <div class="col-12">
                 <div class="form-group">
-                  <label for="description">Description</label>
+                  <label for="description" class="required">Description</label>
                   <textarea
                     type="text"
                     id="description"
                     class="form-control"
                     formControlName="description"
-                    rows="6"></textarea>
+                    rows="4"></textarea>
                 </div>
               </div>
             </div>
             <div class="row">
+              <div class="col-6 col-md-2">
+                <div class="form-group">
+                  <label for="prepTime">Prep time</label>
+                  <input
+                    type="number"
+                    min="5"
+                    id="prepTime"
+                    formControlName="prepTime"
+                    class="form-control"
+                    placeholder="Time in mins.">
+                </div>
+              </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
                   <label for="cookTime">Cook time</label>
@@ -91,7 +109,31 @@
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
-                  <label for="servingSize">Serving size</label>
+                  <label for="chillTime">Chill time</label>
+                  <input
+                    type="number"
+                    min="5"
+                    id="chillTime"
+                    formControlName="chillTime"
+                    class="form-control"
+                    placeholder="Time in mins.">
+                </div>
+              </div>
+              <div class="col-6 col-md-2">
+                <div class="form-group">
+                  <label for="totalTime" class="required">Total time</label>
+                  <input
+                    type="number"
+                    min="5"
+                    id="totalTime"
+                    formControlName="totalTime"
+                    class="form-control"
+                    placeholder="Time in mins.">
+                </div>
+              </div>
+              <div class="col-6 col-md-2">
+                <div class="form-group">
+                  <label for="servingSize" class="required">Serving size</label>
                   <input
                     type="number"
                     id="servingSize"
@@ -99,12 +141,6 @@
                     formControlName="servingSize"
                     class="form-control"
                     placeholder="Total servings">
-                </div>
-              </div>
-              <div class="col-6 col-md-2">
-                <div class="form-group">
-                  <label for="featured">Featured</label><br />
-                  <input class="form-check-input mt-0" type="checkbox" id="featured" formControlName="featured">
                 </div>
               </div>
             </div>
@@ -126,31 +162,29 @@
             </div>
             <div class="row" *ngIf="recipeImagePath.value">
               <div class="col-12">
-                <h6>
-                  Image preview:
-                </h6>
-                <img [src]="recipeImagePath.value" class="img-responsive">
+                <p>
+                  Image preview
+                </p>
+                <img [src]="recipeImagePath.value" class="img-responsive mb-3">
               </div>
             </div>
-          </div>
-          <div class="form-group-wrapper ingredients-wrapper">
-            <h3>
-              Ingredients:
-            </h3>
             <div class="row">
-              <div class="col-12" formArrayName="ingredients">
+              <label class="required">
+                Ingredients
+              </label>
+              <div class="col-12 ingredients-wrapper" formArrayName="ingredients">
                 <div
                   class="row"
                   *ngFor="let ingredientControl of recipeIngredientControls; let i = index"
                   [formGroupName]="i">
-                  <div class="col-sm-6">
+                  <div class="col-sm-12 col-md-5">
                     <input
                       type="text"
                       class="form-control"
                       formControlName="ingredientName"
                       placeholder="Ingredient name">
                   </div>
-                  <div class="col-sm-2">
+                  <div class="col-sm-6 col-md-3">
                     <input
                     type="number"
                     class="form-control"
@@ -163,7 +197,7 @@
                       </option>
                     </select> -->
                   </div>
-                  <div class="col-sm-2">
+                  <div class="col-sm-6 col-md-3">
                     <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
                       <option [ngValue]="null" [disabled]="true">Amount type</option>
                       <option *ngFor="let ingredientMeasurementType of ingredientAmountTypeOptions" [value]="ingredientMeasurementType">
@@ -171,7 +205,7 @@
                       </option>
                     </select>
                   </div>
-                  <div class="col-sm-2">
+                  <div class="col-sm-1">
                     <button
                       type="button"
                       class="btn btn-danger"
@@ -183,18 +217,16 @@
                     <button
                       type="button"
                       class="btn btn-success"
-                      (click)="onAddIngredient()">Add ingredient</button>
+                      (click)="onAddIngredient()"><i class="bi bi-plus-square"></i> Add ingredient</button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="form-group-wrapper steps-wrapper mb-4">
-            <h3>
-              Steps:
-            </h3>
             <div class="row">
-              <div class="col-12" formArrayName="steps">
+              <label class="mt-4 required">
+                Steps
+              </label>
+              <div class="col-12 steps-wrapper" formArrayName="steps">
                 <ol class="m-0 ps-3">
                   <li *ngFor="let stepControl of recipeStepsControls; let i = index" [formGroupName]="i">
                     <div class="row">
@@ -218,19 +250,17 @@
                     <button
                       type="button"
                       class="btn btn-success"
-                      (click)="onAddStep()">Add Step</button>
+                      (click)="onAddStep()"><i class="bi bi-plus-square"></i> Add Step</button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="form-group-wrapper mb-4">
-            <h3>
-              Tags:
-            </h3>
             <div class="row mb-4">
               <div class="col-12 col-md-6">
                 <div class="form-group">
+                  <label class="mt-4 required">
+                    Tags
+                  </label>
                   <select name="recipeTags" id="recipeTags" formControlName="tags" class="form-select" multiple>
                     <option *ngFor="let tag of recipeTagOptions" [value]="tag" class="tag-option">
                       {{ tag }}
@@ -239,31 +269,17 @@
                 </div>
               </div>
             </div>
-            <h3>
-              Additional notes:
-            </h3>
             <div class="row">
               <div class="col-12">
                 <div class="form-group">
-                  <label for="notes">Helpful notes about ingredients and/or steps</label>
+                  <label for="notes">Additional notes</label>
                   <textarea
                     type="text"
                     id="notes"
                     class="form-control"
                     formControlName="notes"
+                    placeholder="Helpful notes about ingredients and/or steps"
                     rows="4"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row d-none">
-              <div class="col-12">
-                <div class="form-group">
-                  <label for="created">Created</label>
-                  <input
-                    type="date"
-                    id="created"
-                    class="form-control"
-                    formControlName="created" value="">
                 </div>
               </div>
             </div>

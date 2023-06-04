@@ -10,7 +10,10 @@ export class Recipe {
   public description: string;
   public imagePath?: string; //optional
   public ingredients: Ingredient[];
-  public cookTime: number;
+  public prepTime?: number;
+  public cookTime?: number;
+  public chillTime?: number;
+  public totalTime: number;
   public servingSize: number;
   public featured: boolean;
   public steps: Step[];
@@ -26,7 +29,10 @@ export class Recipe {
     description: string,
     imagePath: string,
     ingredients: Ingredient[],
+    prepTime: number,
     cookTime: number,
+    chillTime: number,
+    totalTime: number,
     servingSize: number,
     featured: boolean,
     steps: Step[],
@@ -41,7 +47,10 @@ export class Recipe {
     this.description = description;
     this.imagePath = imagePath;
     this.ingredients = ingredients;
-    this.cookTime = cookTime;
+    this.prepTime = prepTime,
+    this.cookTime = cookTime,
+    this.chillTime = chillTime,
+    this.totalTime = totalTime,
     this.servingSize = servingSize;
     this.featured = featured;
     this.steps = steps;

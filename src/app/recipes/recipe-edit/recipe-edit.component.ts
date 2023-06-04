@@ -26,7 +26,10 @@ export class RecipeEditComponent implements OnInit {
   recipeSlug: string;
   recipeAuthor: string;
   recipeDescription: string;
+  recipePrepTime: number;
   recipeCookTime: number;
+  recipeChillTime: number;
+  recipeTotalime: number;
   recipeServingSize: number;
   recipeFeatured: boolean;
   recipeImagePath: string;
@@ -79,7 +82,10 @@ export class RecipeEditComponent implements OnInit {
     this.recipeSlug = this.editingRecipe.slug;
     this.recipeAuthor = this.editingRecipe.author;
     this.recipeDescription = this.editingRecipe.description;
+    this.recipePrepTime = this.editingRecipe.prepTime;
     this.recipeCookTime = this.editingRecipe.cookTime;
+    this.recipeChillTime = this.editingRecipe.chillTime;
+    this.recipeTotalime = this.editingRecipe.totalTime;
     this.recipeServingSize = this.editingRecipe.servingSize;
     this.recipeFeatured = this.editingRecipe.featured;
     this.recipeImagePath = this.editingRecipe.imagePath;
@@ -94,7 +100,10 @@ export class RecipeEditComponent implements OnInit {
       'slug': new FormControl(this.recipeSlug, Validators.required),
       'author': new FormControl(this.recipeAuthor, Validators.required),
       'description': new FormControl(this.recipeDescription, Validators.required),
-      'cookTime': new FormControl(this.recipeCookTime, Validators.required),
+      'prepTime': new FormControl(this.recipePrepTime),
+      'cookTime': new FormControl(this.recipeCookTime),
+      'chillTime': new FormControl(this.recipeChillTime),
+      'totalTime': new FormControl(this.recipeTotalime, Validators.required),
       'servingSize': new FormControl(this.recipeServingSize, Validators.required),
       'featured': new FormControl(this.recipeFeatured),
       'imagePath': new FormControl(this.recipeImagePath),

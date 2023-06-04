@@ -29,8 +29,25 @@
   }
 }
 
+.slug-wrapper{
+  label{
+    &:before{
+      content: none;
+    }
+  }
+}
+
 label{
   margin-bottom: 0.5rem;
+}
+
+.ingredients-wrapper, .steps-wrapper{
+  button{
+    &.btn-success{
+      font-size: 0.75rem;
+      padding: 0.3rem 0.5rem;
+    }
+  }
 }
 
 input, textarea{
@@ -85,6 +102,50 @@ img{
   }
 }
 
+.recipe-date{
+  float: right;
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.modal-content{
+  background-color: #198754;
+  color: #fff;
+  .modal-body{
+    background-color: #f2f2f2;
+    color: #2d3436;
+  }
+  .modal-footer{
+    button{
+      &:first-child{
+        color: #fff;
+        &:hover{
+          color: #efefef;
+        }
+      }
+    }
+  }
+}
+
+small{
+  color: #999;
+}
+
+.required{
+  &:after{
+    content: "Required";
+    background-color: #ff6b6b;
+    color: #fff;
+    font-size: 0.7rem;
+    margin-left: 0.5rem;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+  }
+}
+
+
+//Media queries
+
 @media (max-width: 390px){
   .form-group-wrapper{
     padding: 0.75rem;
@@ -116,8 +177,4 @@ img{
       font-size: 0.75rem;
     }
   }
-}
-
-small{
-  color: #999;
 }

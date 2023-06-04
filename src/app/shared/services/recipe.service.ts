@@ -70,9 +70,10 @@ export class RecipeService{
 
   saveRecipeChanges(recipe: Recipe, id: any){
     console.log(recipe, id);
-    return this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe).subscribe(response => {
-      window.location.href = "/admin";
-    });
+    // return this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe).subscribe(response => {
+    //   window.location.href = "/admin";
+    // });
+    this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe);
   }
 
   deleteRecipe(id: string){

@@ -25,15 +25,15 @@
               <p>
                 Author: {{ recipe.author }}
               </p>
-              <ul class="list-inline mb-3">
-                <li class="list-inline-item">
-                  <i class="bi bi-clock"></i> {{ recipe.cookTime }} mins.
+              <ul class="ps-0 mb-3">
+                <li class="mb-1">
+                  <i class="bi bi-clock"></i> {{ recipe.totalTime }} mins. (<span *ngIf="recipe.prepTime">{{ recipe.prepTime }} mins. prep / </span><span *ngIf="recipe.chillTime">{{ recipe.chillTime }} mins. chill / </span><span *ngIf="recipe.prepTime">{{ recipe.cookTime }} mins. cook</span>)
                 </li>
-                <li class="list-inline-item servings">
+                <li class="servings">
                   <i class="bi bi-person"></i> {{ recipe.servingSize }} servings
                 </li>
               </ul>
-              <p>
+              <p class="mb-0">
                 {{ recipe.description }}
               </p>
             </div>
@@ -53,6 +53,9 @@
                 {{ ingredientSet.ingredientName }}
               </li>
             </ul>
+            <button type="button" (click)="toggleDouble()">
+              Want more? Double the recipe!
+            </button>
             <div class="notes-card fst-italic" *ngIf="recipe.notes">
               <h5 class="fw-bold">
                 Notes for this recipe:
