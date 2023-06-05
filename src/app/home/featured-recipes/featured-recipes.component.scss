@@ -3,17 +3,19 @@ h3{
 }
 
 .card{
+  transition: box-shadow 0.75s ease;
   border: none;
   .image-container {
     border-radius: 0.25rem 0.25rem 0 0;
     overflow: hidden;
     img {
-      transition: transform .75s ease;
+      transition: transform 0.75s ease;
       aspect-ratio: 16/9;
       object-fit: cover;
     }
   }
   &:hover{
+    box-shadow: 0 0 20px rgba(255, 255, 255, 1);
     .image-container {
       img{
         transform: scale(1.2);

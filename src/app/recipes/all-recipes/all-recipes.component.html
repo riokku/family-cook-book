@@ -51,20 +51,20 @@
                 <p class="mb-0">
                   Sort by:
                 </p>
-                <button type="button" (click)="sortByCookTime()" *ngIf="servingSizeSortText === servingSizeSortTextOptions[0]" [ngClass]="
+                <button type="button" (click)="sortByTotalTime()" *ngIf="servingSizeSortText === servingSizeSortTextOptions[0]" [ngClass]="
                 {
-                  'filter-default': cookTimeSortText === cookTimeSortTextOptions[0],
-                  'filter-lowest-highest': cookTimeSortText === cookTimeSortTextOptions[1],
-                  'filter-highest-lowest': cookTimeSortText === cookTimeSortTextOptions[2]
+                  'filter-default': totalTimeSortText === totalTimeSortTextOptions[0],
+                  'filter-lowest-highest': totalTimeSortText === totalTimeSortTextOptions[1],
+                  'filter-highest-lowest': totalTimeSortText === totalTimeSortTextOptions[2]
                 }">
                   <i class="bi" [ngClass]="
                   {
-                    'bi-clock': cookTimeSortText === cookTimeSortTextOptions[0],
-                    'bi-sort-numeric-down': cookTimeSortText === cookTimeSortTextOptions[1],
-                    'bi-sort-numeric-down-alt': cookTimeSortText === cookTimeSortTextOptions[2]
-                  }"></i> {{ cookTimeSortText }}
+                    'bi-clock': totalTimeSortText === totalTimeSortTextOptions[0],
+                    'bi-sort-numeric-down': totalTimeSortText === totalTimeSortTextOptions[1],
+                    'bi-sort-numeric-down-alt': totalTimeSortText === totalTimeSortTextOptions[2]
+                  }"></i> {{ totalTimeSortText }}
                 </button>
-                <button type="button" (click)="sortByServingSize()" *ngIf="cookTimeSortText === cookTimeSortTextOptions[0]" [ngClass]="
+                <button type="button" (click)="sortByServingSize()" *ngIf="totalTimeSortText === totalTimeSortTextOptions[0]" [ngClass]="
                 {
                   'filter-default': servingSizeSortText === servingSizeSortTextOptions[0],
                   'filter-lowest-highest': servingSizeSortText === servingSizeSortTextOptions[1],
@@ -78,7 +78,7 @@
                   }"></i> {{ servingSizeSortText }}
                 </button>
               </div>
-              <button class="reset-sort-button" type="button" (click)="resetSort()" *ngIf="cookTimeSortText != cookTimeSortTextOptions[0] || servingSizeSortText != servingSizeSortTextOptions[0]">
+              <button class="reset-sort-button" type="button" (click)="resetSort()" *ngIf="totalTimeSortText != totalTimeSortTextOptions[0] || servingSizeSortText != servingSizeSortTextOptions[0]">
                 <i class="bi bi-x-circle"></i> Reset
               </button>
             </div>

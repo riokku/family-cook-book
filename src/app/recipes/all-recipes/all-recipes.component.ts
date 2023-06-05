@@ -23,7 +23,7 @@ export class AllRecipesComponent implements OnInit {
   searchShowing: boolean = false;
 
   recipeCategories: string[];
-  recipeCookTimes: number[];
+  recipetotalTimes: number[];
   recipeServingSizes: number[];
 
   filterLabel: string = "Filter";
@@ -31,10 +31,10 @@ export class AllRecipesComponent implements OnInit {
   recipesFiltered: boolean = false;
   chosenFilter: string = "All";
 
-  cookTimeSortTextOptions: string[] = ["Time", "Shortest to longest", "Longest to shortest"];
+  totalTimeSortTextOptions: string[] = ["Time", "Shortest to longest", "Longest to shortest"];
   servingSizeSortTextOptions: string[] = ["Servings", "Fewest to most", "Most to fewest"];
 
-  cookTimeSortText: string = this.cookTimeSortTextOptions[0];
+  totalTimeSortText: string = this.totalTimeSortTextOptions[0];
   servingSizeSortText: string = this.servingSizeSortTextOptions[0];
 
 
@@ -105,21 +105,21 @@ export class AllRecipesComponent implements OnInit {
     this.chosenFilter = "All";
   }
 
-  sortByCookTime(){
-    if(this.cookTimeSortText == this.cookTimeSortTextOptions[0]){
-      this.cookTimeSortText = this.cookTimeSortTextOptions[1];
+  sortByTotalTime(){
+    if(this.totalTimeSortText == this.totalTimeSortTextOptions[0]){
+      this.totalTimeSortText = this.totalTimeSortTextOptions[1];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return a.cookTime - b.cookTime;
+        return a.totalTime - b.totalTime;
       });
-    } else if (this.cookTimeSortText == this.cookTimeSortTextOptions[1]){
-      this.cookTimeSortText = this.cookTimeSortTextOptions[2];
+    } else if (this.totalTimeSortText == this.totalTimeSortTextOptions[1]){
+      this.totalTimeSortText = this.totalTimeSortTextOptions[2];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return b.cookTime - a.cookTime;
+        return b.totalTime - a.totalTime;
       });
     } else {
-      this.cookTimeSortText = this.cookTimeSortTextOptions[1];
+      this.totalTimeSortText = this.totalTimeSortTextOptions[1];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return a.cookTime - b.cookTime;
+        return a.totalTime - b.totalTime;
       });
     }
   }
@@ -144,7 +144,7 @@ export class AllRecipesComponent implements OnInit {
   }
 
   resetSort(){
-    this.cookTimeSortText = this.cookTimeSortTextOptions[0];
+    this.totalTimeSortText = this.totalTimeSortTextOptions[0];
     this.servingSizeSortText = this.servingSizeSortTextOptions[0];
   }
 

@@ -51,14 +51,11 @@
             </p>
             <ul class="ps-1 mb-4">
               <li *ngFor="let ingredientSet of recipe.ingredients">
-                {{ ingredientSet.ingredientAmount | ingredientAmountConverter: isDoubled}}
-                {{ ingredientSet.ingredientMeasurementType }}
+                <strong>{{ ingredientSet.ingredientAmount | ingredientAmountConverter: isDoubled}}
+                {{ ingredientSet.ingredientMeasurementType }}</strong>
                 {{ ingredientSet.ingredientName }}
               </li>
             </ul>
-            <button type="button" class="double-button" (click)="toggleDouble()">
-              <i class="bi bi-question-circle"></i> {{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}
-            </button>
             <div class="notes-card fst-italic" *ngIf="recipe.notes">
               <h5 class="fw-bold">
                 Notes for this recipe:
@@ -67,6 +64,9 @@
                 {{ recipe.notes }}
               </p>
             </div>
+            <button type="button" class="double-button mt-4" (click)="toggleDouble()">
+              <i class="bi bi-question-circle"></i> {{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}
+            </button>
           </div>
         </div>
         <div class="col-12 col-sm-12 col-md-7 col-lg-8">
