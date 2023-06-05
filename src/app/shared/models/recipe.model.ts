@@ -7,12 +7,13 @@ export class Recipe {
   public name: string;
   public slug: string;
   public author: string;
+  public link?: string; //optional
   public description: string;
   public imagePath?: string; //optional
   public ingredients: Ingredient[];
-  public prepTime?: number;
-  public cookTime?: number;
-  public chillTime?: number;
+  public prepTime?: number; //optional
+  public cookTime?: number; //optional
+  public chillTime?: number; //optional
   public totalTime: number;
   public servingSize: number;
   public featured: boolean;
@@ -26,6 +27,7 @@ export class Recipe {
     name: string,
     slug: string,
     author: string,
+    link: string,
     description: string,
     imagePath: string,
     ingredients: Ingredient[],
@@ -44,6 +46,7 @@ export class Recipe {
     this.name = name;
     this.slug = slug;
     this.author = author;
+    this.link = link;
     this.description = description;
     this.imagePath = imagePath;
     this.ingredients = ingredients;

@@ -50,6 +50,7 @@ export class AddRecipeComponent implements OnInit {
     let recipeName = '';
     let recipeSlug = '';
     let recipeAuthor = '';
+    let link = '';
     let recipeDescription = '';
     let recipePrepTime;
     let recipeCookTime;
@@ -69,6 +70,7 @@ export class AddRecipeComponent implements OnInit {
       'slug': new FormControl(recipeSlug, Validators.required),
       'description': new FormControl(recipeDescription, Validators.required),
       'author': new FormControl(recipeAuthor, Validators.required),
+      'link': new FormControl(link),
       'prepTime': new FormControl(recipePrepTime),
       'cookTime': new FormControl(recipeCookTime),
       'chillTime': new FormControl(recipeChillTime),

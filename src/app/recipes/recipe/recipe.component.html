@@ -23,7 +23,7 @@
                 {{ recipe.name }}
               </h1>
               <p>
-                Author: {{ recipe.author }}
+                Author: {{ recipe.author }} <span *ngIf="recipe.link"><a href="{{recipe.link}}" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a></span>
               </p>
               <ul class="ps-0 mb-3">
                 <li class="mb-1">

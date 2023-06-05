@@ -25,6 +25,7 @@ export class RecipeEditComponent implements OnInit {
   recipeName: string;
   recipeSlug: string;
   recipeAuthor: string;
+  link: string;
   recipeDescription: string;
   recipePrepTime: number;
   recipeCookTime: number;
@@ -81,6 +82,7 @@ export class RecipeEditComponent implements OnInit {
     this.updateSlug();
     this.recipeSlug = this.editingRecipe.slug;
     this.recipeAuthor = this.editingRecipe.author;
+    this.link = this.editingRecipe.link;
     this.recipeDescription = this.editingRecipe.description;
     this.recipePrepTime = this.editingRecipe.prepTime;
     this.recipeCookTime = this.editingRecipe.cookTime;
@@ -99,6 +101,7 @@ export class RecipeEditComponent implements OnInit {
       'name': new FormControl(this.recipeName, Validators.required),
       'slug': new FormControl(this.recipeSlug, Validators.required),
       'author': new FormControl(this.recipeAuthor, Validators.required),
+      'link': new FormControl(this.link),
       'description': new FormControl(this.recipeDescription, Validators.required),
       'prepTime': new FormControl(this.recipePrepTime),
       'cookTime': new FormControl(this.recipeCookTime),
