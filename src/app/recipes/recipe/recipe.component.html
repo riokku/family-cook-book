@@ -52,7 +52,7 @@
             <ul class="ps-1 mb-4">
               <li *ngFor="let ingredientSet of recipe.ingredients">
                 <strong>{{ ingredientSet.ingredientAmount | ingredientAmountConverter: isDoubled}}
-                {{ ingredientSet.ingredientMeasurementType }}</strong>
+                <span *ngIf="ingredientSet.ingredientMeasurementType != 'Count'">{{ ingredientSet.ingredientMeasurementType }}</span></strong>
                 {{ ingredientSet.ingredientName }}
               </li>
             </ul>
@@ -74,9 +74,14 @@
             <h3 class="mb-3">
               Steps:
             </h3>
-            <ol class="ps-3 pe-3">
+            <ol class="pe-3">
               <li *ngFor="let step of recipe.steps">
-                {{ step.step }}
+                <div>
+                  {{ recipe.steps.indexOf(step) + 1 + '.'}}
+                </div>
+                <div>
+                  {{ step.step }}
+                </div>
               </li>
             </ol>
           </div>

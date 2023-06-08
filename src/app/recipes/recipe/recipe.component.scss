@@ -14,7 +14,19 @@ ul{
   }
 }
 ol{
+  padding-left: 0;
   li{
+    display: flex;
+    align-items: center;
+    padding-left: 0.25rem;
+    div{
+      &:first-child{
+        font-size: 2rem;
+        color: #574b90;
+        text-shadow: 2px 2px 2px #efefef;
+        padding-right: 1rem;
+      }
+    }
     &:not(:last-child){
       margin-bottom: 1rem;
     }
