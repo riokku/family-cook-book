@@ -25,6 +25,8 @@ ol{
         color: #574b90;
         text-shadow: 2px 2px 2px #efefef;
         padding-right: 1rem;
+        min-width: 40px;
+        text-align: right;
       }
     }
     &:not(:last-child){
@@ -85,4 +87,5 @@ ol{
   border: none;
   color: #000;
   padding: 0.3rem 0.5rem 0.3rem 0.25rem;
+  text-align: left;
 }
