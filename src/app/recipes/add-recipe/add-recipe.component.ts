@@ -30,20 +30,8 @@ export class AddRecipeComponent implements OnInit {
     private router: Router,
   ) {}
 
-  get recipeIngredientControls() {
-    return (this.recipeForm.get('ingredients') as FormArray).controls;
-  }
-
-  get recipeStepsControls() {
-    return (this.recipeForm.get('steps') as FormArray).controls;
-  }
-
   ngOnInit(): void {
     this.initializeForm();
-  }
-
-  updateSlug(){
-    this.slugOutput = this.slugInput.replaceAll(" ", "-").toLowerCase().trim();
   }
 
   private initializeForm(){
@@ -59,7 +47,7 @@ export class AddRecipeComponent implements OnInit {
     let recipeServingSize;
     let recipeFeatured;
     let recipeImagePath = '';
-    let recipeIngredientsArray = new FormArray([]);
+    let recipeIngredientsGroupArray = new FormArray([this.createIngredientGroup()]);
     let recipeStepsArray = new FormArray([]);
     let recipeTags: string[] = [];
     this.recipeCreatedDate = new Date();
@@ -78,7 +66,7 @@ export class AddRecipeComponent implements OnInit {
       'servingSize': new FormControl(recipeServingSize, Validators.required),
       'featured': new FormControl(recipeFeatured),
       'imagePath': new FormControl(recipeImagePath),
-      'ingredients': recipeIngredientsArray,
+      'ingredientGroups': recipeIngredientsGroupArray,
       'steps': recipeStepsArray,
       'tags': new FormControl(recipeTags, Validators.required),
       'created': new FormControl(this.recipeCreatedDate, Validators.required),
@@ -86,14 +74,16 @@ export class AddRecipeComponent implements OnInit {
     });
   }
 
-  onAddIngredient() {
-    (<FormArray>this.recipeForm.get('ingredients')).push(
-      new FormGroup({
-        'ingredientName': new FormControl(null, Validators.required),
-        'ingredientAmount': new FormControl(null, Validators.required),
-        'ingredientMeasurementType': new FormControl(null, Validators.required)
-      })
-    );
+  //Create slug used for URL
+
+  updateSlug(){
+    this.slugOutput = this.slugInput.replaceAll(" ", "-").toLowerCase().trim();
+  }
+
+  //Add/remove steps
+
+  get recipeStepsControls() {
+    return (this.recipeForm.get('steps') as FormArray).controls;
   }
 
   onAddStep() {
@@ -104,13 +94,58 @@ export class AddRecipeComponent implements OnInit {
     );
   }
 
-  onDeleteIngredient(index: number) {
-    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
-  }
-
   onDeleteStep(index: number) {
     (<FormArray>this.recipeForm.get('steps')).removeAt(index);
   }
+
+
+  //Add/remove Ingredient Groups
+
+  get recipeIngredientGroupControls() {
+    return this.recipeForm.get('ingredientGroups') as FormArray;
+  }
+
+  addIngredientGroup(): void {
+    this.recipeIngredientGroupControls.push(this.createIngredientGroup());
+  }
+
+  createIngredientGroup(): FormGroup {
+    return new FormGroup({
+      'ingredientGroupName': new FormControl(null, Validators.required),
+      'ingredients': new FormArray([this.createIngredient()])
+    });
+  }
+
+  deleteIngredientGroup(index: number): void {
+    this.recipeIngredientGroupControls.removeAt(index);
+  }
+
+  //Add/remove Ingredients
+
+  getIngredients(layerIndex: number): FormArray {
+    return (this.recipeIngredientGroupControls.at(layerIndex) as FormGroup).get('ingredients') as FormArray;
+  }
+
+  addIngredient(layerIndex: number): void {
+    const fields = this.getIngredients(layerIndex);
+    fields.push(this.createIngredient());
+  }
+
+  createIngredient(): FormGroup {
+    return new FormGroup({
+      'ingredientName': new FormControl(null, Validators.required),
+      'ingredientAmount': new FormControl(null, Validators.required),
+      'ingredientMeasurementType': new FormControl(null, Validators.required)
+    })
+  }
+
+  deleteIngredient(ingredientGroupIndex: number, ingredientIndex: number): void {
+    const fields = this.getIngredients(ingredientGroupIndex);
+    fields.removeAt(ingredientIndex);
+  }
+
+
+  //Form actions
 
   onSubmit() {
     this.recipeService.submitRecipe(this.recipeForm.value);
@@ -122,7 +157,4 @@ export class AddRecipeComponent implements OnInit {
     this.router.navigate(['/admin'], {relativeTo: this.route});
   }
 
-  showModal(){
-
-  }
 }

@@ -6,6 +6,7 @@ import { RecipesComponent } from "./recipes.component";
 import { AllRecipesComponent } from "./all-recipes/all-recipes.component";
 import { RecipesResolverService } from "../shared/resolvers/recipe-resolve.service";
 import { RecipeEditComponent } from "./recipe-edit/recipe-edit.component";
+import { TestFormComponent } from "./test-form/test-form.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: 'add-recipe',
         component: AddRecipeComponent
+      },
+      {
+        path: 'test-form',
+        component: TestFormComponent
       },
       {
         path: ':slug',
@@ -36,13 +41,11 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
   ],
   exports: [
     RouterModule
   ]
 })
 
-export class RecipesRoutingModule{
-
-}
+export class RecipesRoutingModule{}

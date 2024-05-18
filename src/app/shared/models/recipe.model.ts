@@ -1,4 +1,4 @@
-import { Ingredient } from "./ingredient.model";
+import { IngredientGroup } from "./ingredient-group.model";
 import { Step } from "./step.model";
 
 
@@ -10,7 +10,7 @@ export class Recipe {
   public link?: string; //optional
   public description: string;
   public imagePath?: string; //optional
-  public ingredients: Ingredient[];
+  public ingredientGroups: IngredientGroup[];
   public prepTime?: number; //optional
   public cookTime?: number; //optional
   public chillTime?: number; //optional
@@ -30,7 +30,7 @@ export class Recipe {
     link: string,
     description: string,
     imagePath: string,
-    ingredients: Ingredient[],
+    ingredientGroups: IngredientGroup[],
     prepTime: number,
     cookTime: number,
     chillTime: number,
@@ -49,7 +49,7 @@ export class Recipe {
     this.link = link;
     this.description = description;
     this.imagePath = imagePath;
-    this.ingredients = ingredients;
+    this.ingredientGroups = ingredientGroups;
     this.prepTime = prepTime,
     this.cookTime = cookTime,
     this.chillTime = chillTime,
