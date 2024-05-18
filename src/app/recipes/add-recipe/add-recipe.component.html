@@ -20,9 +20,9 @@
       <div class="col-12">
         <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
           <div class="form-group-wrapper">
-            <h3 class="mb-3">
-              Recipe information:
-            </h3>
+            <h2 class="mb-3">
+              General information:
+            </h2>
             <div class="row">
               <div class="col-12 col-md-9">
                 <div class="form-group mb-3">
@@ -181,62 +181,99 @@
                 <img [src]="recipeImagePath.value" class="img-responsive mb-3">
               </div>
             </div>
+          </div>
+          <div class="form-group-wrapper">
+            <h2 class="mb-3">
+              Ingredients:
+            </h2>
             <div class="row">
               <label class="required">
-                Ingredients
+                Ingredient Group
               </label>
-              <div class="col-12 ingredients-wrapper" formArrayName="ingredients">
+              <div class="col-12 ingredients-wrapper" formArrayName="ingredientGroups">
                 <div
                   class="row"
-                  *ngFor="let ingredientControl of recipeIngredientControls; let i = index"
+                  *ngFor="let ingredientGroup of recipeIngredientGroupControls.controls; let i = index"
                   [formGroupName]="i">
                   <div class="col-sm-12 col-md-5">
                     <input
                       type="text"
                       class="form-control"
-                      formControlName="ingredientName"
-                      placeholder="Ingredient name">
+                      formControlName="ingredientGroupName"
+                      placeholder="Ingredient group name">
                   </div>
-                  <div class="col-sm-6 col-md-3">
-                    <input
-                    type="number"
-                    class="form-control"
-                    formControlName="ingredientAmount"
-                    placeholder="Ingredient amount">
-                    <!-- <select name="ingredientAmount" id="ingredientAmount" formControlName="ingredientAmount" class="form-select">
-                      <option [ngValue]="null" [disabled]="true">Amount</option>
-                      <option *ngFor="let ingredientAmount of ingredientAmountOptions" [value]="ingredientAmount">
-                        {{ ingredientAmount }}
-                      </option>
-                    </select> -->
-                  </div>
-                  <div class="col-sm-6 col-md-3">
-                    <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
-                      <option [ngValue]="null" [disabled]="true">Amount type</option>
-                      <option *ngFor="let ingredientMeasurementType of ingredientAmountTypeOptions" [value]="ingredientMeasurementType">
-                        {{ ingredientMeasurementType }}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-sm-1">
+                  <div class="col-sm-12 col-md-7">
                     <button
                       type="button"
                       class="btn btn-danger"
-                      (click)="onDeleteIngredient(i)">X</button>
+                      (click)="deleteIngredientGroup(i)">X</button>
+                  </div>
+                  <div class="col-12 ingredients-wrapper" formArrayName="ingredients">
+                    <div
+                      class="row"
+                      *ngFor="let ingredient of getIngredients(i).controls; let j = index" [formGroupName]="j">
+                      <div class="col-sm-12 col-md-5">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="ingredientName"
+                          placeholder="Ingredient name">
+                      </div>
+                      <div class="col-sm-6 col-md-3">
+                        <input
+                        type="number"
+                        class="form-control"
+                        formControlName="ingredientAmount"
+                        placeholder="Ingredient amount">
+                        <!-- <select name="ingredientAmount" id="ingredientAmount" formControlName="ingredientAmount" class="form-select">
+                          <option [ngValue]="null" [disabled]="true">Amount</option>
+                          <option *ngFor="let ingredientAmount of ingredientAmountOptions" [value]="ingredientAmount">
+                            {{ ingredientAmount }}
+                          </option>
+                        </select> -->
+                      </div>
+                      <div class="col-sm-6 col-md-3">
+                        <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
+                          <option [ngValue]="null" [disabled]="true">Amount type</option>
+                          <option *ngFor="let ingredientMeasurementType of ingredientAmountTypeOptions" [value]="ingredientMeasurementType">
+                            {{ ingredientMeasurementType }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-1">
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          (click)="deleteIngredient(i, j)">X</button>
+                      </div>
+                    </div>
+                    <div class="row border-bottom">
+                      <div class="col-12">
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          (click)="addIngredient(i)"><i class="bi bi-plus-square"></i> Add ingredient</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12">
                     <button
                       type="button"
-                      class="btn btn-success"
-                      (click)="onAddIngredient()"><i class="bi bi-plus-square"></i> Add ingredient</button>
+                      class="btn btn-secondary"
+                      (click)="addIngredientGroup()"><i class="bi bi-plus-square"></i> Add ingredient group</button>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="form-group-wrapper">
+            <h2 class="mb-3">
+              Instructions:
+            </h2>
             <div class="row">
-              <label class="mt-4 required">
+              <label class="required">
                 Steps
               </label>
               <div class="col-12 steps-wrapper" formArrayName="steps">
@@ -268,10 +305,15 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="form-group-wrapper">
+            <h2 class="mb-3">
+              Additional information:
+            </h2>
             <div class="row mb-4">
               <div class="col-12 col-md-6">
                 <div class="form-group">
-                  <label class="mt-4 required">
+                  <label class="required">
                     Tags
                   </label>
                   <select name="recipeTags" id="recipeTags" formControlName="tags" class="form-select" multiple>

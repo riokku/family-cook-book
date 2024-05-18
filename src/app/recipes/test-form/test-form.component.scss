@@ -41,22 +41,11 @@ label{
   margin-bottom: 0.5rem;
 }
 
-.ingredients-wrapper{
-  input{
-    margin-bottom: 1rem;
-  }
-  .border-bottom{
-    border-bottom: 2px solid gray;
-    margin-bottom: 1rem;
-  }
-}
-
 .ingredients-wrapper, .steps-wrapper{
   button{
     &.btn-success{
       font-size: 0.75rem;
       padding: 0.3rem 0.5rem;
-      margin-bottom: 1rem;
     }
   }
 }

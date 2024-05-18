@@ -49,13 +49,27 @@
             <p class="doubled-text" *ngIf="isDoubled">
               <i class="bi bi-asterisk"></i> Showing <u>doubled</u> quantities:
             </p>
-            <ul class="ps-1 mb-3">
-              <li *ngFor="let ingredientSet of recipe.ingredients">
-                <strong>{{ ingredientSet.ingredientAmount | ingredientAmountConverter: isDoubled}}
-                <span *ngIf="ingredientSet.ingredientMeasurementType != 'Count'">{{ ingredientSet.ingredientMeasurementType | lowercase}}</span></strong>
-                {{ ingredientSet.ingredientName | lowerFirstLetter}}
-              </li>
-            </ul>
+            <div *ngFor="let ingredientGroup of recipe.ingredientGroups">
+              <h4>
+                {{ ingredientGroup.ingredientGroupName }}
+              </h4>
+              <ul class="ps-1 mb-3">
+                <li>
+                  <strong>
+                    <span *ngFor="let ingredient of ingredientGroup.ingredients">
+                      <strong>{{ ingredient.ingredientAmount | ingredientAmountConverter: isDoubled}}
+                        <span *ngIf="ingredient.ingredientMeasurementType != 'Count'">{{ ingredient.ingredientMeasurementType | lowercase}}</span></strong>
+                        {{ ingredient.ingredientName | lowerFirstLetter}}
+                    </span>
+                </strong>
+                </li>
+                <!-- <li *ngFor="let ingredientSet of recipe.ingredients">
+                  <strong>{{ ingredientSet.ingredientAmount | ingredientAmountConverter: isDoubled}}
+                  <span *ngIf="ingredientSet.ingredientMeasurementType != 'Count'">{{ ingredientSet.ingredientMeasurementType | lowercase}}</span></strong>
+                  {{ ingredientSet.ingredientName | lowerFirstLetter}}
+                </li> -->
+              </ul>
+            </div>
             <button type="button" class="double-button mb-3" (click)="toggleDouble()">
               <i class="bi bi-question-circle"></i> {{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}
             </button>

@@ -1,0 +1,36 @@
+<section>
+  <div class="container pt-4 pb-4 page-wrapper">
+    <div class="row">
+      <div class="col-12">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div formArrayName="layersInForm">
+            <div *ngFor="let layer of layers.controls; let i = index" [formGroupName]="i">
+              <h3>Layer {{ i + 1 }}</h3>
+              <label>
+                Layer Name:
+                <input formControlName="name" />
+              </label>
+              <div formArrayName="fieldsInForm">
+                <div *ngFor="let field of getFields(i).controls; let j = index" [formGroupName]="j">
+                  <label>
+                    Field Name:
+                    <input formControlName="fieldName" />
+                  </label>
+                  <label>
+                    Value:
+                    <input formControlName="value" />
+                  </label>
+                  <button type="button" (click)="removeField(i, j)">Remove Field</button>
+                </div>
+              </div>
+              <button type="button" (click)="addField(i)">Add Field</button>
+              <button type="button" (click)="removeLayer(i)">Remove Layer</button>
+            </div>
+          </div>
+          <button type="button" (click)="addLayer()">Add Layer</button>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

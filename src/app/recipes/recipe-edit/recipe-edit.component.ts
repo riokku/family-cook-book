@@ -3,9 +3,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { RecipeService } from '../../shared/services/recipe.service';
-import { Ingredient } from 'src/app/shared/models/ingredient.model';
 import { Step } from 'src/app/shared/models/step.model';
 import { Recipe } from 'src/app/shared/models/recipe.model';
+import { IngredientGroup } from 'src/app/shared/models/ingredient-group.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -34,7 +34,7 @@ export class RecipeEditComponent implements OnInit {
   recipeServingSize: number;
   recipeFeatured: boolean;
   recipeImagePath: string;
-  recipeIngredientsArray: Ingredient[];
+  recipeIngredientsGroupArray: IngredientGroup[];
   recipeStepsArray: Step[];
   recipeTags: string[];
   recipeCreated: Date;
@@ -75,8 +75,6 @@ export class RecipeEditComponent implements OnInit {
 
     this.editingRecipe = this.recipeService.getRecipe(this.editedSlug);
 
-    console.log(this.editingRecipe.id);
-
     this.recipeName = this.editingRecipe.name;
     this.slugInput = this.editingRecipe.name;
     this.updateSlug();
@@ -91,7 +89,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipeServingSize = this.editingRecipe.servingSize;
     this.recipeFeatured = this.editingRecipe.featured;
     this.recipeImagePath = this.editingRecipe.imagePath;
-    this.recipeIngredientsArray = this.editingRecipe.ingredients;
+    this.recipeIngredientsGroupArray = this.editingRecipe.ingredientGroups;
     this.recipeStepsArray = this.editingRecipe.steps;
     this.recipeTags = this.editingRecipe.tags;
     this.recipeCreated = this.editingRecipe.created;
@@ -110,10 +108,13 @@ export class RecipeEditComponent implements OnInit {
       'servingSize': new FormControl(this.recipeServingSize, Validators.required),
       'featured': new FormControl(this.recipeFeatured),
       'imagePath': new FormControl(this.recipeImagePath),
-      'ingredients': new FormArray(this.recipeIngredientsArray.map(ingredient => new FormGroup({
-        'ingredientName': new FormControl(ingredient.ingredientName, Validators.required),
-        'ingredientAmount': new FormControl(ingredient.ingredientAmount, Validators.required),
-        'ingredientMeasurementType': new FormControl(ingredient.ingredientMeasurementType, Validators.required)
+      'ingredientGroups': new FormArray(this.recipeIngredientsGroupArray.map(ingredient => new FormGroup({
+        'ingredientName': new FormControl(ingredient.ingredientGroupName, Validators.required),
+        'ingredients': new FormArray(ingredient.ingredients.map(ingredient => new FormGroup({
+          'ingredientName': new FormControl(ingredient.ingredientName, Validators.required),
+          'ingredientAmount': new FormControl(ingredient.ingredientAmount, Validators.required),
+          'ingredientMeasurementType': new FormControl(ingredient.ingredientMeasurementType, Validators.required)
+        })))
       }))),
       'steps':  new FormArray(this.recipeStepsArray.map(step => new FormGroup({
         'step': new FormControl(step.step, Validators.required)
