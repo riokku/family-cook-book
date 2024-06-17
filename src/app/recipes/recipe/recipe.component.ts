@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 import { RecipeService } from 'src/app/shared/services/recipe.service';
@@ -17,7 +18,8 @@ export class RecipeComponent implements OnInit {
 
     constructor(
       private recipeService: RecipeService,
-      private route: ActivatedRoute
+      private route: ActivatedRoute,
+      private titleService: Title
     ){}
 
     ngOnInit(): void {
@@ -27,6 +29,7 @@ export class RecipeComponent implements OnInit {
            this.recipe = this.recipeService.getRecipe(this.slug);
         }
       )
+      this.titleService.setTitle(`Gogo's Kitchen | ${this.recipe.name}`);
     }
 
     toggleDouble(){

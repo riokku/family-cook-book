@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { RecipeService } from '../../shared/services/recipe.service';
+import { SupaService } from 'src/app/shared/services/supa.service';
 
 @Component({
   selector: 'app-add-recipe',
@@ -27,11 +28,14 @@ export class AddRecipeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
+    private supaService: SupaService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.initializeForm();
+    console.log(this.recipeForm);
+
   }
 
   private initializeForm(){
@@ -59,14 +63,14 @@ export class AddRecipeComponent implements OnInit {
       'description': new FormControl(recipeDescription, Validators.required),
       'author': new FormControl(recipeAuthor, Validators.required),
       'link': new FormControl(link),
-      'prepTime': new FormControl(recipePrepTime),
-      'cookTime': new FormControl(recipeCookTime),
-      'chillTime': new FormControl(recipeChillTime),
-      'totalTime': new FormControl(recipeTotalTime, Validators.required),
-      'servingSize': new FormControl(recipeServingSize, Validators.required),
+      'prep_time': new FormControl(recipePrepTime),
+      'cook_time': new FormControl(recipeCookTime),
+      'chill_time': new FormControl(recipeChillTime),
+      'total_time': new FormControl(recipeTotalTime, Validators.required),
+      'serving_size': new FormControl(recipeServingSize, Validators.required),
       'featured': new FormControl(recipeFeatured),
-      'imagePath': new FormControl(recipeImagePath),
-      'ingredientGroups': recipeIngredientsGroupArray,
+      'image_path': new FormControl(recipeImagePath),
+      'ingredient_groups': recipeIngredientsGroupArray,
       'steps': recipeStepsArray,
       'tags': new FormControl(recipeTags, Validators.required),
       'created': new FormControl(this.recipeCreatedDate, Validators.required),
@@ -102,7 +106,7 @@ export class AddRecipeComponent implements OnInit {
   //Add/remove Ingredient Groups
 
   get recipeIngredientGroupControls() {
-    return this.recipeForm.get('ingredientGroups') as FormArray;
+    return this.recipeForm.get('ingredient_groups') as FormArray;
   }
 
   addIngredientGroup(): void {
@@ -149,6 +153,13 @@ export class AddRecipeComponent implements OnInit {
 
   onSubmit() {
     this.recipeService.submitRecipe(this.recipeForm.value);
+    this.latestRecipeName = this.recipeForm.value.name;
+    this.recipeForm.reset();
+  }
+
+  onSubmitNew(){
+    this.supaService.getLoggedInUser();
+    this.supaService.addRecipeNew(this.recipeForm.value);
     this.latestRecipeName = this.recipeForm.value.name;
     this.recipeForm.reset();
   }

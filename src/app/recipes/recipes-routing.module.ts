@@ -6,32 +6,29 @@ import { RecipesComponent } from "./recipes.component";
 import { AllRecipesComponent } from "./all-recipes/all-recipes.component";
 import { RecipesResolverService } from "../shared/resolvers/recipe-resolve.service";
 import { RecipeEditComponent } from "./recipe-edit/recipe-edit.component";
-import { TestFormComponent } from "./test-form/test-form.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: RecipesComponent,
     children: [
       {
-        path:'',
-        component: AllRecipesComponent
+        path:"",
+        component: AllRecipesComponent,
+        title: "Gogo's Kitchen | Recipes"
       },
       {
-        path: 'add-recipe',
-        component: AddRecipeComponent
+        path: "add-recipe",
+        component: AddRecipeComponent,
+        title: "Gogo's Kitchen | Add Recipe"
       },
       {
-        path: 'test-form',
-        component: TestFormComponent
-      },
-      {
-        path: ':slug',
+        path: ":slug",
         component: RecipeComponent,
         resolve: [RecipesResolverService]
       },
       {
-        path: ':slug/edit',
+        path: ":slug/edit",
         component: RecipeEditComponent,
         resolve: [RecipesResolverService]
       }

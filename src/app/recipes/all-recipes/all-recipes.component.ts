@@ -109,17 +109,17 @@ export class AllRecipesComponent implements OnInit {
     if(this.totalTimeSortText == this.totalTimeSortTextOptions[0]){
       this.totalTimeSortText = this.totalTimeSortTextOptions[1];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return a.totalTime - b.totalTime;
+        return a.total_time - b.total_time;
       });
     } else if (this.totalTimeSortText == this.totalTimeSortTextOptions[1]){
       this.totalTimeSortText = this.totalTimeSortTextOptions[2];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return b.totalTime - a.totalTime;
+        return b.total_time - a.total_time;
       });
     } else {
       this.totalTimeSortText = this.totalTimeSortTextOptions[1];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return a.totalTime - b.totalTime;
+        return a.total_time - b.total_time;
       });
     }
   }
@@ -128,17 +128,17 @@ export class AllRecipesComponent implements OnInit {
     if(this.servingSizeSortText == this.servingSizeSortTextOptions[0]){
       this.servingSizeSortText = this.servingSizeSortTextOptions[1];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return a.servingSize - b.servingSize;
+        return a.serving_size - b.serving_size;
       });
     } else if (this.servingSizeSortText == this.servingSizeSortTextOptions[1]){
       this.servingSizeSortText = this.servingSizeSortTextOptions[2];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return b.servingSize - a.servingSize;
+        return b.serving_size - a.serving_size;
       });
     } else {
       this.servingSizeSortText = this.servingSizeSortTextOptions[1];
       this.selectedRecipes = this.selectedRecipes.sort((a:Recipe, b:Recipe) => {
-        return a.servingSize - b.servingSize;
+        return a.serving_size - b.serving_size;
       });
     }
   }

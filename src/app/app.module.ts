@@ -14,15 +14,11 @@ import { RecipeService } from './shared/services/recipe.service';
 import { RecipesRoutingModule } from './recipes/recipes-routing.module';
 import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recipes.component';
 import { RouterModule } from '@angular/router';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
-import { AuthService } from './shared/services/auth.service';
 import { IntroComponent } from './intro/intro.component';
 
 @NgModule({
@@ -46,17 +42,11 @@ import { IntroComponent } from './intro/intro.component';
     ReactiveFormsModule,
     RecipesRoutingModule,
     RouterModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase())
   ],
   providers: [
     RecipeService,
-    AuthService,
-    {
-      provide: FIREBASE_OPTIONS,
-      useValue: environment.firebase
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
