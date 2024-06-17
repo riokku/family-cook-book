@@ -14,7 +14,6 @@ import { SlugGeneratorPipe } from "../shared/pipes/slug-generator.pipe";
 import { RecipeEditComponent } from "./recipe-edit/recipe-edit.component";
 import { IngredientAmountConverterPipe } from "../shared/pipes/ingredient-amount-converter.pipe";
 import { LowerFirstLetterPipe } from "../shared/pipes/lower-first-letter.pipe";
-import { TestFormComponent } from "./test-form/test-form.component";
 
 @NgModule(
   {
@@ -22,7 +21,6 @@ import { TestFormComponent } from "./test-form/test-form.component";
       RecipeComponent,
       RecipesComponent,
       AddRecipeComponent,
-      TestFormComponent,
       RecipeCardComponent,
       AllRecipesComponent,
       RecipeEditComponent,

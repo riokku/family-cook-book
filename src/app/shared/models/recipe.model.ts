@@ -9,13 +9,13 @@ export class Recipe {
   public author: string;
   public link?: string; //optional
   public description: string;
-  public imagePath?: string; //optional
-  public ingredientGroups: IngredientGroup[];
-  public prepTime?: number; //optional
-  public cookTime?: number; //optional
-  public chillTime?: number; //optional
-  public totalTime: number;
-  public servingSize: number;
+  public image_path?: string; //optional
+  public ingredient_groups: IngredientGroup[];
+  public prep_time?: number; //optional
+  public cook_time?: number; //optional
+  public chill_time?: number; //optional
+  public total_time: number;
+  public serving_size: number;
   public featured: boolean;
   public steps: Step[];
   public tags: string[];
@@ -29,13 +29,13 @@ export class Recipe {
     author: string,
     link: string,
     description: string,
-    imagePath: string,
-    ingredientGroups: IngredientGroup[],
-    prepTime: number,
-    cookTime: number,
-    chillTime: number,
-    totalTime: number,
-    servingSize: number,
+    image_path: string,
+    ingredient_groups: IngredientGroup[],
+    prep_time: number,
+    cook_time: number,
+    chill_time: number,
+    total_time: number,
+    serving_size: number,
     featured: boolean,
     steps: Step[],
     tags: string[],
@@ -48,13 +48,13 @@ export class Recipe {
     this.author = author;
     this.link = link;
     this.description = description;
-    this.imagePath = imagePath;
-    this.ingredientGroups = ingredientGroups;
-    this.prepTime = prepTime,
-    this.cookTime = cookTime,
-    this.chillTime = chillTime,
-    this.totalTime = totalTime,
-    this.servingSize = servingSize;
+    this.image_path = image_path;
+    this.ingredient_groups = ingredient_groups;
+    this.prep_time = prep_time,
+    this.cook_time = cook_time,
+    this.chill_time = chill_time,
+    this.total_time = total_time,
+    this.serving_size = serving_size;
     this.featured = featured;
     this.steps = steps;
     this.tags = tags;

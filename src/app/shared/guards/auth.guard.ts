@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from "@angular/router";
-import { Observable, map, take } from "rxjs";
-import { AuthService } from "../services/auth.service";
+import { Observable } from "rxjs";
+import { SupaService } from "../services/supa.service";
 
 @Injectable(
   {
@@ -10,18 +10,20 @@ import { AuthService } from "../services/auth.service";
 )
 export class AuthGuard implements CanActivate {
 
-  constructor(private AuthService: AuthService, private router: Router){}
+  constructor(
+    private router: Router,
+    private SupaService: SupaService
+  ){}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
-    return this.AuthService.fetchData().then((result: boolean) => {
+    return this.SupaService.checkAdminStatus().then((result) => {
       if(result){
         return true;
+      } else {
+        return false;
       }
-      return this.router.createUrlTree(['/auth']);
     });
-
-
 
 
   }

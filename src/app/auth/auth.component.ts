@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthResponseData, AuthService } from '../shared/services/auth.service';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { SupaService } from '../shared/services/supa.service';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
+
 export class AuthComponent implements OnInit{
 
   isLoginMode: boolean = true;
@@ -16,17 +16,22 @@ export class AuthComponent implements OnInit{
   error: string;
   isLoggedIn: boolean;
 
-  constructor(private authService: AuthService, private router: Router){}
+  constructor(
+    private supaService: SupaService,
+    private router: Router
+  ){}
 
-  ngOnInit(): void {
-    if(localStorage.getItem("userData")){
+  async ngOnInit() {
+    let loggedInUser = await this.supaService.getLoggedInUser();
+
+    if(loggedInUser){
       this.isLoggedIn = true;
     } else {
       this.isLoggedIn = false;
     }
 
-    console.log(this.authService.user);
-    console.log(this.isLoggedIn);
+    this.supaService.checkAdminStatus();
+
   }
 
   onSwitchMode(){
@@ -34,37 +39,44 @@ export class AuthComponent implements OnInit{
   }
 
   onSubmit(form: NgForm){
+
     if(!form.valid){
       return;
     }
 
+    this.isLoading = true;
+
     const email = form.value.email;
     const password = form.value.password;
 
-    this.isLoading = true;
-
-    let authObservable: Observable<AuthResponseData>;
-
     if(this.isLoginMode){
-      authObservable = this.authService.login(email, password);
+      this.supaService.signIn(email, password).then((res) => {
+        console.log(res);
+        if(res.data.user.role === "authenticated"){
+         this.isLoading = false;
+         this.isLoggedIn = true;
+         this.router.navigate(['/admin']);
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
     } else {
-      authObservable = this.authService.signUp(email, password);
+      this.supaService.signUp(email, password).then((res) => {
+        console.log(res);
+        if(res.data.user.role === "authenticated"){
+          this.isLoading = false;
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
     }
 
-    authObservable.subscribe(resData => {
-      console.log(resData);
-      this.isLoading = false;
-      this.router.navigate(['/admin']);
-    }, errorMessage => {
-      console.log(errorMessage);
-      this.error = errorMessage;
-      this.isLoading = false;
-    })
     form.reset();
+
   }
 
-  logout(){
-    this.authService.logout();
+  async logout(){
+    this.supaService.logout();
     this.isLoggedIn = false;
   }
 

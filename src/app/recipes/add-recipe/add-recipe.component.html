@@ -18,7 +18,7 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="recipeForm" (ngSubmit)="onSubmitNew()">
           <div class="form-group-wrapper">
             <h2 class="mb-3">
               General information:
@@ -98,60 +98,60 @@
             <div class="row">
               <div class="col-6 col-md-2">
                 <div class="form-group">
-                  <label for="prepTime">Prep time</label>
+                  <label for="prep_time">Prep time</label>
                   <input
                     type="number"
                     min="5"
-                    id="prepTime"
-                    formControlName="prepTime"
+                    id="prep_time"
+                    formControlName="prep_time"
                     class="form-control"
                     placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
-                  <label for="cookTime">Cook time</label>
+                  <label for="cook_time">Cook time</label>
                   <input
                     type="number"
                     min="5"
-                    id="cookTime"
-                    formControlName="cookTime"
+                    id="cook_time"
+                    formControlName="cook_time"
                     class="form-control"
                     placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
-                  <label for="chillTime">Chill time</label>
+                  <label for="chill_time">Chill time</label>
                   <input
                     type="number"
                     min="5"
-                    id="chillTime"
-                    formControlName="chillTime"
+                    id="chill_time"
+                    formControlName="chill_time"
                     class="form-control"
                     placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
-                  <label for="totalTime" class="required">Total time</label>
+                  <label for="total_time" class="required">Total time</label>
                   <input
                     type="number"
                     min="5"
-                    id="totalTime"
-                    formControlName="totalTime"
+                    id="total_time"
+                    formControlName="total_time"
                     class="form-control"
                     placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
-                  <label for="servingSize" class="required">Serving size</label>
+                  <label for="serving_size" class="required">Serving size</label>
                   <input
                     type="number"
-                    id="servingSize"
+                    id="serving_size"
                     min="1"
-                    formControlName="servingSize"
+                    formControlName="serving_size"
                     class="form-control"
                     placeholder="Total servings">
                 </div>
@@ -160,25 +160,25 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="form-group">
-                  <label for="imagePath">Link to recipe image</label>
+                  <label for="image_path">Link to recipe image</label>
                   <small class="d-block mb-3">
                     No image yet? No worries! Use our placeholder URL for now: https://i.imgur.com/qkklRA1.png
                   </small>
                   <input
                     type="text"
-                    id="imagePath"
-                    formControlName="imagePath"
+                    id="image_path"
+                    formControlName="image_path"
                     class="form-control"
-                    #recipeImagePath>
+                    #recipeimage_path>
                 </div>
               </div>
             </div>
-            <div class="row" *ngIf="recipeImagePath.value">
+            <div class="row" *ngIf="recipeimage_path.value">
               <div class="col-12">
                 <p>
                   Image preview
                 </p>
-                <img [src]="recipeImagePath.value" class="img-responsive mb-3">
+                <img [src]="recipeimage_path.value" class="img-responsive mb-3">
               </div>
             </div>
           </div>
@@ -190,7 +190,7 @@
               <label class="required">
                 Ingredient Group
               </label>
-              <div class="col-12 ingredients-wrapper" formArrayName="ingredientGroups">
+              <div class="col-12 ingredients-wrapper" formArrayName="ingredient_groups">
                 <div
                   class="row"
                   *ngFor="let ingredientGroup of recipeIngredientGroupControls.controls; let i = index"

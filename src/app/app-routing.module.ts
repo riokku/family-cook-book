@@ -10,7 +10,8 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    resolve: [RecipesResolverService]
+    resolve: [RecipesResolverService],
+    title: "Gogo's Kitchen | Home"
   },
   {
     path: 'recipes',
@@ -18,13 +19,15 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    component: AuthComponent
+    component: AuthComponent,
+    title: "Gogo's Kitchen | Authentication"
   },
   {
     path: 'admin',
     component: AdminComponent,
     canActivate: [AuthGuard],
-    resolve: [RecipesResolverService]
+    resolve: [RecipesResolverService],
+    title: "Gogo's Kitchen | Manage Recipes"
   },
   {
     path: '**',
