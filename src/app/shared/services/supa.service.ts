@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { Session, SupabaseClient, createClient } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
 import { Recipe } from '../models/recipe.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,16 @@ import { Recipe } from '../models/recipe.model';
 export class SupaService {
 
   private supabaseClient: SupabaseClient;
+  private authStateSubject = new BehaviorSubject<Session | null>(null);
+  authState$ = this.authStateSubject.asObservable();
+
+  private recipes: Recipe[] = [];
 
   constructor() {
-    this.supabaseClient = createClient(environment.supabase.url, environment.supabase.key)
+    this.supabaseClient = createClient(environment.supabase.url, environment.supabase.key);
+    this.supabaseClient.auth.onAuthStateChange((event, session) => {
+      this.authStateSubject.next(session);
+    });
   }
 
 
@@ -53,15 +61,14 @@ export class SupaService {
     return true;
   }
 
+  //Checks if user can access admin table in database, if so, set user as admin
   async checkAdminStatus(){
     let { data: admins, error } = await this.supabaseClient
     .from('admins')
     .select('*');
-
     if(admins.length > 0){
       return true;
     } else {
-      console.error(error);
       return false;
     }
 
@@ -70,13 +77,14 @@ export class SupaService {
 
   //Recipe functions
 
+  //Add new recipe
   async addRecipeNew(incomingRecipe: Recipe){
     const { data, error } = await this.supabaseClient
     .from('recipes')
     .insert([
       incomingRecipe
     ])
-    .select()
+    .select();
 
     if(data){
       console.log('New recipe', data);
@@ -84,9 +92,23 @@ export class SupaService {
     if(error){
       console.error(error);
     }
+  }
 
-    console.log(incomingRecipe);
+  //Fetch all recipes
+  async fetchRecipes():Promise<Recipe[]>{
+    let { data: recipes, error } = await this.supabaseClient
+    .from('recipes')
+    .select('*');
+    if(error){
+      console.error(error)
+    }
+    this.recipes = recipes;
+    return recipes
+  }
 
+  //Get specific recipe
+  getRecipe(slug: string):any{
+    return this.recipes.find(recipe => recipe.slug === slug);
   }
 
 

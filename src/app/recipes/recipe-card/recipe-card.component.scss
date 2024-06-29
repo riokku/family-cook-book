@@ -3,6 +3,7 @@
   transition: box-shadow 0.75s;
   .image-container {
     overflow: hidden;
+    border-radius: 0.375rem 0.375rem 0 0;
     img {
       transition: transform .75s ease;
       aspect-ratio: 16/9;

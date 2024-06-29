@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Recipe } from 'src/app/shared/models/recipe.model';
-import { RecipeService } from 'src/app/shared/services/recipe.service';
+import { SupaService } from 'src/app/shared/services/supa.service';
 
 @Component({
   selector: 'app-recipe',
@@ -17,7 +17,7 @@ export class RecipeComponent implements OnInit {
     isDoubled: boolean = false;
 
     constructor(
-      private recipeService: RecipeService,
+      private supaService: SupaService,
       private route: ActivatedRoute,
       private titleService: Title
     ){}
@@ -26,7 +26,8 @@ export class RecipeComponent implements OnInit {
       const slug = this.route.params.subscribe(
         (params: Params) => {
            this.slug = params['slug'];
-           this.recipe = this.recipeService.getRecipe(this.slug);
+
+           this.recipe = this.supaService.getRecipe(this.slug);
         }
       )
       this.titleService.setTitle(`Gogo's Kitchen | ${this.recipe.name}`);
