@@ -23,14 +23,11 @@ export class AuthComponent implements OnInit{
 
   async ngOnInit() {
     let loggedInUser = await this.supaService.getLoggedInUser();
-
     if(loggedInUser){
       this.isLoggedIn = true;
     } else {
       this.isLoggedIn = false;
     }
-
-    this.supaService.checkAdminStatus();
 
   }
 
@@ -44,6 +41,7 @@ export class AuthComponent implements OnInit{
       return;
     }
 
+
     this.isLoading = true;
 
     const email = form.value.email;
@@ -51,11 +49,14 @@ export class AuthComponent implements OnInit{
 
     if(this.isLoginMode){
       this.supaService.signIn(email, password).then((res) => {
-        console.log(res);
         if(res.data.user.role === "authenticated"){
          this.isLoading = false;
          this.isLoggedIn = true;
          this.router.navigate(['/admin']);
+        } else {
+          this.isLoading = false;
+          this.isLoggedIn = true;
+          this.router.navigate(['/recipes']);
         }
       }).catch((err) => {
         console.log(err);
@@ -75,7 +76,7 @@ export class AuthComponent implements OnInit{
 
   }
 
-  async logout(){
+  logout(){
     this.supaService.logout();
     this.isLoggedIn = false;
   }

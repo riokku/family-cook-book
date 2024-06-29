@@ -1,18 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Recipe } from '../shared/models/recipe.model';
 import { RecipeService } from '../shared/services/recipe.service';
-import { AuthService } from '../shared/services/auth.service';
-import { Subscription } from 'rxjs';
+import { SupaService } from '../shared/services/supa.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit, OnDestroy{
+export class AdminComponent implements OnInit{
 
   isAuthenticated: boolean = false;
-  private userSub: Subscription;
 
   allRecipes: Recipe[] = [];
   recipeResults: Recipe[] = [];
@@ -20,28 +19,19 @@ export class AdminComponent implements OnInit, OnDestroy{
   toBeDeletedRecipe: Recipe;
   toBeDeletedRecipeName: string;
 
-  loggedInUserID: any;
-  loggedInUserName: any;
-  userApproved: any = localStorage.getItem('userApproved');
-  unAuthorizedUserError: boolean;
-
-  constructor(private recipeService: RecipeService, private AuthService: AuthService) {}
+  constructor(
+    private recipeService: RecipeService,
+    private supaService: SupaService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-
-    this.userSub = this.AuthService.user.subscribe(user => {
-      this.isAuthenticated = !!user;
-    });
-
-
-    this.allRecipes = this.recipeService.getRecipes();
-    this.recipeResults = this.allRecipes;
-    this.loggedInUserName = localStorage.getItem("userName")?.split(" ")[0].slice(1);
-    console.log(this.allRecipes);
+    this.loadRecipes();
   }
 
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe();
+  async loadRecipes(){
+    this.allRecipes = await this.supaService.fetchRecipes();
+    this.recipeResults = this.allRecipes;
   }
 
   updateResults(){
@@ -68,7 +58,8 @@ export class AdminComponent implements OnInit, OnDestroy{
   }
 
   onLogout(){
-    this.AuthService.logout();
+    this.supaService.logout();
+    this.router.navigate(['/auth']);
   }
 
 }

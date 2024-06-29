@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../shared/services/auth.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { SupaService } from '../shared/services/supa.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +11,17 @@ export class HeaderComponent implements OnInit{
 
   userAuthenticated: boolean = false;
   userIsAdmin: boolean = false;
+  authSubscription: Subscription | undefined;
 
-  constructor(private AuthService: AuthService){}
+  constructor(
+    private SupaService: SupaService,
+    private changeRef: ChangeDetectorRef
+  ){}
 
   ngOnInit(): void {
-    this.AuthService.user.subscribe(user => {
+    this.authSubscription = this.SupaService.authState$.subscribe((session) => {
       this.checkAdminStatus();
-    })
+    });
   }
 
   closeNavOnClick() {
@@ -27,11 +32,13 @@ export class HeaderComponent implements OnInit{
   }
 
   checkAdminStatus(){
-    this.AuthService.fetchData().then((result: boolean) => {
+    this.SupaService.checkAdminStatus().then((result: boolean) => {
       if(result){
         this.userIsAdmin = true;
+        this.changeRef.detectChanges();
       } else {
         this.userIsAdmin = false;
+        this.changeRef.detectChanges();
       }
     });
   }

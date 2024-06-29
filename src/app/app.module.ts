@@ -18,8 +18,8 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
-import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
 import { IntroComponent } from './intro/intro.component';
+import { SupaService } from './shared/services/supa.service';
 
 @NgModule({
   declarations: [
@@ -47,11 +47,7 @@ import { IntroComponent } from './intro/intro.component';
   ],
   providers: [
     RecipeService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true
-    }
+    SupaService
   ],
   bootstrap: [AppComponent]
 })

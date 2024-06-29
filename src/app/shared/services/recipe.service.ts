@@ -4,7 +4,6 @@ import { map, tap } from "rxjs";
 
 
 import { HttpClient } from "@angular/common/http";
-import { AuthService } from "src/app/shared/services/auth.service";
 import { Router } from "@angular/router";
 
 @Injectable({
@@ -13,7 +12,10 @@ import { Router } from "@angular/router";
 
 export class RecipeService{
 
-  constructor(private http: HttpClient, private AuthService: AuthService, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   private recipes: Recipe[] = [];
 

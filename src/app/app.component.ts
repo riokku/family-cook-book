@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RecipeService } from './shared/services/recipe.service';
-import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,14 +12,15 @@ export class AppComponent {
 
   showSite: boolean = false;
 
-  constructor(private recipeService: RecipeService, private AuthService: AuthService) {}
+  constructor(
+    private recipeService: RecipeService
+  ) {}
 
   ngOnInit(): void {
     this.recipeService.fetchRecipes().subscribe();
-    this.AuthService.autoLogin();
-      setTimeout(() => {
-        this.showSite = true;
-      }, 3000);
+    setTimeout(() => {
+      this.showSite = true;
+    }, 3000);
 
   }
 

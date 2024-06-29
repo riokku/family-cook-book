@@ -6,6 +6,7 @@ import { RecipeService } from '../../shared/services/recipe.service';
 import { Step } from 'src/app/shared/models/step.model';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 import { IngredientGroup } from 'src/app/shared/models/ingredient-group.model';
+import { SupaService } from 'src/app/shared/services/supa.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -47,6 +48,7 @@ export class RecipeEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
+    private supaService: SupaService,
     private router: Router,
   ) {}
 
@@ -57,6 +59,11 @@ export class RecipeEditComponent implements OnInit {
   get recipeStepsControls() {
     return (this.editRecipeForm.get('steps') as FormArray).controls;
   }
+
+  get recipeIngredientGroupControls() {
+    return this.editRecipeForm.get('ingredient_groups') as FormArray;
+  }
+
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -73,7 +80,10 @@ export class RecipeEditComponent implements OnInit {
 
   private initializeForm(){
 
-    this.editingRecipe = this.recipeService.getRecipe(this.editedSlug);
+    //this.editingRecipe = this.recipeService.getRecipe(this.editedSlug);
+    this.editingRecipe = this.supaService.getRecipe(this.editedSlug);
+    console.log('Second', this.editedSlug);
+
 
     this.recipeName = this.editingRecipe.name;
     this.slugInput = this.editingRecipe.name;
@@ -101,15 +111,15 @@ export class RecipeEditComponent implements OnInit {
       'author': new FormControl(this.recipeAuthor, Validators.required),
       'link': new FormControl(this.link),
       'description': new FormControl(this.recipeDescription, Validators.required),
-      'prepTime': new FormControl(this.recipePrepTime),
-      'cookTime': new FormControl(this.recipeCookTime),
-      'chillTime': new FormControl(this.recipeChillTime),
-      'totalTime': new FormControl(this.recipeTotalime, Validators.required),
-      'servingSize': new FormControl(this.recipeServingSize, Validators.required),
+      'prep_time': new FormControl(this.recipePrepTime),
+      'cook_time': new FormControl(this.recipeCookTime),
+      'chill_time': new FormControl(this.recipeChillTime),
+      'total_time': new FormControl(this.recipeTotalime, Validators.required),
+      'serving_size': new FormControl(this.recipeServingSize, Validators.required),
       'featured': new FormControl(this.recipeFeatured),
-      'imagePath': new FormControl(this.recipeImagePath),
-      'ingredientGroups': new FormArray(this.recipeIngredientsGroupArray.map(ingredient => new FormGroup({
-        'ingredientName': new FormControl(ingredient.ingredientGroupName, Validators.required),
+      'image_path': new FormControl(this.recipeImagePath),
+      'ingredient_groups': new FormArray(this.recipeIngredientsGroupArray.map(ingredient => new FormGroup({
+        'ingredientGroupName': new FormControl(ingredient.ingredientGroupName, Validators.required),
         'ingredients': new FormArray(ingredient.ingredients.map(ingredient => new FormGroup({
           'ingredientName': new FormControl(ingredient.ingredientName, Validators.required),
           'ingredientAmount': new FormControl(ingredient.ingredientAmount, Validators.required),
@@ -144,9 +154,47 @@ export class RecipeEditComponent implements OnInit {
     );
   }
 
-  onDeleteIngredient(index: number) {
-    (<FormArray>this.editRecipeForm.get('ingredients')).removeAt(index);
+  deleteIngredient(ingredientGroupIndex: number, ingredientIndex: number): void {
+    const fields = this.getIngredients(ingredientGroupIndex);
+    fields.removeAt(ingredientIndex);
   }
+
+  //Add/remove Ingredient Groups
+
+  addIngredientGroup(): void {
+    this.recipeIngredientGroupControls.push(this.createIngredientGroup());
+  }
+
+  createIngredientGroup(): FormGroup {
+    return new FormGroup({
+      'ingredientGroupName': new FormControl(null, Validators.required),
+      'ingredients': new FormArray([this.createIngredient()])
+    });
+  }
+
+  deleteIngredientGroup(index: number): void {
+    this.recipeIngredientGroupControls.removeAt(index);
+  }
+
+  //Add/remove Ingredients
+
+  getIngredients(layerIndex: number): FormArray {
+    return (this.recipeIngredientGroupControls.at(layerIndex) as FormGroup).get('ingredients') as FormArray;
+  }
+
+  addIngredient(layerIndex: number): void {
+    const fields = this.getIngredients(layerIndex);
+    fields.push(this.createIngredient());
+  }
+
+  createIngredient(): FormGroup {
+    return new FormGroup({
+      'ingredientName': new FormControl(null, Validators.required),
+      'ingredientAmount': new FormControl(null, Validators.required),
+      'ingredientMeasurementType': new FormControl(null, Validators.required)
+    })
+  }
+
 
   onDeleteStep(index: number) {
     (<FormArray>this.editRecipeForm.get('steps')).removeAt(index);

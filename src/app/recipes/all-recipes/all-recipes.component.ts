@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Recipe } from '../../shared/models/recipe.model';
 import { RecipeService } from '../../shared/services/recipe.service';
+import { SupaService } from 'src/app/shared/services/supa.service';
 
 @Component({
   selector: 'app-all-recipes',
@@ -38,30 +39,52 @@ export class AllRecipesComponent implements OnInit {
   servingSizeSortText: string = this.servingSizeSortTextOptions[0];
 
 
-  constructor(private recipeService: RecipeService) {}
+  constructor(
+    private recipeService: RecipeService,
+    private supaService: SupaService
+  ) {}
 
   ngOnInit(): void {
+
+    this.loadRecipes();
+
     setTimeout(() => {
-      this.allRecipes = this.recipeService.getRecipes();
-      this.selectedRecipes = this.allRecipes.sort((a:Recipe, b:Recipe) => {
-        if (a.featured && !b.featured) {
-          return -1;
-        } else if (!a.featured && b.featured) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+      //this.allRecipes = this.recipeService.getRecipes();
+
+
+      // this.selectedRecipes = this.allRecipes.sort((a:Recipe, b:Recipe) => {
+      //   if (a.featured && !b.featured) {
+      //     return -1;
+      //   } else if (!a.featured && b.featured) {
+      //     return 1;
+      //   } else {
+      //     return 0;
+      //   }
+      // });
       this.setFilterOptions();
-    }, 100);
+    }, 500);
+  }
+
+  async loadRecipes(){
+    this.allRecipes = await this.supaService.fetchRecipes();
+    this.selectedRecipes = this.allRecipes.sort((a:Recipe, b:Recipe) => {
+      if (a.featured && !b.featured) {
+        return -1;
+      } else if (!a.featured && b.featured) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    console.log(this.selectedRecipes);
+
   }
 
   setFilterOptions(){
-    let fullCategoryList = this.allRecipes.map(el => {
-      return el.tags;
+    let fullCategoryList = this.allRecipes.map(recipe => {
+      return recipe.tags;
     })
     this.recipeCategories = [...new Set(fullCategoryList.flat(1).sort())];
-    console.log(this.recipeCategories);
   }
 
   updateResults(){
