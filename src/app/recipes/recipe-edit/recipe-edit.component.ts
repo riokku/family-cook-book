@@ -23,6 +23,7 @@ export class RecipeEditComponent implements OnInit {
   editedSlug: string;
   editingRecipe: Recipe;
 
+  recipeId: number;
   recipeName: string;
   recipeSlug: string;
   recipeAuthor: string;
@@ -41,8 +42,7 @@ export class RecipeEditComponent implements OnInit {
   recipeCreated: Date;
   recipeNotes: string;
 
-  ingredientAmountOptions: string[] = ["1/4", "1/2", "3/4", "1", "1 1/4", "1 1/2", "1 3/4", "2", "2 1/4", "2 1/2", "2 3/4", "3"];
-  ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons (tsp)", "Tablespoons (tbsp)", "Fluid ounces (fl oz)", "Pints (pt)", "Quarts (qt)", "Milliliters (ml)", "Liters (l)", "Grams (g)", "Kilograms (kg)", "Ounces (oz)", "Pounds (lb)", "Count"];
+  ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons", "Tablespoons", "Fluid ounces", "Pints", "Quarts", "Milliliters", "Liters", "Grams", "Kilograms", "Ounces", "Pounds", "Count"];
   recipeTagOptions: string[] = ["Appetizer", "Dinner", "Cast iron", "Beverage", "Breakfast", "Dessert", "Cookies", "Grilling", "Italian", "Mexican", "Salad", "Seafood", "Soup"];
 
   constructor(
@@ -84,7 +84,7 @@ export class RecipeEditComponent implements OnInit {
     this.editingRecipe = this.supaService.getRecipe(this.editedSlug);
     console.log('Second', this.editedSlug);
 
-
+    this.recipeId = this.editingRecipe.id;
     this.recipeName = this.editingRecipe.name;
     this.slugInput = this.editingRecipe.name;
     this.updateSlug();
@@ -106,6 +106,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipeNotes = this.editingRecipe.notes;
 
     this.editRecipeForm = new FormGroup({
+      'id': new FormControl(this.recipeId, Validators.required),
       'name': new FormControl(this.recipeName, Validators.required),
       'slug': new FormControl(this.recipeSlug, Validators.required),
       'author': new FormControl(this.recipeAuthor, Validators.required),
@@ -201,7 +202,8 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSaveChanges() {
-    this.recipeService.saveRecipeChanges(this.editRecipeForm.value, this.editingRecipe.id);
+    this.supaService.updateRecipe(this.editRecipeForm.value);
+    //this.recipeService.saveRecipeChanges(this.editRecipeForm.value, this.editingRecipe.id);
     this.editRecipeForm.reset();
     //this.router.navigate(['/admin']);
   }

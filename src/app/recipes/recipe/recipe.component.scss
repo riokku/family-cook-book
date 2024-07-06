@@ -35,8 +35,24 @@ ol{
   }
 }
 .ingredient-pane{
-  background-color: #f0eef6;
   height: 100%;
+  .ingredient-header{
+    background-color: #2d3436;
+    color: #fff;
+  }
+  .ingredient-content{
+    background-color: #f0eef6;
+    .ingredient-group{
+      hr{
+        max-width: 25%;
+      }
+      &.last-group{
+        hr{
+          display: none;
+        }
+      }
+    }
+  }
 }
 .breadcrumb{
   i{

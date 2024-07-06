@@ -107,8 +107,25 @@ export class SupaService {
   }
 
   //Get specific recipe
-  getRecipe(slug: string):any{
+  getRecipe(slug: string){
     return this.recipes.find(recipe => recipe.slug === slug);
+  }
+
+  //Update recipe
+  async updateRecipe(updatedRecipe: Recipe){
+    console.log(updatedRecipe);
+    console.log(updatedRecipe.id);
+
+
+    const { data, error } = await this.supabaseClient
+    .from('recipes')
+    .update(updatedRecipe)
+    .eq('id', updatedRecipe.id)
+    .select();
+
+    if(error){
+      console.error(error)
+    }
   }
 
 

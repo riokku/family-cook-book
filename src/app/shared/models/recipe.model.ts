@@ -3,7 +3,7 @@ import { Step } from "./step.model";
 
 
 export class Recipe {
-  public id?: string; //optional
+  public id?: number; //Will not have for new recipes
   public name: string;
   public slug: string;
   public author: string;
@@ -23,7 +23,7 @@ export class Recipe {
   public notes?: string; //optional
 
   constructor(
-    id: string,
+    id: number,
     name: string,
     slug: string,
     author: string,
