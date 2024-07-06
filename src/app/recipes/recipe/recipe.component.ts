@@ -35,7 +35,6 @@ export class RecipeComponent implements OnInit {
 
     toggleDouble(){
       this.isDoubled = !this.isDoubled;
-      console.log(this.isDoubled);
     }
 
 }

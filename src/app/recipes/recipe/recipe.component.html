@@ -42,36 +42,41 @@
       </div>
       <div class="row">
         <div class="col-12 col-sm-12 col-md-5 col-lg-4">
-          <div class="ingredient-pane p-4">
-            <h3 class="mb-3">
-              Ingredients:
-            </h3>
-            <p class="doubled-text" *ngIf="isDoubled">
-              <i class="bi bi-asterisk"></i> Showing <u>doubled</u> quantities:
-            </p>
-            <div *ngFor="let ingredientGroup of recipe.ingredient_groups">
-              <h4 *ngIf="recipe.ingredient_groups.length > 1">
-                {{ ingredientGroup.ingredientGroupName }}
-              </h4>
-              <ul class="ps-1 mb-3">
-                <li *ngFor="let ingredient of ingredientGroup.ingredients">
-                  <strong>{{ ingredient.ingredientAmount | ingredientAmountConverter: isDoubled}}
-                  <span *ngIf="ingredient.ingredientMeasurementType != 'Count'">{{ ingredient.ingredientMeasurementType | lowercase}}</span></strong>
-                  {{ ingredient.ingredientName | lowerFirstLetter}}
-                </li>
-              </ul>
+          <div class="ingredient-pane">
+            <div class="ingredient-header p-4">
+              <h3 class="mb-0">
+                Ingredients:
+              </h3>
             </div>
-            <div class="notes-card fst-italic mt-4" *ngIf="recipe.notes">
-              <h5 class="fw-bold">
-                Notes for this recipe:
-              </h5>
-              <p class="mb-0">
-                {{ recipe.notes }}
+            <div class="ingredient-content p-4">
+              <p class="doubled-text" *ngIf="isDoubled">
+                <i class="bi bi-asterisk"></i> Showing <u>doubled</u> quantities:
               </p>
+              <div class="ingredient-group" *ngFor="let ingredientGroup of recipe.ingredient_groups; let last = last" [ngClass]="{'last-group': last}">
+                <h4 *ngIf="recipe.ingredient_groups.length > 1">
+                  {{ ingredientGroup.ingredientGroupName }}
+                </h4>
+                <ul class="ps-1">
+                  <li *ngFor="let ingredient of ingredientGroup.ingredients">
+                    <strong>{{ ingredient.ingredientAmount | ingredientAmountConverter: isDoubled}}
+                    <span *ngIf="ingredient.ingredientMeasurementType != 'Count'">{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount | lowercase}}</span></strong>
+                    {{ ingredient.ingredientName | lowerFirstLetter}}
+                  </li>
+                </ul>
+                <hr class="mt-4 mb-4" />
+              </div>
+              <div class="notes-card fst-italic mt-5" *ngIf="recipe.notes">
+                <h5 class="fw-bold">
+                  Notes for this recipe:
+                </h5>
+                <p class="mb-0">
+                  {{ recipe.notes }}
+                </p>
+              </div>
+              <button type="button" class="double-button mt-3" (click)="toggleDouble()">
+                <i class="bi bi-question-circle"></i> {{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}
+              </button>
             </div>
-            <button type="button" class="double-button mt-3" (click)="toggleDouble()">
-              <i class="bi bi-question-circle"></i> {{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}
-            </button>
           </div>
         </div>
         <div class="col-12 col-sm-12 col-md-7 col-lg-8">
