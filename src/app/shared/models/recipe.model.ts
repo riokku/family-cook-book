@@ -39,7 +39,7 @@ export class Recipe {
     featured: boolean,
     steps: Step[],
     tags: string[],
-    createdDate: Date,
+    created: Date,
     notes: string
     ){
     this.id = id;
@@ -58,7 +58,7 @@ export class Recipe {
     this.featured = featured;
     this.steps = steps;
     this.tags = tags;
-    this.created = createdDate;
+    this.created = created;
     this.notes = notes;
   }
 

@@ -163,7 +163,7 @@ a{
 }
 
 .modal-header{
-  background-color: #574b90;
+  background-color: #8b0000;
   color: #fff;
 }
 
@@ -171,9 +171,9 @@ button{
   border: none;
   &.delete-confirmation{
     color: #fff;
-    background-color: #574b90;
+    background-color: #8b0000;
     &:hover{
-      background-color: #6457a8;
+      background-color: #d70000;
     }
   }
 }

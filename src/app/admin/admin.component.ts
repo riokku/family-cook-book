@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Recipe } from '../shared/models/recipe.model';
-import { RecipeService } from '../shared/services/recipe.service';
 import { SupaService } from '../shared/services/supa.service';
 import { Router } from '@angular/router';
 
@@ -20,7 +19,6 @@ export class AdminComponent implements OnInit{
   toBeDeletedRecipeName: string;
 
   constructor(
-    private recipeService: RecipeService,
     private supaService: SupaService,
     private router: Router
   ) {}
@@ -31,7 +29,9 @@ export class AdminComponent implements OnInit{
 
   async loadRecipes(){
     this.allRecipes = await this.supaService.fetchRecipes();
-    this.recipeResults = this.allRecipes;
+
+    //Sorts array be created date, most recent first, converts strings > Dates > numbers then compares
+    this.recipeResults = this.allRecipes.sort((a: Recipe, b: Recipe) => +new Date(b.created) - +new Date(a.created));
   }
 
   updateResults(){
@@ -49,12 +49,8 @@ export class AdminComponent implements OnInit{
   }
 
   deleteRecipe(deletedRecipeID:any){
-    this.recipeService.deleteRecipe(deletedRecipeID);
+    this.supaService.deleteRecipe(deletedRecipeID);
     this.recipeResults = this.recipeResults.filter(recipe => recipe.id != deletedRecipeID);
-  }
-
-  recipeTrackBy(index: number, recipe: Recipe){
-    return recipe.id;
   }
 
   onLogout(){

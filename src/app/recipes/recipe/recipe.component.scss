@@ -36,12 +36,15 @@ ol{
 }
 .ingredient-pane{
   height: 100%;
+  display: flex;
+  flex-direction: column;
   .ingredient-header{
     background-color: #2d3436;
     color: #fff;
   }
   .ingredient-content{
     background-color: #f0eef6;
+    flex: 1;
     .ingredient-group{
       hr{
         max-width: 25%;
