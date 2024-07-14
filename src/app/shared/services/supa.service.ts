@@ -113,10 +113,6 @@ export class SupaService {
 
   //Update recipe
   async updateRecipe(updatedRecipe: Recipe){
-    console.log(updatedRecipe);
-    console.log(updatedRecipe.id);
-
-
     const { data, error } = await this.supabaseClient
     .from('recipes')
     .update(updatedRecipe)
@@ -128,5 +124,21 @@ export class SupaService {
     }
   }
 
+  //Delete recipe
+  async deleteRecipe(toBeDeletedRecipeID: number){
+    const { error } = await this.supabaseClient
+    .from('recipes')
+    .delete()
+    .eq('id', toBeDeletedRecipeID)
+
+    if(error){
+      console.error(error)
+    }
+  }
+
+  //Get featured recipes
+  async getFeaturedRecipes(): Promise<Recipe[]>{
+    return this.recipes.filter(recipe => recipe.featured);
+  }
 
 }

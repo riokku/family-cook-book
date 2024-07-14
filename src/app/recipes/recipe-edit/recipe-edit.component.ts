@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
-import { RecipeService } from '../../shared/services/recipe.service';
 import { Step } from 'src/app/shared/models/step.model';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 import { IngredientGroup } from 'src/app/shared/models/ingredient-group.model';
@@ -47,7 +46,6 @@ export class RecipeEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private recipeService: RecipeService,
     private supaService: SupaService,
     private router: Router,
   ) {}
@@ -80,10 +78,7 @@ export class RecipeEditComponent implements OnInit {
 
   private initializeForm(){
 
-    //this.editingRecipe = this.recipeService.getRecipe(this.editedSlug);
     this.editingRecipe = this.supaService.getRecipe(this.editedSlug);
-    console.log('Second', this.editedSlug);
-
     this.recipeId = this.editingRecipe.id;
     this.recipeName = this.editingRecipe.name;
     this.slugInput = this.editingRecipe.name;
@@ -203,9 +198,7 @@ export class RecipeEditComponent implements OnInit {
 
   onSaveChanges() {
     this.supaService.updateRecipe(this.editRecipeForm.value);
-    //this.recipeService.saveRecipeChanges(this.editRecipeForm.value, this.editingRecipe.id);
-    this.editRecipeForm.reset();
-    //this.router.navigate(['/admin']);
+    this.router.navigate(['/admin']);
   }
 
   onCancel() {

@@ -42,10 +42,15 @@ label{
 }
 
 .ingredients-wrapper, .steps-wrapper{
+  .border-bottom{
+    border-bottom: 2px solid gray;
+    margin-bottom: 1rem;
+  }
   button{
     &.btn-success{
       font-size: 0.75rem;
       padding: 0.3rem 0.5rem;
+      margin-bottom: 1rem;
     }
   }
 }

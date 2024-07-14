@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Recipe } from 'src/app/shared/models/recipe.model';
-import { RecipeService } from 'src/app/shared/services/recipe.service';
+import { SupaService } from 'src/app/shared/services/supa.service';
 
 
 @Component({
@@ -8,20 +8,19 @@ import { RecipeService } from 'src/app/shared/services/recipe.service';
   templateUrl: './featured-recipes.component.html',
   styleUrls: ['./featured-recipes.component.scss']
 })
+
 export class FeaturedRecipesComponent {
 
   @Input() index: number;
 
-  recipes: Recipe[] = [];
+  featuredRecipes: Recipe[];
 
-  constructor(private recipeService: RecipeService) {}
+  constructor(
+    private supaService: SupaService
+  ) {}
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.recipes = this.recipeService.getFeaturedRecipes();
-      console.log(this.recipes);
-    }, 20);
-
+  async ngOnInit(): Promise<void> {
+      this.featuredRecipes = await this.supaService.getFeaturedRecipes();
   }
 
 }
