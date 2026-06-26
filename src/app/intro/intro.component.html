@@ -1,3 +1,38 @@
 <div class="wrapper">
-  <img src="../../assets/gifs/home-logo-gif.gif" alt="">
+  <div class="content">
+    <svg
+      class="cupcake"
+      viewBox="0 0 200 162"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <!-- Cupcake outline draws in: frosting dome + wrapper -->
+      <path
+        class="cupcake-outline"
+        d="M 82,157 L 66,122 C 63,112 70,107 80,107 C 83,107 85,102 87,97 C 89,92 91,87 94,83 C 96,79 98,74 100,68 C 102,74 104,79 106,83 C 109,87 111,92 113,97 C 115,102 117,107 120,107 C 130,107 137,112 134,122 L 118,157 Z"
+        pathLength="100"
+      />
+      <!-- Sprinkles: elongated ellipses, pop in staggered -->
+      <ellipse class="sprinkle" cx="95"  cy="80"  rx="2" ry="5" style="fill: #ff6b81;" />
+      <ellipse class="sprinkle" cx="108" cy="85"  rx="5" ry="2" style="fill: #ffd32a;" />
+      <ellipse class="sprinkle" cx="87"  cy="96"  rx="2" ry="5" style="fill: #00d2d3;" />
+      <ellipse class="sprinkle" cx="114" cy="95"  rx="5" ry="2" style="fill: #ff6348;" />
+      <ellipse class="sprinkle" cx="101" cy="93"  rx="2" ry="5" style="fill: #1dd1a1;" />
+      <ellipse class="sprinkle" cx="90"  cy="104" rx="5" ry="2" style="fill: #a29bfe;" />
+      <ellipse class="sprinkle" cx="113" cy="106" rx="2" ry="5" style="fill: #fd79a8;" />
+    </svg>
+
+    <!-- Title curved along a smile arc -->
+    <svg
+      class="site-name-svg"
+      viewBox="0 -10 380 70"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <path id="smile-arc" d="M 5,55 A 185,25 0 0,0 375,55" />
+      </defs>
+      <text class="site-name">
+        <textPath href="#smile-arc" startOffset="50%" text-anchor="middle">Gogo&rsquo;s Kitchen</textPath>
+      </text>
+    </svg>
+  </div>
 </div>
