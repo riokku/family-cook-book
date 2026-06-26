@@ -33,8 +33,6 @@ export class AddRecipeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    console.log(this.recipeForm);
-
   }
 
   private initializeForm(){

@@ -43,11 +43,6 @@ export class SupaService {
   //Get logged in user
   async getLoggedInUser(){
     const { data: { user } } = await this.supabaseClient.auth.getUser();
-    if(user){
-      console.log('Logged in user info: ', user);
-    } else {
-      console.log('Nobody is logged in');
-    }
     return user;
   }
 
@@ -86,9 +81,6 @@ export class SupaService {
     ])
     .select();
 
-    if(data){
-      console.log('New recipe', data);
-    }
     if(error){
       console.error(error);
     }

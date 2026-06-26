@@ -76,8 +76,6 @@ export class AllRecipesComponent implements OnInit {
         return 0;
       }
     });
-    console.log(this.selectedRecipes);
-
   }
 
   setFilterOptions(){

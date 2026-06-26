@@ -20,7 +20,6 @@ export class RecipeService{
   private recipes: Recipe[] = [];
 
   fetchRecipes(){
-    console.log("recipe service fetch");
     return this.http
       .get<Recipe[]>('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes.json')
       .pipe(
@@ -42,7 +41,6 @@ export class RecipeService{
 
   setRecipes(recipes: Recipe[]){
     this.recipes = recipes;
-    console.log(`Recipes are set. There are ${recipes.length} recipes registered.`);
   }
 
   getRecipes(){
@@ -62,15 +60,12 @@ export class RecipeService{
   }
 
   submitRecipe(recipe: Recipe){
-    console.log(recipe);
     return this.http.post('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes.json', recipe).subscribe(response => {
-      console.log(response)
     });
 
   }
 
   saveRecipeChanges(recipe: Recipe, id: any){
-    console.log(recipe, id);
     return this.http.put('https://family-cook-book-b02f5-default-rtdb.firebaseio.com/recipes/' + id + '.json', recipe).subscribe(response => {
       this.router.navigate(['/admin']);
     });
