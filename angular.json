@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "family-cook-book:build:production"
+              "buildTarget": "family-cook-book:build:production"
             },
             "development": {
-              "browserTarget": "family-cook-book:build:development"
+              "buildTarget": "family-cook-book:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "family-cook-book:build"
+            "buildTarget": "family-cook-book:build"
           }
         },
         "test": {
