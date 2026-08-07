@@ -19,10 +19,10 @@
     <div class="row">
       <div class="col-12">
         <form [formGroup]="recipeForm" (ngSubmit)="onSubmitNew()">
+
+          <!-- ── General information ─────────────────────────────────────── -->
           <div class="form-group-wrapper">
-            <h2 class="mb-3">
-              General information:
-            </h2>
+            <h2 class="mb-3">General information:</h2>
             <div class="row">
               <div class="col-12 col-md-9">
                 <div class="form-group mb-3">
@@ -32,21 +32,11 @@
                     id="name"
                     formControlName="name"
                     class="form-control mb-0"
-                    [(ngModel)]="slugInput"
-                    (input)="updateSlug()">
+                    (input)="onNameInput($event)">
                 </div>
-                <div class="form-group mb-3 slug-wrapper" *ngIf="slugInput">
-                  <label class="d-inline" for="slug">Slug:</label>
-                  <p class="d-inline">
-                    {{ slugOutput | slugGenerator}}
-                  </p>
-                  <input
-                    type="text"
-                    id="slug"
-                    formControlName="slug"
-                    class="form-control d-none"
-                    [(ngModel)]="slugOutput"
-                    >
+                <div class="form-group mb-3 slug-wrapper" *ngIf="recipeForm.get('name').value">
+                  <label class="d-inline">Slug:</label>
+                  <p class="d-inline">{{ recipeForm.get('slug').value | slugGenerator }}</p>
                 </div>
               </div>
               <div class="col-6 col-md-3">
@@ -60,12 +50,7 @@
               <div class="col-12 col-md-6">
                 <div class="form-group">
                   <label for="author" class="required">Author</label>
-                  <input
-                    type="text"
-                    id="author"
-                    formControlName="author"
-                    class="form-control"
-                  >
+                  <input type="text" id="author" formControlName="author" class="form-control">
                 </div>
               </div>
             </div>
@@ -73,12 +58,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <label for="link">Link to original recipe (if found elsewhere online)</label>
-                  <input
-                    type="text"
-                    id="link"
-                    formControlName="link"
-                    class="form-control"
-                  >
+                  <input type="text" id="link" formControlName="link" class="form-control">
                 </div>
               </div>
             </div>
@@ -86,12 +66,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <label for="description" class="required">Description</label>
-                  <textarea
-                    type="text"
-                    id="description"
-                    class="form-control"
-                    formControlName="description"
-                    rows="4"></textarea>
+                  <textarea type="text" id="description" class="form-control" formControlName="description" rows="4"></textarea>
                 </div>
               </div>
             </div>
@@ -99,61 +74,31 @@
               <div class="col-6 col-md-2">
                 <div class="form-group">
                   <label for="prep_time">Prep time</label>
-                  <input
-                    type="number"
-                    min="5"
-                    id="prep_time"
-                    formControlName="prep_time"
-                    class="form-control"
-                    placeholder="Time in mins.">
+                  <input type="number" min="5" id="prep_time" formControlName="prep_time" class="form-control" placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
                   <label for="cook_time">Cook time</label>
-                  <input
-                    type="number"
-                    min="5"
-                    id="cook_time"
-                    formControlName="cook_time"
-                    class="form-control"
-                    placeholder="Time in mins.">
+                  <input type="number" min="5" id="cook_time" formControlName="cook_time" class="form-control" placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
                   <label for="chill_time">Chill time</label>
-                  <input
-                    type="number"
-                    min="5"
-                    id="chill_time"
-                    formControlName="chill_time"
-                    class="form-control"
-                    placeholder="Time in mins.">
+                  <input type="number" min="5" id="chill_time" formControlName="chill_time" class="form-control" placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
                   <label for="total_time" class="required">Total time</label>
-                  <input
-                    type="number"
-                    min="5"
-                    id="total_time"
-                    formControlName="total_time"
-                    class="form-control"
-                    placeholder="Time in mins.">
+                  <input type="number" min="5" id="total_time" formControlName="total_time" class="form-control" placeholder="Time in mins.">
                 </div>
               </div>
               <div class="col-6 col-md-2">
                 <div class="form-group">
                   <label for="serving_size" class="required">Serving size</label>
-                  <input
-                    type="number"
-                    id="serving_size"
-                    min="1"
-                    formControlName="serving_size"
-                    class="form-control"
-                    placeholder="Total servings">
+                  <input type="number" id="serving_size" min="1" formControlName="serving_size" class="form-control" placeholder="Total servings">
                 </div>
               </div>
             </div>
@@ -164,67 +109,76 @@
                   <small class="d-block mb-3">
                     No image yet? No worries! Use our placeholder URL for now: https://i.imgur.com/qkklRA1.png
                   </small>
-                  <input
-                    type="text"
-                    id="image_path"
-                    formControlName="image_path"
-                    class="form-control"
-                    #recipeimage_path>
+                  <input type="text" id="image_path" formControlName="image_path" class="form-control" #recipeimage_path>
                 </div>
               </div>
             </div>
             <div class="row" *ngIf="recipeimage_path.value">
               <div class="col-12">
-                <p>
-                  Image preview
-                </p>
+                <p>Image preview</p>
                 <img [src]="recipeimage_path.value" class="img-responsive mb-3">
               </div>
             </div>
           </div>
+
+          <!-- ── Ingredients ─────────────────────────────────────────────── -->
           <div class="form-group-wrapper">
-            <h2 class="mb-3">
-              Ingredients:
-            </h2>
+            <h2 class="mb-3">Ingredients:</h2>
             <div class="row">
-              <label class="required">
-                Ingredient Group
-              </label>
-              <div class="col-12 ingredients-wrapper" formArrayName="ingredient_groups">
-                <div
-                  class="row"
-                  *ngFor="let ingredientGroup of recipeIngredientGroupControls.controls; let i = index"
-                  [formGroupName]="i">
-                  <div class="col-sm-12 col-md-5">
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="ingredientGroupName"
-                      placeholder="Ingredient group name">
+              <label class="required">Ingredient Group</label>
+
+              <!-- Ingredient groups drop list -->
+              <div class="col-12"
+                   formArrayName="ingredient_groups"
+                   cdkDropList
+                   (cdkDropListDropped)="dropIngredientGroup($event)">
+
+                <!-- Each ingredient group is a drag item -->
+                <div class="ingredient-group-item"
+                     *ngFor="let ingredientGroup of recipeIngredientGroupControls.controls; let i = index"
+                     [formGroupName]="i"
+                     cdkDrag>
+
+                  <!-- Group header: drag handle + name + delete -->
+                  <div class="row align-items-center mb-2">
+                    <div class="col-auto pe-0">
+                      <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder group">
+                        <i class="bi bi-grip-vertical"></i>
+                      </button>
+                    </div>
+                    <div class="col-sm-12 col-md-5">
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="ingredientGroupName"
+                        placeholder="Ingredient group name">
+                    </div>
+                    <div class="col-sm-12 col-md-5">
+                      <button type="button" class="btn btn-danger" (click)="deleteIngredientGroup(i)">X</button>
+                    </div>
                   </div>
-                  <div class="col-sm-12 col-md-7">
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      (click)="deleteIngredientGroup(i)">X</button>
-                  </div>
-                  <div class="col-12 ingredients-wrapper" formArrayName="ingredients">
-                    <div
-                      class="row"
-                      *ngFor="let ingredient of getIngredients(i).controls; let j = index" [formGroupName]="j">
-                      <div class="col-sm-12 col-md-5">
-                        <input
-                          type="text"
-                          class="form-control"
-                          formControlName="ingredientName"
-                          placeholder="Ingredient name">
+
+                  <!-- Ingredients drop list (nested) -->
+                  <div class="ingredients-wrapper"
+                       formArrayName="ingredients"
+                       cdkDropList
+                       (cdkDropListDropped)="dropIngredient($event, i)">
+
+                    <!-- Each ingredient is a drag item -->
+                    <div class="row ingredient-item"
+                         *ngFor="let ingredient of getIngredients(i).controls; let j = index"
+                         [formGroupName]="j"
+                         cdkDrag>
+                      <div class="col-auto pe-0">
+                        <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder ingredient">
+                          <i class="bi bi-grip-vertical"></i>
+                        </button>
+                      </div>
+                      <div class="col-sm-12 col-md-4">
+                        <input type="text" class="form-control" formControlName="ingredientName" placeholder="Ingredient name">
                       </div>
                       <div class="col-sm-6 col-md-3">
-                        <input
-                        type="number"
-                        class="form-control"
-                        formControlName="ingredientAmount"
-                        placeholder="Ingredient amount">
+                        <input type="number" class="form-control" formControlName="ingredientAmount" placeholder="Ingredient amount">
                       </div>
                       <div class="col-sm-6 col-md-3">
                         <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
@@ -235,85 +189,89 @@
                         </select>
                       </div>
                       <div class="col-sm-1">
-                        <button
-                          type="button"
-                          class="btn btn-danger"
-                          (click)="deleteIngredient(i, j)">X</button>
+                        <button type="button" class="btn btn-danger" (click)="deleteIngredient(i, j)">X</button>
                       </div>
+                      <div *cdkDragPlaceholder class="drag-placeholder"></div>
                     </div>
+
                     <div class="row border-bottom">
                       <div class="col-12">
-                        <button
-                          type="button"
-                          class="btn btn-success"
-                          (click)="addIngredient(i)"><i class="bi bi-plus-square"></i> Add ingredient</button>
+                        <button type="button" class="btn btn-success" (click)="addIngredient(i)">
+                          <i class="bi bi-plus-square"></i> Add ingredient
+                        </button>
                       </div>
                     </div>
                   </div>
+
+                  <!-- Placeholder shown while this group is being dragged -->
+                  <div *cdkDragPlaceholder class="drag-placeholder drag-placeholder--group"></div>
                 </div>
+
                 <div class="row">
                   <div class="col-12">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      (click)="addIngredientGroup()"><i class="bi bi-plus-square"></i> Add ingredient group</button>
+                    <button type="button" class="btn btn-secondary" (click)="addIngredientGroup()">
+                      <i class="bi bi-plus-square"></i> Add ingredient group
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- ── Instructions ────────────────────────────────────────────── -->
           <div class="form-group-wrapper">
-            <h2 class="mb-3">
-              Instructions:
-            </h2>
+            <h2 class="mb-3">Instructions:</h2>
             <div class="row">
-              <label class="required">
-                Steps
-              </label>
-              <div class="col-12 steps-wrapper" formArrayName="steps">
-                <ol class="m-0 ps-3">
-                  <li *ngFor="let stepControl of recipeStepsControls; let i = index" [formGroupName]="i">
-                    <div class="row">
-                      <div class="col-sm-10">
-                        <textarea
-                          type="text"
-                          class="form-control"
-                          formControlName="step"></textarea>
-                      </div>
-                      <div class="col-sm-2">
-                        <button
-                          type="button"
-                          class="btn btn-danger"
-                          (click)="onDeleteStep(i)">X</button>
-                      </div>
+              <label class="required">Steps</label>
+
+              <!-- Steps drop list -->
+              <div class="col-12 steps-wrapper"
+                   formArrayName="steps"
+                   cdkDropList
+                   (cdkDropListDropped)="dropStep($event)">
+
+                <!-- Each step is a drag item -->
+                <div class="step-item"
+                     *ngFor="let stepControl of recipeStepsControls; let i = index"
+                     [formGroupName]="i"
+                     cdkDrag>
+                  <div class="row align-items-start">
+                    <div class="col-auto pe-0 d-flex align-items-center pt-2">
+                      <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder step">
+                        <i class="bi bi-grip-vertical"></i>
+                      </button>
+                      <span class="step-number">{{ i + 1 }}.</span>
                     </div>
-                  </li>
-                </ol>
+                    <div class="col">
+                      <textarea type="text" class="form-control" formControlName="step" rows="2"></textarea>
+                    </div>
+                    <div class="col-auto">
+                      <button type="button" class="btn btn-danger" (click)="onDeleteStep(i)">X</button>
+                    </div>
+                  </div>
+                  <div *cdkDragPlaceholder class="drag-placeholder"></div>
+                </div>
+
                 <div class="row">
                   <div class="col-12">
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      (click)="onAddStep()"><i class="bi bi-plus-square"></i> Add Step</button>
+                    <button type="button" class="btn btn-success" (click)="onAddStep()">
+                      <i class="bi bi-plus-square"></i> Add Step
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- ── Additional information ──────────────────────────────────── -->
           <div class="form-group-wrapper">
-            <h2 class="mb-3">
-              Additional information:
-            </h2>
+            <h2 class="mb-3">Additional information:</h2>
             <div class="row mb-4">
               <div class="col-12 col-md-6">
                 <div class="form-group">
-                  <label class="required">
-                    Tags
-                  </label>
+                  <label class="required">Tags</label>
                   <select name="recipeTags" id="recipeTags" formControlName="tags" class="form-select" multiple>
-                    <option *ngFor="let tag of recipeTagOptions" [value]="tag" class="tag-option">
-                      {{ tag }}
-                    </option>
+                    <option *ngFor="let tag of recipeTagOptions" [value]="tag" class="tag-option">{{ tag }}</option>
                   </select>
                 </div>
               </div>
@@ -322,59 +280,45 @@
               <div class="col-12">
                 <div class="form-group">
                   <label for="notes">Additional notes</label>
-                  <textarea
-                    type="text"
-                    id="notes"
-                    class="form-control"
-                    formControlName="notes"
-                    placeholder="Helpful notes about ingredients and/or steps"
-                    rows="4"></textarea>
+                  <textarea type="text" id="notes" class="form-control" formControlName="notes" placeholder="Helpful notes about ingredients and/or steps" rows="4"></textarea>
                 </div>
               </div>
             </div>
           </div>
+
           <div class="row d-none">
             <div class="col-12">
               <div class="form-group">
                 <label for="created">Created</label>
-                <input
-                  type="date"
-                  id="created"
-                  class="form-control"
-                  formControlName="created" value="">
+                <input type="date" id="created" class="form-control" formControlName="created" value="">
               </div>
             </div>
           </div>
+
           <div class="row">
             <div class="col-xs-12">
               <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid" data-bs-toggle="modal" data-bs-target="#successModal">Submit</button>
               <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
-              <span class="recipe-date">
-                Recipe created: {{recipeCreatedDate | date:'medium' }}
-              </span>
+              <span class="recipe-date">Recipe created: {{recipeCreatedDate | date:'medium' }}</span>
             </div>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Success modal -->
     <div class="row">
       <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">
-                Success! Your recipe has been added.
-              </h5>
+              <h5 class="modal-title">Success! Your recipe has been added.</h5>
             </div>
             <div class="modal-body">
-              <p class="mb-0">
-                Latest recipe: <strong>{{ latestRecipeName }}</strong>
-              </p>
+              <p class="mb-0">Latest recipe: <strong>{{ latestRecipeName }}</strong></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn" data-bs-dismiss="modal" (click)="onCancel()">
-                Go to admin
-              </button>
+              <button type="button" class="btn" data-bs-dismiss="modal" (click)="onCancel()">Go to admin</button>
               <button type="button" class="btn btn-light" data-bs-dismiss="modal">
                 <i class="bi bi-plus-square-fill"></i> Add another recipe
               </button>

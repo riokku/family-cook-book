@@ -3,7 +3,7 @@ import { RouterModule } from "@angular/router";
 import { AddRecipeComponent } from "./add-recipe/add-recipe.component";
 import { RecipeCardComponent } from "./recipe-card/recipe-card.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { RecipesRoutingModule } from "./recipes-routing.module";
 import { RecipesComponent } from "./recipes.component";
@@ -35,7 +35,8 @@ import { IngredientSanitizerPipe } from "../shared/pipes/single-quantity-check.p
       RouterModule,
       RecipesRoutingModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      DragDropModule
     ]
   }
 )

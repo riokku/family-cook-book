@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import { RecipeService } from '../../shared/services/recipe.service';
 import { SupaService } from 'src/app/shared/services/supa.service';
@@ -13,9 +14,6 @@ import { SupaService } from 'src/app/shared/services/supa.service';
 })
 
 export class AddRecipeComponent implements OnInit {
-
-  slugInput: string;
-  slugOutput: string;
 
   recipeCreatedDate: Date;
   recipeForm: FormGroup;
@@ -76,13 +74,15 @@ export class AddRecipeComponent implements OnInit {
     });
   }
 
-  //Create slug used for URL
+  // ── Slug ──────────────────────────────────────────────────────────────────
 
-  updateSlug(){
-    this.slugOutput = this.slugInput.replaceAll(" ", "-").toLowerCase().trim();
+  onNameInput(event: Event): void {
+    const name = (event.target as HTMLInputElement).value;
+    const slug = name.replaceAll(' ', '-').toLowerCase().trim();
+    this.recipeForm.get('slug').setValue(slug, { emitEvent: false });
   }
 
-  //Add/remove steps
+  // ── Steps ─────────────────────────────────────────────────────────────────
 
   get recipeStepsControls() {
     return (this.recipeForm.get('steps') as FormArray).controls;
@@ -90,9 +90,7 @@ export class AddRecipeComponent implements OnInit {
 
   onAddStep() {
     (<FormArray>this.recipeForm.get('steps')).push(
-      new FormGroup({
-        'step': new FormControl(null, Validators.required)
-      })
+      new FormGroup({ 'step': new FormControl(null, Validators.required) })
     );
   }
 
@@ -100,8 +98,15 @@ export class AddRecipeComponent implements OnInit {
     (<FormArray>this.recipeForm.get('steps')).removeAt(index);
   }
 
+  dropStep(event: CdkDragDrop<FormGroup[]>): void {
+    this.moveArrayItem(
+      this.recipeForm.get('steps') as FormArray,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
 
-  //Add/remove Ingredient Groups
+  // ── Ingredient Groups ─────────────────────────────────────────────────────
 
   get recipeIngredientGroupControls() {
     return this.recipeForm.get('ingredient_groups') as FormArray;
@@ -122,15 +127,22 @@ export class AddRecipeComponent implements OnInit {
     this.recipeIngredientGroupControls.removeAt(index);
   }
 
-  //Add/remove Ingredients
+  dropIngredientGroup(event: CdkDragDrop<FormGroup[]>): void {
+    this.moveArrayItem(
+      this.recipeIngredientGroupControls,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  // ── Ingredients ───────────────────────────────────────────────────────────
 
   getIngredients(layerIndex: number): FormArray {
     return (this.recipeIngredientGroupControls.at(layerIndex) as FormGroup).get('ingredients') as FormArray;
   }
 
   addIngredient(layerIndex: number): void {
-    const fields = this.getIngredients(layerIndex);
-    fields.push(this.createIngredient());
+    this.getIngredients(layerIndex).push(this.createIngredient());
   }
 
   createIngredient(): FormGroup {
@@ -138,16 +150,31 @@ export class AddRecipeComponent implements OnInit {
       'ingredientName': new FormControl(null, Validators.required),
       'ingredientAmount': new FormControl(null, Validators.required),
       'ingredientMeasurementType': new FormControl(null, Validators.required)
-    })
+    });
   }
 
   deleteIngredient(ingredientGroupIndex: number, ingredientIndex: number): void {
-    const fields = this.getIngredients(ingredientGroupIndex);
-    fields.removeAt(ingredientIndex);
+    this.getIngredients(ingredientGroupIndex).removeAt(ingredientIndex);
   }
 
+  dropIngredient(event: CdkDragDrop<FormGroup[]>, groupIndex: number): void {
+    this.moveArrayItem(
+      this.getIngredients(groupIndex),
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
 
-  //Form actions
+  // ── Helpers ───────────────────────────────────────────────────────────────
+
+  /** Reorders a FormArray by removing the item at `from` and inserting it at `to`. */
+  private moveArrayItem(formArray: FormArray, from: number, to: number): void {
+    const item = formArray.at(from);
+    formArray.removeAt(from);
+    formArray.insert(to, item);
+  }
+
+  // ── Form actions ──────────────────────────────────────────────────────────
 
   onSubmit() {
     this.recipeService.submitRecipe(this.recipeForm.value);
