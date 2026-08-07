@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import { Step } from 'src/app/shared/models/step.model';
 import { Recipe } from 'src/app/shared/models/recipe.model';
@@ -15,9 +16,6 @@ import { SupaService } from 'src/app/shared/services/supa.service';
 })
 
 export class RecipeEditComponent implements OnInit {
-
-  slugInput: string;
-  slugOutput: string;
 
   editRecipeForm: FormGroup;
   editedSlug: string;
@@ -73,8 +71,45 @@ export class RecipeEditComponent implements OnInit {
     )
   }
 
-  updateSlug(){
-    this.slugOutput = this.slugInput.replaceAll(" ", "-").toLowerCase().trim();
+  // ── Slug ──────────────────────────────────────────────────────────────────
+
+  onNameInput(event: Event): void {
+    const name = (event.target as HTMLInputElement).value;
+    const slug = name.replaceAll(' ', '-').toLowerCase().trim();
+    this.editRecipeForm.get('slug').setValue(slug, { emitEvent: false });
+  }
+
+  // ── Drag & drop ───────────────────────────────────────────────────────────
+
+  dropStep(event: CdkDragDrop<FormGroup[]>): void {
+    this.moveArrayItem(
+      this.editRecipeForm.get('steps') as FormArray,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  dropIngredient(event: CdkDragDrop<FormGroup[]>, groupIndex: number): void {
+    this.moveArrayItem(
+      this.getIngredients(groupIndex),
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  dropIngredientGroup(event: CdkDragDrop<FormGroup[]>): void {
+    this.moveArrayItem(
+      this.recipeIngredientGroupControls,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  /** Reorders a FormArray by removing the item at `from` and inserting it at `to`. */
+  private moveArrayItem(formArray: FormArray, from: number, to: number): void {
+    const item = formArray.at(from);
+    formArray.removeAt(from);
+    formArray.insert(to, item);
   }
 
   private initializeForm(){
@@ -82,8 +117,6 @@ export class RecipeEditComponent implements OnInit {
     this.editingRecipe = this.supaService.getRecipe(this.editedSlug);
     this.recipeId = this.editingRecipe.id;
     this.recipeName = this.editingRecipe.name;
-    this.slugInput = this.editingRecipe.name;
-    this.updateSlug();
     this.recipeSlug = this.editingRecipe.slug;
     this.recipeAuthor = this.editingRecipe.author;
     this.link = this.editingRecipe.link;

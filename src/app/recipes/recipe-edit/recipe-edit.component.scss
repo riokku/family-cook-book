@@ -136,6 +136,77 @@ small{
   color: #999;
 }
 
+// ── Drag & drop ──────────────────────────────────────────────────────────────
+
+.drag-handle {
+  background: none;
+  border: none;
+  cursor: grab;
+  color: #bbb;
+  padding: 0.25rem 0.35rem;
+  line-height: 1;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: #574b90;
+    background-color: rgba(87, 75, 144, 0.08);
+  }
+
+  &:active { cursor: grabbing; }
+
+  i { font-size: 1.1rem; pointer-events: none; }
+}
+
+.step-number {
+  font-weight: 600;
+  color: #555;
+  min-width: 1.5rem;
+  display: inline-block;
+}
+
+.step-item {
+  margin-bottom: 0.75rem;
+}
+
+.ingredient-group-item {
+  background: #e8e8e8;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.drag-placeholder {
+  min-height: 52px;
+  background: rgba(87, 75, 144, 0.08);
+  border: 2px dashed #574b90;
+  border-radius: 0.375rem;
+  margin: 0.25rem 0;
+}
+
+.drag-placeholder--group {
+  min-height: 80px;
+}
+
+.cdk-drag-preview {
+  background: #fff;
+  border: 1px solid rgba(87, 75, 144, 0.4);
+  border-radius: 0.375rem;
+  box-shadow: 0 6px 20px rgba(87, 75, 144, 0.18);
+  opacity: 0.92;
+  padding: 0.5rem 0.75rem;
+}
+
+.cdk-drag-animating {
+  transition: transform 220ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .step-item:not(.cdk-drag-placeholder),
+.cdk-drop-list-dragging .ingredient-item:not(.cdk-drag-placeholder),
+.cdk-drop-list-dragging .ingredient-group-item:not(.cdk-drag-placeholder) {
+  transition: transform 220ms cubic-bezier(0, 0, 0.2, 1);
+}
+
 .required{
   &:after{
     content: "Required";
