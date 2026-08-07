@@ -20,6 +20,7 @@ import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { IntroComponent } from './intro/intro.component';
 import { SupaService } from './shared/services/supa.service';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SupaService } from './shared/services/supa.service';
     FormsModule,
     ReactiveFormsModule,
     RecipesRoutingModule,
-    RouterModule
+    RouterModule,
+    SharedModule
   ],
   providers: [
     RecipeService,

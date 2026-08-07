@@ -7,6 +7,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { RecipesRoutingModule } from "./recipes-routing.module";
 import { RecipesComponent } from "./recipes.component";
+import { SharedModule } from "../shared/shared.module";
 import { CommonModule } from "@angular/common";
 import { AllRecipesComponent } from './all-recipes/all-recipes.component';
 import { RecipeComponent } from "./recipe/recipe.component";
@@ -36,7 +37,8 @@ import { IngredientSanitizerPipe } from "../shared/pipes/single-quantity-check.p
       RecipesRoutingModule,
       FormsModule,
       ReactiveFormsModule,
-      DragDropModule
+      DragDropModule,
+      SharedModule
     ]
   }
 )

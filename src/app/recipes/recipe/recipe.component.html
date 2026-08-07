@@ -27,7 +27,7 @@
               </p>
               <ul class="ps-0 mb-3">
                 <li class="mb-1">
-                  <i class="bi bi-clock me-1"></i> {{ recipe.total_time }} mins. (<span *ngIf="recipe.prep_time">{{ recipe.prep_time }} mins. prep</span><span *ngIf="recipe.chill_time"> / {{ recipe.chill_time }} mins. chill</span><span *ngIf="recipe.cook_time"> / {{ recipe.cook_time }} mins. cook</span>)
+                  <i class="bi bi-clock me-1"></i> {{ recipe.total_time | timeFormat }} (<span *ngIf="recipe.prep_time">{{ recipe.prep_time | timeFormat }} prep</span><span *ngIf="recipe.chill_time"> / {{ recipe.chill_time | timeFormat }} chill</span><span *ngIf="recipe.cook_time"> / {{ recipe.cook_time | timeFormat }} cook</span>)
                 </li>
                 <li class="servings">
                   <i class="bi bi-person me-1"></i> {{ recipe.serving_size }} servings
