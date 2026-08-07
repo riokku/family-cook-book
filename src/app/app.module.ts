@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,28 +21,34 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { IntroComponent } from './intro/intro.component';
 import { SupaService } from './shared/services/supa.service';
 
-@NgModule({ declarations: [
-        AppComponent,
-        HeaderComponent,
-        FooterComponent,
-        HomeComponent,
-        AdminComponent,
-        FeaturedRecipesComponent,
-        AuthComponent,
-        LoadingSpinnerComponent,
-        IntroComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
-        NgbModule,
-        FormsModule,
-        ReactiveFormsModule,
-        RecipesRoutingModule,
-        RouterModule,
-        provideAuth(() => getAuth()),
-        provideDatabase(() => getDatabase())], providers: [
-        RecipeService,
-        SupaService,
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    HomeComponent,
+    AdminComponent,
+    FeaturedRecipesComponent,
+    AuthComponent,
+    LoadingSpinnerComponent,
+    IntroComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RecipesRoutingModule,
+    RouterModule
+  ],
+  providers: [
+    RecipeService,
+    SupaService,
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase())
+  ],
+  bootstrap: [AppComponent]
+})
 export class AppModule { }
