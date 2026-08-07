@@ -16,6 +16,7 @@ export class RecipeComponent implements OnInit {
     recipe: Recipe;
     slug: string;
     isDoubled: boolean = false;
+    isAdmin: boolean = false;
 
     constructor(
       private supaService: SupaService,
@@ -24,14 +25,16 @@ export class RecipeComponent implements OnInit {
     ){}
 
     ngOnInit(): void {
-      const slug = this.route.params.subscribe(
+      this.route.params.subscribe(
         (params: Params) => {
            this.slug = params['slug'];
-
            this.recipe = this.supaService.getRecipe(this.slug);
         }
-      )
+      );
       this.titleService.setTitle(`Gogo's Kitchen | ${this.recipe.name}`);
+      this.supaService.checkAdminStatus().then(isAdmin => {
+        this.isAdmin = isAdmin;
+      });
     }
 
     toggleDouble(){
