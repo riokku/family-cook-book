@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({name: 'ingredientSanitizer'})
+@Pipe({
+    name: 'ingredientSanitizer',
+    standalone: false
+})
 
 export class IngredientSanitizerPipe implements PipeTransform{
 

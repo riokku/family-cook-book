@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { SupaService } from '../shared/services/supa.service';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss']
+    selector: 'app-auth',
+    templateUrl: './auth.component.html',
+    styleUrls: ['./auth.component.scss'],
+    standalone: false
 })
 
 export class AuthComponent implements OnInit{

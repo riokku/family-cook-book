@@ -8,9 +8,10 @@ import { IngredientGroup } from 'src/app/shared/models/ingredient-group.model';
 import { SupaService } from 'src/app/shared/services/supa.service';
 
 @Component({
-  selector: 'app-recipe-edit',
-  templateUrl: './recipe-edit.component.html',
-  styleUrls: ['./recipe-edit.component.scss']
+    selector: 'app-recipe-edit',
+    templateUrl: './recipe-edit.component.html',
+    styleUrls: ['./recipe-edit.component.scss'],
+    standalone: false
 })
 
 export class RecipeEditComponent implements OnInit {

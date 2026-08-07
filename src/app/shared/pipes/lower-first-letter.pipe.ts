@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({name: 'lowerFirstLetter'})
+@Pipe({
+    name: 'lowerFirstLetter',
+    standalone: false
+})
 
 export class LowerFirstLetterPipe implements PipeTransform{
 

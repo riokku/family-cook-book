@@ -4,9 +4,10 @@ import { SupaService } from 'src/app/shared/services/supa.service';
 
 
 @Component({
-  selector: 'app-featured-recipes',
-  templateUrl: './featured-recipes.component.html',
-  styleUrls: ['./featured-recipes.component.scss']
+    selector: 'app-featured-recipes',
+    templateUrl: './featured-recipes.component.html',
+    styleUrls: ['./featured-recipes.component.scss'],
+    standalone: false
 })
 
 export class FeaturedRecipesComponent {

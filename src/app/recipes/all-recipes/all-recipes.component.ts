@@ -4,9 +4,10 @@ import { RecipeService } from '../../shared/services/recipe.service';
 import { SupaService } from 'src/app/shared/services/supa.service';
 
 @Component({
-  selector: 'app-all-recipes',
-  templateUrl: './all-recipes.component.html',
-  styleUrls: ['./all-recipes.component.scss']
+    selector: 'app-all-recipes',
+    templateUrl: './all-recipes.component.html',
+    styleUrls: ['./all-recipes.component.scss'],
+    standalone: false
 })
 
 export class AllRecipesComponent implements OnInit {

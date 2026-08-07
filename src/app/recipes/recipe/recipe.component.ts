@@ -5,9 +5,10 @@ import { Recipe } from 'src/app/shared/models/recipe.model';
 import { SupaService } from 'src/app/shared/services/supa.service';
 
 @Component({
-  selector: 'app-recipe',
-  templateUrl: './recipe.component.html',
-  styleUrls: ['./recipe.component.scss']
+    selector: 'app-recipe',
+    templateUrl: './recipe.component.html',
+    styleUrls: ['./recipe.component.scss'],
+    standalone: false
 })
 
 export class RecipeComponent implements OnInit {

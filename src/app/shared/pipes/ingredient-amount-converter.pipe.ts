@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({name: 'ingredientAmountConverter'})
+@Pipe({
+    name: 'ingredientAmountConverter',
+    standalone: false
+})
 
 export class IngredientAmountConverterPipe implements PipeTransform{
 
