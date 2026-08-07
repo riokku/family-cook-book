@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Resolve } from "@angular/router";
+
 import { Recipe } from "../models/recipe.model";
 import { SupaService } from "../services/supa.service";
 
@@ -7,7 +7,7 @@ import { SupaService } from "../services/supa.service";
   providedIn: 'root'
 })
 
-export class RecipesResolverService implements Resolve<Recipe[]>{
+export class RecipesResolverService {
   constructor(
     private supaService: SupaService
   ){}
