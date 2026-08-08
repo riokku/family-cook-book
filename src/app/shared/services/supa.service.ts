@@ -58,11 +58,10 @@ export class SupaService {
 
   //Checks if user can access admin table in database, if so, set user as admin
   async checkAdminStatus(): Promise<boolean> {
-    // Ensure the session is restored from localStorage before querying
-    const { data: { session } } = await this.supabaseClient.auth.getSession();
-    if (!session) return false;
-
-    const { data: admins, error } = await this.supabaseClient
+    // The PostgREST client calls getSession() internally before attaching the JWT,
+    // so no explicit getSession() call is needed here — doing so causes two
+    // concurrent lock requests on the same Supabase auth lock key.
+    const { data: admins } = await this.supabaseClient
       .from('admins')
       .select('*');
     return !!(admins && admins.length > 0);
