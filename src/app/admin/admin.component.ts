@@ -19,6 +19,14 @@ export class AdminComponent implements OnInit{
   toBeDeletedRecipe: Recipe;
   toBeDeletedRecipeName: string;
 
+  currentPage = 1;
+  readonly pageSize = 10;
+
+  get pagedResults(): Recipe[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.recipeResults.slice(start, start + this.pageSize);
+  }
+
   constructor(
     private supaService: SupaService,
     private router: Router
@@ -36,11 +44,13 @@ export class AdminComponent implements OnInit{
   }
 
   updateResults(){
+    this.currentPage = 1;
     this.recipeResults = this.allRecipes.filter(recipe => recipe.name.toLowerCase().includes(this.searchInput.toLowerCase()));
   }
 
   clearSearchInput(){
     this.searchInput = '';
+    this.currentPage = 1;
     this.updateResults();
   }
 
@@ -49,9 +59,14 @@ export class AdminComponent implements OnInit{
     this.toBeDeletedRecipeName = this.toBeDeletedRecipe.name;
   }
 
-  deleteRecipe(deletedRecipeID:any){
+  deleteRecipe(deletedRecipeID: any){
     this.supaService.deleteRecipe(deletedRecipeID);
     this.recipeResults = this.recipeResults.filter(recipe => recipe.id != deletedRecipeID);
+    this.allRecipes = this.allRecipes.filter(recipe => recipe.id != deletedRecipeID);
+    const maxPage = Math.ceil(this.recipeResults.length / this.pageSize) || 1;
+    if (this.currentPage > maxPage) {
+      this.currentPage = maxPage;
+    }
   }
 
   onLogout(){

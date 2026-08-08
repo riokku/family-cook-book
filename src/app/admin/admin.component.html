@@ -45,7 +45,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <div class="recipe-blade" *ngFor="let recipe of recipeResults">
+          <div class="recipe-blade" *ngFor="let recipe of pagedResults">
             <div class="row">
               <div class="col-12 col-sm-12 col-md-8 d-flex align-items-center">
                 <p class="recipe-name mb-0">
@@ -68,6 +68,18 @@
               </div>
             </div>
           </div>
+          <!-- Pagination -->
+          <ngb-pagination
+            *ngIf="recipeResults.length > pageSize"
+            [(page)]="currentPage"
+            [collectionSize]="recipeResults.length"
+            [pageSize]="pageSize"
+            [maxSize]="5"
+            [rotate]="true"
+            [boundaryLinks]="true"
+            class="d-flex justify-content-center mt-3">
+          </ngb-pagination>
+
           <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">

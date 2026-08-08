@@ -184,6 +184,18 @@ button{
 }
 
 
+// Pagination
+:host ::ng-deep ngb-pagination {
+  .page-item.active .page-link {
+    background-color: #574b90;
+    border-color: #574b90;
+  }
+  .page-link {
+    color: #574b90;
+    &:focus { box-shadow: 0 0 0 0.2rem rgba(87, 75, 144, 0.25); }
+  }
+}
+
 @media (max-width: 390px){
   input{
     min-width: 90%;
