@@ -15,17 +15,11 @@ export class AuthGuard  {
     private SupaService: SupaService
   ){}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-
-    return this.SupaService.checkAdminStatus().then((result) => {
-      if(result){
-        return true;
-      } else {
-        return false;
-      }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
+    return this.SupaService.checkAdminStatus().then(isAdmin => {
+      if (isAdmin) return true;
+      return this.router.createUrlTree(['/auth']);
     });
-
-
   }
 
 }

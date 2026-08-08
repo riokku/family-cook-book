@@ -57,16 +57,15 @@ export class SupaService {
   }
 
   //Checks if user can access admin table in database, if so, set user as admin
-  async checkAdminStatus(){
-    let { data: admins, error } = await this.supabaseClient
-    .from('admins')
-    .select('*');
-    if(admins.length > 0){
-      return true;
-    } else {
-      return false;
-    }
+  async checkAdminStatus(): Promise<boolean> {
+    // Ensure the session is restored from localStorage before querying
+    const { data: { session } } = await this.supabaseClient.auth.getSession();
+    if (!session) return false;
 
+    const { data: admins, error } = await this.supabaseClient
+      .from('admins')
+      .select('*');
+    return !!(admins && admins.length > 0);
   }
 
 
