@@ -17,7 +17,15 @@ export class SupaService {
   private recipes: Recipe[] = [];
 
   constructor() {
-    this.supabaseClient = createClient(environment.supabase.url, environment.supabase.key);
+    this.supabaseClient = createClient(environment.supabase.url, environment.supabase.key, {
+      auth: {
+        // Supabase uses navigator.locks (Web Locks API) for token serialization, but
+        // Zone.js intercepts the resulting promise rejections and logs them as unhandled
+        // errors. For a single-tab SPA there are no true concurrent auth writers, so
+        // replacing the lock with a passthrough is safe and eliminates the noise.
+        lock: (_name: string, _acquireTimeout: number, fn: () => Promise<any>) => fn()
+      }
+    });
     this.supabaseClient.auth.onAuthStateChange((event, session) => {
       this.authStateSubject.next(session);
     });
