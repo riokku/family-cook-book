@@ -27,7 +27,8 @@ nav{
   }
 
   .nav-item{
-    display: inline-block;
+    display: flex;
+    align-items: center;
     position: relative;
     &:not(:last-child){
       margin-right: 1rem;
@@ -76,7 +77,9 @@ nav{
     color: #fff;
     cursor: pointer;
     font-size: 0.9rem;
-    padding: 0.375rem 0.75rem;
+    /* calc(nav-link-padding - border-width) keeps total height identical */
+    padding: calc(0.5rem - 1px) 0.6rem;
+    line-height: 1.5;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 
     &:hover {
