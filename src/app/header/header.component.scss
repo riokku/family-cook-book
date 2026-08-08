@@ -69,6 +69,27 @@ nav{
     }
   }
 
+  .nav-logout-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 0.25rem;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.375rem 0.75rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: #fff;
+    }
+
+    @media (max-width: 991px) {
+      margin-left: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+
   .navbar-toggler{
     color: #fff;
     border: 2px solid #fff;

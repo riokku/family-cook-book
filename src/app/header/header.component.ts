@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SupaService } from '../shared/services/supa.service';
 import { Subscription } from 'rxjs';
 
@@ -16,7 +17,8 @@ export class HeaderComponent implements OnInit{
 
   constructor(
     private SupaService: SupaService,
-    private changeRef: ChangeDetectorRef
+    private changeRef: ChangeDetectorRef,
+    private router: Router
   ){}
 
   ngOnInit(): void {
@@ -30,6 +32,14 @@ export class HeaderComponent implements OnInit{
     if (element.getAttribute("aria-expanded") == "true" ) {
         element.click();
     }
+  }
+
+  async onLogout() {
+    await this.SupaService.logout();
+    this.userIsAdmin = false;
+    this.changeRef.detectChanges();
+    this.closeNavOnClick();
+    this.router.navigate(['/auth']);
   }
 
   checkAdminStatus(){
