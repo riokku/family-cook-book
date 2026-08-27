@@ -118,6 +118,30 @@ ol{
   i { font-size: 0.9rem; }
 }
 
+.step-ingredient-list {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0;
+  padding: 0;
+
+  li {
+    background-color: #4a3f7a;
+    color: #fff;
+    border-radius: 0.4rem;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    // The global "ul li:not(:last-child) { margin-bottom: 1rem }" rule has higher
+    // specificity than "li { margin-bottom: 0 }", so override the pseudo-class too.
+    &, &:not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .double-button{
   background-color: transparent;
   border-radius: 0.25rem;

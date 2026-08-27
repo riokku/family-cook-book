@@ -356,6 +356,60 @@
                       <button type="button" class="btn btn-danger" (click)="onDeleteStep(i)">X</button>
                     </div>
                   </div>
+
+                  <!-- Step ingredients -->
+                  <div class="step-ingredients-section" formArrayName="stepIngredients">
+                    <p class="step-ingredients-label mb-2">
+                      <i class="bi bi-list-check me-1"></i> Ingredients used in this step:
+                    </p>
+                    <div class="step-ingredient-row"
+                         *ngFor="let si of getStepIngredients(i).controls; let j = index"
+                         [formGroupName]="j">
+                      <div class="row align-items-center g-2 mb-2">
+                        <div class="col-sm-12 col-md-5">
+                          <select class="form-select form-select-sm"
+                                  formControlName="ingredientName"
+                                  (change)="onStepIngredientNameChange(i, j)">
+                            <option [ngValue]="null" disabled>Select ingredient</option>
+                            <option *ngFor="let ing of allIngredients" [value]="ing.name">{{ ing.name }}</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                          <input type="number"
+                                 class="form-control form-control-sm"
+                                 [class.is-invalid]="getStepIngredients(i).at(j).get('ingredientAmount').errors?.['max']"
+                                 formControlName="ingredientAmount"
+                                 placeholder="Amount"
+                                 [max]="maxAmountFor(getStepIngredients(i).at(j).get('ingredientName').value)"
+                                 min="0.001"
+                                 step="any">
+                          <div class="invalid-feedback d-block"
+                               *ngIf="getStepIngredients(i).at(j).get('ingredientAmount').errors?.['max']">
+                            Max for this ingredient is {{ maxAmountFor(getStepIngredients(i).at(j).get('ingredientName').value) }}
+                          </div>
+                        </div>
+                        <div class="col-sm-4 col-md-3">
+                          <span class="step-ingredient-unit"
+                                *ngIf="getStepIngredients(i).at(j).get('ingredientMeasurementType').value">
+                            {{ getStepIngredients(i).at(j).get('ingredientMeasurementType').value }}
+                          </span>
+                        </div>
+                        <div class="col-auto">
+                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteStepIngredient(i, j)" title="Remove">
+                            <i class="bi bi-x"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            (click)="addStepIngredient(i)"
+                            [disabled]="allIngredients.length === 0"
+                            [title]="allIngredients.length === 0 ? 'Add ingredients above first' : ''">
+                      <i class="bi bi-plus-square me-1"></i> Add ingredient to this step
+                    </button>
+                  </div>
+
                   <div *cdkDragPlaceholder class="drag-placeholder"></div>
                 </div>
 

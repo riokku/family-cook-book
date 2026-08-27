@@ -4,8 +4,8 @@
   height: 100%;
 }
 
-.fade-in{
-  animation: fadeIn 3s linear forwards;
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
 .header{
@@ -21,15 +21,8 @@ main{
 }
 
 @keyframes fadeIn {
-  0%{
-    opacity: 0;
-  }
-  70%{
-    opacity: 0;
-  }
-  100%{
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 

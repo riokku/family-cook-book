@@ -9,6 +9,7 @@
 
 html, body {
   height: 100%;
+  background-color: #000;
   // Bootstrap 5 sets scroll-behavior: smooth on :root, which makes Angular's
   // router scroll-to-top on navigation look like an animated slide rather than
   // an instant page change. Override to auto for correct SPA behaviour.

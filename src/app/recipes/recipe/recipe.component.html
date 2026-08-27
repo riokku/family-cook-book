@@ -96,6 +96,9 @@
                 </div>
                 <div>
                   {{ step.step }}
+                  <ul class="step-ingredient-list ps-0 mt-2" *ngIf="step.stepIngredients?.length">
+                    <li *ngFor="let si of step.stepIngredients">{{ si.ingredientAmount | ingredientAmountConverter: isDoubled }}<ng-container *ngIf="si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count'"> {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount | lowercase }}</ng-container> {{ si.ingredientName | lowerFirstLetter }}</li>
+                  </ul>
                 </div>
               </li>
             </ol>

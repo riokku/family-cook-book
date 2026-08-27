@@ -90,12 +90,82 @@ export class AddRecipeComponent implements OnInit {
 
   onAddStep() {
     (<FormArray>this.recipeForm.get('steps')).push(
-      new FormGroup({ 'step': new FormControl(null, Validators.required) })
+      new FormGroup({
+        'step': new FormControl(null, Validators.required),
+        'stepIngredients': new FormArray([])
+      })
     );
   }
 
   onDeleteStep(index: number) {
     (<FormArray>this.recipeForm.get('steps')).removeAt(index);
+  }
+
+  // ── Step ingredients ──────────────────────────────────────────────────────
+
+  /** Flat list of all named ingredients across every ingredient group in the form. */
+  get allIngredients(): { name: string; amount: number; unit: string }[] {
+    const result: { name: string; amount: number; unit: string }[] = [];
+    const groups = this.recipeIngredientGroupControls;
+    for (let i = 0; i < groups.length; i++) {
+      const grp = groups.at(i) as FormGroup;
+      const ings = grp.get('ingredients') as FormArray;
+      for (let j = 0; j < ings.length; j++) {
+        const ing = ings.at(j) as FormGroup;
+        const name = ing.get('ingredientName').value;
+        if (name) {
+          result.push({
+            name,
+            amount: ing.get('ingredientAmount').value,
+            unit: ing.get('ingredientMeasurementType').value
+          });
+        }
+      }
+    }
+    return result;
+  }
+
+  getStepIngredients(stepIndex: number): FormArray {
+    return (this.recipeForm.get('steps') as FormArray)
+      .at(stepIndex).get('stepIngredients') as FormArray;
+  }
+
+  createStepIngredient(name: string = null, amount: number = null, unit: string = null): FormGroup {
+    return new FormGroup({
+      'ingredientName': new FormControl(name, Validators.required),
+      'ingredientAmount': new FormControl(amount, [Validators.required, Validators.min(0.001)]),
+      'ingredientMeasurementType': new FormControl(unit)
+    });
+  }
+
+  addStepIngredient(stepIndex: number): void {
+    this.getStepIngredients(stepIndex).push(this.createStepIngredient());
+  }
+
+  deleteStepIngredient(stepIndex: number, ingredientIndex: number): void {
+    this.getStepIngredients(stepIndex).removeAt(ingredientIndex);
+  }
+
+  /** When an ingredient is chosen from the dropdown, auto-populate its unit and cap the amount. */
+  onStepIngredientNameChange(stepIndex: number, ingredientIndex: number): void {
+    const stepIng = this.getStepIngredients(stepIndex).at(ingredientIndex) as FormGroup;
+    const selected = stepIng.get('ingredientName').value;
+    const master = this.allIngredients.find(i => i.name === selected);
+    if (master) {
+      stepIng.get('ingredientMeasurementType').setValue(master.unit, { emitEvent: false });
+      stepIng.get('ingredientAmount').setValidators([
+        Validators.required,
+        Validators.min(0.001),
+        Validators.max(master.amount)
+      ]);
+      stepIng.get('ingredientAmount').updateValueAndValidity();
+    }
+  }
+
+  /** Returns the max allowed amount for a given ingredient name (from the master list). */
+  maxAmountFor(ingredientName: string): number | null {
+    if (!ingredientName) return null;
+    return this.allIngredients.find(i => i.name === ingredientName)?.amount ?? null;
   }
 
   dropStep(event: CdkDragDrop<FormGroup[]>): void {
