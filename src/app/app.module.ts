@@ -10,12 +10,9 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
-import { RecipeService } from './shared/services/recipe.service';
 import { RecipesRoutingModule } from './recipes/recipes-routing.module';
 import { FeaturedRecipesComponent } from './home/featured-recipes/featured-recipes.component';
 import { RouterModule } from '@angular/router';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { AuthComponent } from './auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { IntroComponent } from './intro/intro.component';
@@ -45,11 +42,8 @@ import { SharedModule } from './shared/shared.module';
     SharedModule
   ],
   providers: [
-    RecipeService,
     SupaService,
-    provideHttpClient(withInterceptorsFromDi()),
-    provideAuth(() => getAuth()),
-    provideDatabase(() => getDatabase())
+    provideHttpClient(withInterceptorsFromDi())
   ],
   bootstrap: [AppComponent]
 })

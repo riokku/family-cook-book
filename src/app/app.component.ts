@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { RecipeService } from './shared/services/recipe.service';
+import { Component } from '@angular/core';
 
 @Component({
     selector: 'app-root',
@@ -7,16 +6,8 @@ import { RecipeService } from './shared/services/recipe.service';
     styleUrls: ['./app.component.scss'],
     standalone: false
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   title = 'family-cook-book';
-
-  constructor(
-    private recipeService: RecipeService
-  ) {}
-
-  ngOnInit(): void {
-    this.recipeService.fetchRecipes().subscribe();
-  }
 
 }

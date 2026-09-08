@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
-import { RecipeService } from '../../shared/services/recipe.service';
 import { SupaService } from 'src/app/shared/services/supa.service';
 import { AiService, ScannedRecipe } from 'src/app/shared/services/ai.service';
 
@@ -33,7 +32,6 @@ export class AddRecipeComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private recipeService: RecipeService,
     private supaService: SupaService,
     private router: Router,
     private aiService: AiService,
@@ -373,12 +371,6 @@ export class AddRecipeComponent implements OnInit {
   }
 
   // ── Form actions ──────────────────────────────────────────────────────────
-
-  onSubmit() {
-    this.recipeService.submitRecipe(this.recipeForm.value);
-    this.latestRecipeName = this.recipeForm.value.name;
-    this.recipeForm.reset();
-  }
 
   onSubmitNew(){
     this.supaService.getLoggedInUser();
