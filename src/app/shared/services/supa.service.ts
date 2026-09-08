@@ -76,14 +76,10 @@ export class SupaService {
   }
 
 
-  //Invoke an edge function, attaching the current session JWT automatically
-  async invokeFunction<T>(name: string, body: unknown): Promise<T> {
-    const { data, error } = await this.supabaseClient.functions.invoke(name, { body });
-    if (error) {
-      console.error(`Edge function "${name}" failed:`, error);
-      throw error;
-    }
-    return data as T;
+  //Access token for the current session, for authenticating edge function calls
+  async getAccessToken(): Promise<string | null> {
+    const { data: { session } } = await this.supabaseClient.auth.getSession();
+    return session?.access_token ?? null;
   }
 
 

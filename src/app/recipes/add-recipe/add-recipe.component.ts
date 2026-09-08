@@ -113,7 +113,7 @@ export class AddRecipeComponent implements OnInit {
       this.scanSuccess = true;
     } catch (err) {
       console.error('Recipe scan error:', err);
-      this.scanError = await this.describeScanError(err);
+      this.scanError = this.describeScanError(err);
     } finally {
       this.isScanningRecipe = false;
       input.value = ''; // reset so the same file can be chosen again
@@ -121,39 +121,12 @@ export class AddRecipeComponent implements OnInit {
   }
 
   /**
-   * Turns a failed scan into a message worth showing. The edge function reports
-   * a real reason in its JSON body, so prefer that; only guess as a last resort,
-   * and never blame the photo for what was actually a transport failure.
+   * AiService already unwraps the function's own error message, so surface that
+   * directly. Only a genuine network failure arrives without one.
    */
-  private async describeScanError(err: any): Promise<string> {
-    const response: Response | undefined = err?.context;
-    const status = response?.status;
-
-    if (status === 401 || status === 403) {
-      return 'You need to be signed in as an admin to scan recipes. Try signing in again.';
-    }
-
-    // Prefer whatever the function itself said
-    try {
-      const text = await response?.clone?.().text?.();
-      if (text) {
-        try {
-          const body = JSON.parse(text);
-          if (body?.error) return body.error;
-        } catch {
-          return `Scan failed (${status}): ${text.slice(0, 200)}`;
-        }
-      }
-    } catch {
-      // response body could not be read — fall through
-    }
-
-    // No response at all means we never got a reply, not a bad photo
-    if (!status) {
-      return 'The scan timed out before it finished. Check your connection and try again — if it keeps happening, the scan-recipe function logs will show why.';
-    }
-
-    return `Scan failed (${status}). Check the scan-recipe function logs for details.`;
+  private describeScanError(err: any): string {
+    if (err?.message) return err.message;
+    return 'Could not reach the recipe scanner. Check your connection and try again.';
   }
 
   /**
