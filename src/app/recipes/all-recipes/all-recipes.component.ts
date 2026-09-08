@@ -43,12 +43,9 @@ export class AllRecipesComponent implements OnInit {
     private supaService: SupaService
   ) {}
 
-  ngOnInit(): void {
-    this.loadRecipes();
-
-    setTimeout(() => {
-      this.setFilterOptions();
-    }, 500);
+  async ngOnInit(): Promise<void> {
+    await this.loadRecipes();
+    this.setFilterOptions();
   }
 
   async loadRecipes(){
