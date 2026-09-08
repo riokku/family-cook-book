@@ -125,11 +125,16 @@ Deno.serve(async (req: Request) => {
     }
 
     // ── Gemini ────────────────────────────────────────────────────────────────
+    // The key goes in a header rather than the query string so it can never
+    // surface in an error message, log line, or stack trace.
     const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': geminiKey
+        },
         body: JSON.stringify({
           contents: [{
             parts: [
@@ -177,6 +182,9 @@ Deno.serve(async (req: Request) => {
 
   } catch (err) {
     console.error('scan-recipe failed:', err);
-    return json({ error: 'Something went wrong while scanning the recipe.' }, 500);
+    // Callers are verified admins and the API key is never in the URL, so the
+    // real message is safe to return — and saves a trip to the function logs.
+    const detail = err instanceof Error ? err.message : String(err);
+    return json({ error: `Scan failed: ${detail}` }, 500);
   }
 });
