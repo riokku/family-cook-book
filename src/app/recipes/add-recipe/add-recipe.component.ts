@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import { RecipeService } from '../../shared/services/recipe.service';
 import { SupaService } from 'src/app/shared/services/supa.service';
+import { AiService, ScannedRecipe } from 'src/app/shared/services/ai.service';
 
 @Component({
     selector: 'app-add-recipe',
@@ -15,10 +16,17 @@ import { SupaService } from 'src/app/shared/services/supa.service';
 
 export class AddRecipeComponent implements OnInit {
 
+  @ViewChild('scanInput') scanInput: ElementRef<HTMLInputElement>;
+
   recipeCreatedDate: Date;
   recipeForm: FormGroup;
 
   latestRecipeName: string;
+
+  // ── AI scan state ──────────────────────────────────────────────────────────
+  isScanningRecipe = false;
+  scanError: string | null = null;
+  scanSuccess = false;
 
   ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons", "Tablespoons", "Fluid ounces", "Pints", "Quarts", "Milliliters", "Liters", "Grams", "Kilograms", "Ounces", "Pounds", "Count"];
   recipeTagOptions: string[] = ["Appetizer", "Dinner", "Cast iron", "Beverage", "Breakfast", "Dessert", "Cookies", "Grilling", "Italian", "Mexican", "Salad", "Seafood", "Soup"];
@@ -28,6 +36,7 @@ export class AddRecipeComponent implements OnInit {
     private recipeService: RecipeService,
     private supaService: SupaService,
     private router: Router,
+    private aiService: AiService,
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +89,107 @@ export class AddRecipeComponent implements OnInit {
     const name = (event.target as HTMLInputElement).value;
     const slug = name.replaceAll(' ', '-').toLowerCase().trim();
     this.recipeForm.get('slug').setValue(slug, { emitEvent: false });
+  }
+
+  // ── AI Recipe Scanner ──────────────────────────────────────────────────────
+
+  /** Opens the hidden file input so the user can pick an image or use the camera. */
+  onScanRecipe(): void {
+    this.scanInput.nativeElement.click();
+  }
+
+  /** Handles the file chosen by the user, sends it to Gemini, and populates the form. */
+  async onScanFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    this.isScanningRecipe = true;
+    this.scanError = null;
+    this.scanSuccess = false;
+
+    try {
+      const base64 = await this.fileToBase64(file);
+      const scanned = await this.aiService.extractRecipeFromImage(base64, file.type);
+      this.populateFormFromScan(scanned);
+      this.scanSuccess = true;
+    } catch (err) {
+      console.error('Recipe scan error:', err);
+      this.scanError = 'Could not read the recipe from this photo. Try a clearer image, or fill in the form manually.';
+    } finally {
+      this.isScanningRecipe = false;
+      input.value = ''; // reset so the same file can be chosen again
+    }
+  }
+
+  /** Converts a File to a base64-encoded string (data URI prefix stripped). */
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        resolve(dataUrl.split(',')[1]); // strip "data:<mime>;base64,"
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /** Populates every form field from the AI-scanned recipe object. */
+  private populateFormFromScan(scanned: ScannedRecipe): void {
+    // General fields
+    this.recipeForm.patchValue({
+      name:         scanned.name        || '',
+      description:  scanned.description || '',
+      author:       scanned.author      || '',
+      prep_time:    scanned.prep_time,
+      cook_time:    scanned.cook_time,
+      chill_time:   scanned.chill_time,
+      total_time:   scanned.total_time,
+      serving_size: scanned.serving_size,
+      tags:         scanned.tags        || [],
+      notes:        scanned.notes       || '',
+    });
+
+    // Auto-generate slug from scanned name
+    if (scanned.name) {
+      const slug = scanned.name.replaceAll(' ', '-').toLowerCase().trim();
+      this.recipeForm.get('slug').setValue(slug, { emitEvent: false });
+    }
+
+    // Ingredient groups — rebuild the FormArray from scratch
+    const ingredientGroupsArray = this.recipeForm.get('ingredient_groups') as FormArray;
+    ingredientGroupsArray.clear();
+    for (const group of (scanned.ingredient_groups || [])) {
+      const groupForm = new FormGroup({
+        'ingredientGroupName': new FormControl(group.ingredientGroupName || 'Main', Validators.required),
+        'ingredients': new FormArray([])
+      });
+      const ingredientsArray = groupForm.get('ingredients') as FormArray;
+      for (const ing of (group.ingredients || [])) {
+        ingredientsArray.push(new FormGroup({
+          'ingredientName':            new FormControl(ing.ingredientName,            Validators.required),
+          'ingredientAmount':          new FormControl(ing.ingredientAmount,          Validators.required),
+          'ingredientMeasurementType': new FormControl(ing.ingredientMeasurementType, Validators.required)
+        }));
+      }
+      ingredientGroupsArray.push(groupForm);
+    }
+
+    // Ensure at least one ingredient group exists so the form stays valid
+    if (ingredientGroupsArray.length === 0) {
+      ingredientGroupsArray.push(this.createIngredientGroup());
+    }
+
+    // Steps — rebuild the FormArray from scratch
+    const stepsArray = this.recipeForm.get('steps') as FormArray;
+    stepsArray.clear();
+    for (const s of (scanned.steps || [])) {
+      stepsArray.push(new FormGroup({
+        'step':            new FormControl(s.step, Validators.required),
+        'stepIngredients': new FormArray([])
+      }));
+    }
   }
 
   // ── Steps ─────────────────────────────────────────────────────────────────

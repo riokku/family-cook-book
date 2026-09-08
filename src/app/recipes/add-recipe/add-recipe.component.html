@@ -18,6 +18,47 @@
     </div>
     <div class="row">
       <div class="col-12">
+        <!-- Hidden file input — triggered by the Scan button below -->
+        <input
+          type="file"
+          #scanInput
+          accept="image/*"
+          class="d-none"
+          (change)="onScanFileSelected($event)">
+
+        <!-- ── AI Recipe Scanner ──────────────────────────────────────────── -->
+        <div class="scan-banner mb-4">
+          <div class="d-flex align-items-center flex-wrap gap-3">
+            <div>
+              <h5 class="scan-banner__title mb-1">
+                <i class="bi bi-camera-fill me-2"></i>Got a recipe on paper?
+              </h5>
+              <small class="scan-banner__subtitle">
+                Take or upload a photo and AI will fill in the form for you.
+              </small>
+            </div>
+            <button
+              type="button"
+              class="btn btn-scan ms-auto"
+              (click)="onScanRecipe()"
+              [disabled]="isScanningRecipe">
+              <span *ngIf="!isScanningRecipe">
+                <i class="bi bi-camera me-2"></i>Scan Recipe Photo
+              </span>
+              <span *ngIf="isScanningRecipe">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Analyzing…
+              </span>
+            </button>
+          </div>
+          <div *ngIf="scanError" class="alert alert-danger mt-3 mb-0 py-2">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ scanError }}
+          </div>
+          <div *ngIf="scanSuccess" class="alert alert-success mt-3 mb-0 py-2">
+            <i class="bi bi-check-circle-fill me-2"></i>Recipe scanned! Review the fields below and adjust anything that needs a tweak.
+          </div>
+        </div>
+
         <form [formGroup]="recipeForm" (ngSubmit)="onSubmitNew()">
 
           <!-- ── General information ─────────────────────────────────────── -->
