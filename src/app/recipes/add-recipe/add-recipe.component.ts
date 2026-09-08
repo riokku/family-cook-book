@@ -107,8 +107,8 @@ export class AddRecipeComponent implements OnInit {
     this.scanSuccess = false;
 
     try {
-      const base64 = await this.fileToBase64(file);
-      const scanned = await this.aiService.extractRecipeFromImage(base64, file.type);
+      const { data, mimeType } = await this.fileToScaledBase64(file);
+      const scanned = await this.aiService.extractRecipeFromImage(data, mimeType);
       this.populateFormFromScan(scanned);
       this.scanSuccess = true;
     } catch (err) {
@@ -121,34 +121,70 @@ export class AddRecipeComponent implements OnInit {
   }
 
   /**
-   * Turns a failed scan into a message worth showing. The edge function sends a
-   * useful reason in its JSON body, so prefer that over a generic fallback.
+   * Turns a failed scan into a message worth showing. The edge function reports
+   * a real reason in its JSON body, so prefer that; only guess as a last resort,
+   * and never blame the photo for what was actually a transport failure.
    */
   private async describeScanError(err: any): Promise<string> {
-    const status = err?.context?.status;
+    const response: Response | undefined = err?.context;
+    const status = response?.status;
+
     if (status === 401 || status === 403) {
       return 'You need to be signed in as an admin to scan recipes. Try signing in again.';
     }
+
+    // Prefer whatever the function itself said
     try {
-      const body = await err?.context?.json?.();
-      if (body?.error) return body.error;
+      const text = await response?.clone?.().text?.();
+      if (text) {
+        try {
+          const body = JSON.parse(text);
+          if (body?.error) return body.error;
+        } catch {
+          return `Scan failed (${status}): ${text.slice(0, 200)}`;
+        }
+      }
     } catch {
-      // response body was not JSON — fall through to the generic message
+      // response body could not be read — fall through
     }
-    return 'Could not read the recipe from this photo. Try a clearer image, or fill in the form manually.';
+
+    // No response at all means we never got a reply, not a bad photo
+    if (!status) {
+      return 'The scan timed out before it finished. Check your connection and try again — if it keeps happening, the scan-recipe function logs will show why.';
+    }
+
+    return `Scan failed (${status}). Check the scan-recipe function logs for details.`;
   }
 
-  /** Converts a File to a base64-encoded string (data URI prefix stripped). */
-  private fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result as string;
-        resolve(dataUrl.split(',')[1]); // strip "data:<mime>;base64,"
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+  /**
+   * Downscales an image and returns it as base64 (data URI prefix stripped).
+   *
+   * Phone cameras produce 3-12MB photos, and base64 inflates that by a further
+   * third — far more than the scan needs and slow enough over mobile data to
+   * stall the request. 1600px on the long edge keeps recipe text comfortably
+   * legible to Gemini while cutting the payload to a few hundred KB.
+   */
+  private async fileToScaledBase64(
+    file: File,
+    maxEdge = 1600,
+    quality = 0.85
+  ): Promise<{ data: string; mimeType: string }> {
+    // `from-image` honours the EXIF orientation phones write, so a photo taken
+    // sideways is uprighted rather than handed to Gemini rotated.
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+
+    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+    const width = Math.round(bitmap.width * scale);
+    const height = Math.round(bitmap.height * scale);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, width, height);
+    bitmap.close();
+
+    const dataUrl = canvas.toDataURL('image/jpeg', quality);
+    return { data: dataUrl.split(',')[1], mimeType: 'image/jpeg' };
   }
 
   /** Populates every form field from the AI-scanned recipe object. */
