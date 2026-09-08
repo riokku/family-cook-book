@@ -115,11 +115,29 @@ export class AddRecipeComponent implements OnInit {
       this.scanSuccess = true;
     } catch (err) {
       console.error('Recipe scan error:', err);
-      this.scanError = 'Could not read the recipe from this photo. Try a clearer image, or fill in the form manually.';
+      this.scanError = await this.describeScanError(err);
     } finally {
       this.isScanningRecipe = false;
       input.value = ''; // reset so the same file can be chosen again
     }
+  }
+
+  /**
+   * Turns a failed scan into a message worth showing. The edge function sends a
+   * useful reason in its JSON body, so prefer that over a generic fallback.
+   */
+  private async describeScanError(err: any): Promise<string> {
+    const status = err?.context?.status;
+    if (status === 401 || status === 403) {
+      return 'You need to be signed in as an admin to scan recipes. Try signing in again.';
+    }
+    try {
+      const body = await err?.context?.json?.();
+      if (body?.error) return body.error;
+    } catch {
+      // response body was not JSON — fall through to the generic message
+    }
+    return 'Could not read the recipe from this photo. Try a clearer image, or fill in the form manually.';
   }
 
   /** Converts a File to a base64-encoded string (data URI prefix stripped). */
