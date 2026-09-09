@@ -26,6 +26,10 @@ export class SupaService {
         // Zone.js intercepts the resulting promise rejections and logs them as unhandled
         // errors. For a single-tab SPA there are no true concurrent auth writers, so
         // replacing the lock with a passthrough is safe and eliminates the noise.
+        //
+        // Needs @supabase/supabase-js >= 2.44. Older versions drop `lock` when
+        // forwarding auth options to the auth client, so it silently has no effect
+        // and navigatorLock is used regardless.
         lock: (_name: string, _acquireTimeout: number, fn: () => Promise<any>) => fn()
       }
     });

@@ -2,6 +2,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    // Dependency .d.ts files are not ours to satisfy: supabase-js declares Node
+    // types (Buffer, NodeJS) that a browser app deliberately does not load.
+    "skipLibCheck": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
