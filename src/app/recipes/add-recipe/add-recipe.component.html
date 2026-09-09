@@ -144,9 +144,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-12">
                 <div class="form-group">
-                  <label>Recipe image</label>
+                  <label class="d-block">Recipe image</label>
 
                   <!-- Source toggle -->
                   <div class="btn-group image-source-toggle mb-3" role="group" aria-label="Image source">
@@ -426,7 +426,7 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
               <button type="submit" class="btn btn-success me-3" [disabled]="!recipeForm.valid" data-bs-toggle="modal" data-bs-target="#successModal">Submit</button>
               <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
               <span class="recipe-date">Recipe created: {{recipeCreatedDate | date:'medium' }}</span>
