@@ -9,7 +9,7 @@
 
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_MODEL = 'gemini-3.6-flash';
 
 const VALID_UNITS = [
   'Cups', 'Teaspoons', 'Tablespoons', 'Fluid ounces', 'Pints',
