@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
@@ -16,7 +16,7 @@ import { downscaleImage } from 'src/app/shared/utils/image.util';
     standalone: false
 })
 
-export class RecipeEditComponent implements OnInit {
+export class RecipeEditComponent implements OnInit, OnDestroy {
 
   editRecipeForm: FormGroup;
   editedSlug: string;
@@ -50,6 +50,11 @@ export class RecipeEditComponent implements OnInit {
   isUploadingImage = false;
   imageUploadError: string | null = null;
 
+  /** The image this recipe had when the form loaded. */
+  private savedImageUrl: string | null = null;
+  /** Uploads from this session that no save has committed yet. */
+  private pendingImageUrls: string[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private supaService: SupaService,
@@ -75,6 +80,17 @@ export class RecipeEditComponent implements OnInit {
     try {
       const scaled = await downscaleImage(file);
       const publicUrl = await this.supaService.uploadRecipeImage(scaled);
+
+      // Swapping one unsaved upload for another orphans the first straight
+      // away. The recipe's saved image is left alone until a save confirms it
+      // has actually been replaced.
+      const replaced = this.editRecipeForm.get('image_path').value;
+      if (this.pendingImageUrls.includes(replaced)) {
+        this.pendingImageUrls = this.pendingImageUrls.filter(url => url !== replaced);
+        await this.supaService.deleteRecipeImage(replaced);
+      }
+
+      this.pendingImageUrls.push(publicUrl);
       this.editRecipeForm.get('image_path').setValue(publicUrl);
     } catch (err: any) {
       console.error('Image upload failed:', err);
@@ -84,6 +100,20 @@ export class RecipeEditComponent implements OnInit {
       this.isUploadingImage = false;
       input.value = ''; // reset so the same file can be chosen again
     }
+  }
+
+  /** Removes uploads the user never committed with a save. */
+  private discardPendingImages(): void {
+    const orphans = this.pendingImageUrls;
+    this.pendingImageUrls = [];
+    for (const url of orphans) {
+      void this.supaService.deleteRecipeImage(url);
+    }
+  }
+
+  /** Covers cancelling and navigating away; both tear the component down. */
+  ngOnDestroy(): void {
+    this.discardPendingImages();
   }
 
   get recipeIngredientControls() {
@@ -165,6 +195,7 @@ export class RecipeEditComponent implements OnInit {
     this.recipeServingSize = this.editingRecipe.serving_size;
     this.recipeFeatured = this.editingRecipe.featured;
     this.recipeImagePath = this.editingRecipe.image_path;
+    this.savedImageUrl = this.editingRecipe.image_path ?? null;
     this.recipeIngredientsGroupArray = this.editingRecipe.ingredient_groups;
     this.recipeStepsArray = this.editingRecipe.steps;
     this.recipeTags = this.editingRecipe.tags;
@@ -352,7 +383,17 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSaveChanges() {
+    const keptImageUrl = this.editRecipeForm.get('image_path').value;
     this.supaService.updateRecipe(this.editRecipeForm.value);
+
+    // The save commits every pending upload, and retires the old image if this
+    // recipe no longer points at it
+    this.pendingImageUrls = [];
+    if (this.savedImageUrl && this.savedImageUrl !== keptImageUrl) {
+      void this.supaService.deleteRecipeImage(this.savedImageUrl);
+    }
+    this.savedImageUrl = keptImageUrl;
+
     this.router.navigate(['/admin']);
   }
 

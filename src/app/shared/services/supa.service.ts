@@ -105,6 +105,35 @@ export class SupaService {
     return data.publicUrl;
   }
 
+  /**
+   * Storage path behind one of our public URLs, or null when the URL points
+   * somewhere we don't own — an imgur link, say — and must be left alone.
+   */
+  private storagePathFor(imageUrl: string): string | null {
+    if (!imageUrl) return null;
+    const marker = `/storage/v1/object/public/${SupaService.RECIPE_IMAGE_BUCKET}/`;
+    const start = imageUrl.indexOf(marker);
+    return start === -1 ? null : imageUrl.slice(start + marker.length);
+  }
+
+  /**
+   * Removes an uploaded recipe image. Externally hosted images are ignored.
+   * Failures are logged rather than thrown: cleanup falling behind should never
+   * break the delete or save the caller actually asked for.
+   */
+  async deleteRecipeImage(imageUrl: string): Promise<void> {
+    const path = this.storagePathFor(imageUrl);
+    if (!path) return;
+
+    const { error } = await this.supabaseClient.storage
+      .from(SupaService.RECIPE_IMAGE_BUCKET)
+      .remove([path]);
+
+    if (error) {
+      console.error('Could not delete recipe image:', error);
+    }
+  }
+
 
   //Recipe functions
 
@@ -152,8 +181,15 @@ export class SupaService {
     }
   }
 
-  //Delete recipe
+  //Delete recipe, along with its uploaded image
   async deleteRecipe(toBeDeletedRecipeID: number){
+    // Read the image path while the row still exists
+    const { data: doomedRecipe } = await this.supabaseClient
+    .from('recipes')
+    .select('image_path')
+    .eq('id', toBeDeletedRecipeID)
+    .single();
+
     const { error } = await this.supabaseClient
     .from('recipes')
     .delete()
@@ -161,6 +197,13 @@ export class SupaService {
 
     if(error){
       console.error(error)
+      return;
+    }
+
+    // Only once the row is gone, so a failed delete never leaves a recipe
+    // pointing at an image that no longer exists
+    if(doomedRecipe?.image_path){
+      await this.deleteRecipeImage(doomedRecipe.image_path);
     }
   }
 
