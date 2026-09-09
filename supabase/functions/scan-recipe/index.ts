@@ -153,7 +153,11 @@ Deno.serve(async (req: Request) => {
     if (!geminiResponse.ok) {
       const detail = await geminiResponse.text();
       console.error('Gemini API error:', geminiResponse.status, detail);
-      return json({ error: 'The recipe scanner is unavailable right now.' }, 502);
+      // Surface Gemini's own reason: a retired model, a rejected key and a
+      // tripped quota are indistinguishable without it.
+      return json({
+        error: `Gemini rejected the request (${geminiResponse.status}): ${detail.slice(0, 400)}`
+      }, 502);
     }
 
     const result = await geminiResponse.json();
