@@ -1,48 +1,76 @@
-h3{
-  color: #fff;
+@use '../../../styles/tokens' as *;
+
+.featured-heading{
+  color: $white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
 
-.card{
-  transition: box-shadow 0.75s ease;
-  border: none;
-  .image-container {
-    border-radius: 0.25rem 0.25rem 0 0;
-    overflow: hidden;
-    img {
-      transition: transform 0.75s ease;
-      aspect-ratio: 16/9;
-      object-fit: cover;
+// Card presentation comes from app-recipe-card, so the home page and the
+// recipes page stay in step. Only the carousel chrome lives here.
+.featured-carousel{
+
+  .carousel-item{
+    // Bootstrap sets display:block on the active item; the card host is a flex
+    // item, so give it a row to sit in.
+    &.active{
+      display: flex;
     }
   }
-  &:hover{
-    box-shadow: 0 0 20px rgba(255, 255, 255, 1);
-    .image-container {
-      img{
-        transform: scale(1.2);
+
+  .carousel-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .nav-arrow{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    background-color: rgba(255, 255, 255, 0.12);
+    color: $white;
+    transition: background-color 0.2s ease;
+    @include focus-ring($focus-on-dark);
+    &:hover{
+      background-color: rgba(255, 255, 255, 0.26);
+      border-color: $white;
+    }
+  }
+
+  // Bootstrap positions .carousel-indicators absolutely over the slide; here
+  // they belong inline in the control row beneath it.
+  .carousel-indicators{
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    button{
+      width: 0.6rem;
+      height: 0.6rem;
+      flex-shrink: 0;
+      padding: 0;
+      border-radius: 999px;
+      border: none;
+      background-color: rgba(255, 255, 255, 0.45);
+      opacity: 1;
+      text-indent: 0;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      @include focus-ring($focus-on-dark);
+      &.active{
+        background-color: $white;
+        transform: scale(1.25);
       }
     }
   }
-  .tag-list{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    li{
-      background-color: #6457a8;
-      color: #fff;
-      padding: .35rem;
-      border-radius: 0.25rem;
-      font-size: 0.8rem;
-    }
-  }
-}
-
-.featured{
-  z-index: 2;
-  position: absolute;
-  right: 0;
-  top: 10px;
-  padding: 0.25rem 0.5rem;
-  background-color: #574b90;
-  color: #fff;
-  border-radius: 0.25rem 0 0 0.25rem;
 }

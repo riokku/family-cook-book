@@ -1,8 +1,11 @@
+<app-intro *ngIf="showIntro" (finished)="onIntroFinished()"></app-intro>
+
 <div class="site-wrapper fade-in">
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="header">
     <app-header></app-header>
   </div>
-  <main>
+  <main id="main-content" tabindex="-1">
     <router-outlet></router-outlet>
   </main>
   <div class="footer">

@@ -167,6 +167,11 @@ export class SupaService {
     return recipes
   }
 
+  /** Recipes from the last fetch, populated by RecipesResolverService. */
+  get cachedRecipes(): Recipe[]{
+    return this.recipes;
+  }
+
   //Get specific recipe
   getRecipe(slug: string){
     return this.recipes.find(recipe => recipe.slug === slug);

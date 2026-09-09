@@ -1,6 +1,12 @@
+@use '../../styles/tokens' as *;
+
 section{
-  background-color: #2d3436;
-  color: #fff;
+  background-color: $ink;
+  color: $white;
+
+  a{
+    @include focus-ring($focus-on-dark);
+  }
   .footer-info{
     display: flex;
     justify-content: space-between;

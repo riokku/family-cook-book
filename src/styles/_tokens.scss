@@ -1,0 +1,34 @@
+// Shared design tokens. Import with a relative path, e.g.
+// `@use '../../styles/tokens' as *;`.
+//
+// Deliberately not on the Sass load path: adding stylePreprocessorOptions to
+// angular.json makes this builder surface Bootstrap's own @import deprecation
+// warnings on every build, and it has no option to silence them.
+
+// Brand
+$purple: #574b90;
+$purple-light: #6457a8;
+$ink: #2d3436;
+$ink-hover: #3a4345;
+
+// Neutrals
+$white: #fff;
+$grey-100: #f2f2f2;
+$grey-200: #e9e9e9;
+$grey-600: #5a5a5a;
+$danger: #b3261e;
+
+// Focus indicators need 3:1 against the surface behind them, and no single
+// colour clears that on both the purple panel and a white card — so there is
+// one per surface rather than one for the app.
+$focus-on-dark: #ffd93d;
+$focus-on-light: $purple;
+
+// One focus treatment everywhere, deliberately different from any selected
+// state so "this is focused" never reads as "this is on".
+@mixin focus-ring($color: $focus-on-light, $offset: 2px) {
+  &:focus-visible{
+    outline: 3px solid $color;
+    outline-offset: $offset;
+  }
+}

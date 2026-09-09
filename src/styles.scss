@@ -1,3 +1,5 @@
+@use './styles/tokens' as *;
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 * {
@@ -23,9 +25,67 @@ a{
   }
 }
 
+// App-wide keyboard focus baseline. :focus-visible only fires for keyboard
+// (and equivalent) focus, so this never shows on a mouse click. Components on
+// dark surfaces override the colour; components with their own ring win on
+// specificity.
+a,
+button,
+input,
+select,
+textarea,
+summary,
+// -1 is the skip-link's programmatic target, not a keyboard stop.
+[tabindex]:not([tabindex="-1"]){
+  @include focus-ring($focus-on-light);
+}
+
+// Skip link: hidden until focused, then the first stop on the page.
+.skip-link{
+  position: absolute;
+  left: 0.5rem;
+  top: -4rem;
+  z-index: 1080;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  background-color: $white;
+  color: $purple;
+  font-weight: 600;
+  transition: top 0.15s ease;
+  &:focus{
+    top: 0.5rem;
+    color: $purple;
+  }
+}
+
+// Applied by RevealOnScrollDirective. Global rather than component-scoped so
+// any template can use the directive; the directive adds .reveal-pending
+// itself, so nothing is ever left hidden if its script does not run.
+.reveal-pending{
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  &.reveal-visible{
+    opacity: 1;
+    transform: none;
+  }
+}
 
 @media (max-width: 390px){
   .pt-5{
     padding-top: 2rem !important;
+  }
+}
+
+// Honoured app-wide rather than per component: every transition and animation
+// in the app is decorative.
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }

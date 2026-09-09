@@ -1,5 +1,14 @@
+@use '../../styles/tokens' as *;
+
 nav{
-  background-color: #574b90;
+  background-color: $purple;
+
+  // Dark brand bar: the light-surface default would be near invisible here.
+  a,
+  button,
+  .navbar-toggler{
+    @include focus-ring($focus-on-dark);
+  }
 
   .home-link-wrapper{
     display: flex;
