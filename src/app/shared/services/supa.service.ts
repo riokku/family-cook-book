@@ -10,6 +10,9 @@ import { BehaviorSubject } from 'rxjs';
 
 export class SupaService {
 
+  /** Public storage bucket holding uploaded recipe photos. */
+  private static readonly RECIPE_IMAGE_BUCKET = 'recipe-images';
+
   private supabaseClient: SupabaseClient;
   private authStateSubject = new BehaviorSubject<Session | null>(null);
   authState$ = this.authStateSubject.asObservable();
@@ -80,6 +83,26 @@ export class SupaService {
   async getAccessToken(): Promise<string | null> {
     const { data: { session } } = await this.supabaseClient.auth.getSession();
     return session?.access_token ?? null;
+  }
+
+  //Upload a recipe image to storage and return its public URL
+  async uploadRecipeImage(image: Blob): Promise<string> {
+    const path = `${crypto.randomUUID()}.jpg`;
+
+    const { error } = await this.supabaseClient.storage
+      .from(SupaService.RECIPE_IMAGE_BUCKET)
+      .upload(path, image, { contentType: image.type || 'image/jpeg', upsert: false });
+
+    if (error) {
+      console.error('Recipe image upload failed:', error);
+      throw error;
+    }
+
+    const { data } = this.supabaseClient.storage
+      .from(SupaService.RECIPE_IMAGE_BUCKET)
+      .getPublicUrl(path);
+
+    return data.publicUrl;
   }
 
 

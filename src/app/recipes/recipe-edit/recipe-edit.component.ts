@@ -7,6 +7,7 @@ import { Step } from 'src/app/shared/models/step.model';
 import { Recipe } from 'src/app/shared/models/recipe.model';
 import { IngredientGroup } from 'src/app/shared/models/ingredient-group.model';
 import { SupaService } from 'src/app/shared/services/supa.service';
+import { downscaleImage } from 'src/app/shared/utils/image.util';
 
 @Component({
     selector: 'app-recipe-edit',
@@ -43,11 +44,47 @@ export class RecipeEditComponent implements OnInit {
   ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons", "Tablespoons", "Fluid ounces", "Pints", "Quarts", "Milliliters", "Liters", "Grams", "Kilograms", "Ounces", "Pounds", "Count"];
   recipeTagOptions: string[] = ["Appetizer", "Dinner", "Cast iron", "Beverage", "Breakfast", "Dessert", "Cookies", "Grilling", "Italian", "Mexican", "Salad", "Seafood", "Soup"];
 
+  // ── Recipe image state ─────────────────────────────────────────────────────
+  // Defaults to 'url' here so an existing recipe's current link stays visible.
+  imageSource: 'upload' | 'url' = 'url';
+  isUploadingImage = false;
+  imageUploadError: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private supaService: SupaService,
     private router: Router,
   ) {}
+
+  // ── Recipe image ───────────────────────────────────────────────────────────
+
+  setImageSource(source: 'upload' | 'url'): void {
+    this.imageSource = source;
+    this.imageUploadError = null;
+  }
+
+  /** Uploads a chosen photo to storage and stores its public URL on the form. */
+  async onImageFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    this.isUploadingImage = true;
+    this.imageUploadError = null;
+
+    try {
+      const scaled = await downscaleImage(file);
+      const publicUrl = await this.supaService.uploadRecipeImage(scaled);
+      this.editRecipeForm.get('image_path').setValue(publicUrl);
+    } catch (err: any) {
+      console.error('Image upload failed:', err);
+      this.imageUploadError =
+        err?.message || 'Could not upload that image. Try again, or paste a link instead.';
+    } finally {
+      this.isUploadingImage = false;
+      input.value = ''; // reset so the same file can be chosen again
+    }
+  }
 
   get recipeIngredientControls() {
     return (this.editRecipeForm.get('ingredients') as FormArray).controls;

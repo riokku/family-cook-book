@@ -5,6 +5,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import { SupaService } from 'src/app/shared/services/supa.service';
 import { AiService, ScannedRecipe } from 'src/app/shared/services/ai.service';
+import { blobToBase64, downscaleImage } from 'src/app/shared/utils/image.util';
 
 @Component({
     selector: 'app-add-recipe',
@@ -26,6 +27,11 @@ export class AddRecipeComponent implements OnInit {
   isScanningRecipe = false;
   scanError: string | null = null;
   scanSuccess = false;
+
+  // ── Recipe image state ─────────────────────────────────────────────────────
+  imageSource: 'upload' | 'url' = 'upload';
+  isUploadingImage = false;
+  imageUploadError: string | null = null;
 
   ingredientAmountTypeOptions: string[] = ["Cups", "Teaspoons", "Tablespoons", "Fluid ounces", "Pints", "Quarts", "Milliliters", "Liters", "Grams", "Kilograms", "Ounces", "Pounds", "Count"];
   recipeTagOptions: string[] = ["Appetizer", "Dinner", "Cast iron", "Beverage", "Breakfast", "Dessert", "Cookies", "Grilling", "Italian", "Mexican", "Salad", "Seafood", "Soup"];
@@ -129,35 +135,40 @@ export class AddRecipeComponent implements OnInit {
     return 'Could not reach the recipe scanner. Check your connection and try again.';
   }
 
-  /**
-   * Downscales an image and returns it as base64 (data URI prefix stripped).
-   *
-   * Phone cameras produce 3-12MB photos, and base64 inflates that by a further
-   * third — far more than the scan needs and slow enough over mobile data to
-   * stall the request. 1600px on the long edge keeps recipe text comfortably
-   * legible to Gemini while cutting the payload to a few hundred KB.
-   */
-  private async fileToScaledBase64(
-    file: File,
-    maxEdge = 1600,
-    quality = 0.85
-  ): Promise<{ data: string; mimeType: string }> {
-    // `from-image` honours the EXIF orientation phones write, so a photo taken
-    // sideways is uprighted rather than handed to Gemini rotated.
-    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  /** Downscales a photo and returns it as base64, ready for the scan request. */
+  private async fileToScaledBase64(file: File): Promise<{ data: string; mimeType: string }> {
+    const scaled = await downscaleImage(file);
+    return { data: await blobToBase64(scaled), mimeType: 'image/jpeg' };
+  }
 
-    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
-    const width = Math.round(bitmap.width * scale);
-    const height = Math.round(bitmap.height * scale);
+  // ── Recipe image ───────────────────────────────────────────────────────────
 
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    canvas.getContext('2d').drawImage(bitmap, 0, 0, width, height);
-    bitmap.close();
+  setImageSource(source: 'upload' | 'url'): void {
+    this.imageSource = source;
+    this.imageUploadError = null;
+  }
 
-    const dataUrl = canvas.toDataURL('image/jpeg', quality);
-    return { data: dataUrl.split(',')[1], mimeType: 'image/jpeg' };
+  /** Uploads a chosen photo to storage and stores its public URL on the form. */
+  async onImageFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    this.isUploadingImage = true;
+    this.imageUploadError = null;
+
+    try {
+      const scaled = await downscaleImage(file);
+      const publicUrl = await this.supaService.uploadRecipeImage(scaled);
+      this.recipeForm.get('image_path').setValue(publicUrl);
+    } catch (err: any) {
+      console.error('Image upload failed:', err);
+      this.imageUploadError =
+        err?.message || 'Could not upload that image. Try again, or paste a link instead.';
+    } finally {
+      this.isUploadingImage = false;
+      input.value = ''; // reset so the same file can be chosen again
+    }
   }
 
   /** Populates every form field from the AI-scanned recipe object. */
