@@ -275,17 +275,17 @@ small{
 .required{
   &:after{
     content: "Required";
-    // Muted, not red: this marks a field as required, which is not an error.
-    // Red here competes with real validation messages.
-    background-color: transparent;
-    color: $grey-600;
+    // Brand purple rather than red: this marks a field as needed, not as an
+    // error, so it should stand out without competing with validation.
+    background-color: $purple-tint;
+    color: $purple;
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     margin-left: 0.5rem;
-    padding: 0;
-    border-radius: 0;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
   }
 }
 

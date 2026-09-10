@@ -1,9 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow">
   <div class="container pt-2 pb-2">
     <a routerLink="/"  class="home-link-wrapper">
-      <img class="hero me-2" src="../../assets/icons/hero.png" alt="Gogo's Kitchen">
+      <img class="hero me-2" src="../../assets/icons/hero.png" alt="" aria-hidden="true">
       <h1 class="site-title m-0">
-        Gogo&rsquo;s Kitchen
+        <!-- Initials on screen, full name for screen readers and the document
+             outline, so shortening it costs nothing in meaning. -->
+        <span aria-hidden="true">GK</span>
+        <span class="visually-hidden">Gogo&rsquo;s Kitchen</span>
       </h1>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
