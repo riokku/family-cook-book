@@ -10,10 +10,13 @@ export class AppComponent {
 
   title = 'family-cook-book';
 
-  // Key for the once-per-session flag. sessionStorage rather than
-  // localStorage: the splash should return on a fresh visit, just not on every
-  // route change within one.
   private static readonly INTRO_SEEN_KEY = 'gogos-intro-seen';
+
+  // Show the splash at most once in this window. sessionStorage looks like the
+  // natural fit, but it is scoped per tab rather than per browsing session, so
+  // opening a recipe in a second tab replayed the whole animation. A timestamp
+  // in localStorage gives "not again today, but yes on a fresh visit".
+  private static readonly INTRO_INTERVAL_MS = 12 * 60 * 60 * 1000;
 
   showIntro: boolean = this.shouldShowIntro();
 
@@ -29,7 +32,9 @@ export class AppComponent {
     // Private browsing and blocked storage both throw on access, and a splash
     // screen is never worth failing the app over.
     try {
-      return sessionStorage.getItem(AppComponent.INTRO_SEEN_KEY) === null;
+      const lastSeen = Number(localStorage.getItem(AppComponent.INTRO_SEEN_KEY));
+      // Covers null (0) and anything unparseable (NaN): both mean "show it".
+      return !lastSeen || Date.now() - lastSeen > AppComponent.INTRO_INTERVAL_MS;
     } catch {
       return false;
     }
@@ -38,7 +43,7 @@ export class AppComponent {
   onIntroFinished(){
     this.showIntro = false;
     try {
-      sessionStorage.setItem(AppComponent.INTRO_SEEN_KEY, 'true');
+      localStorage.setItem(AppComponent.INTRO_SEEN_KEY, String(Date.now()));
     } catch {
       // Storage unavailable; the splash simply shows again next navigation.
     }
