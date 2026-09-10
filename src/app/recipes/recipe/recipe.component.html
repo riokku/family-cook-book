@@ -5,11 +5,13 @@
         <a class="breadcrumb" [routerLink]="['/recipes']">
           <i class="bi bi-chevron-double-left me-1"></i> Back to all recipes
         </a>
-        <a *ngIf="isAdmin"
-           class="btn-edit"
-           [routerLink]="['/recipes', recipe.slug, 'edit']">
-          <i class="bi bi-pencil-square me-1"></i> Edit recipe
-        </a>
+        @if (isAdmin) {
+          <a
+            class="btn-edit"
+            [routerLink]="['/recipes', recipe.slug, 'edit']">
+            <i class="bi bi-pencil-square me-1"></i> Edit recipe
+          </a>
+        }
       </div>
     </div>
     <div class="recipe-wrapper">
@@ -28,56 +30,76 @@
                 {{ recipe.name }}
               </h1>
               <p>
-                Author: {{ recipe.author }} <span *ngIf="recipe.link"><a href="{{recipe.link}}" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a></span>
-              </p>
-              <ul class="ps-0 mb-3">
-                <li class="mb-1">
-                  <i class="bi bi-clock me-1"></i> {{ recipe.total_time | timeFormat }} (<span *ngIf="recipe.prep_time">{{ recipe.prep_time | timeFormat }} prep</span><span *ngIf="recipe.chill_time"> / {{ recipe.chill_time | timeFormat }} chill</span><span *ngIf="recipe.cook_time"> / {{ recipe.cook_time | timeFormat }} cook</span>)
-                </li>
-                <li class="servings">
-                  <i class="bi bi-person me-1"></i> {{ recipe.serving_size }} servings
-                </li>
-              </ul>
-              <p class="mb-0">
-                {{ recipe.description }}
-              </p>
-            </div>
+                Author: {{ recipe.author }} @if (recipe.link) {
+                <span><a href="{{recipe.link}}" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a></span>
+              }
+            </p>
+            <ul class="ps-0 mb-3">
+              <li class="mb-1">
+                <i class="bi bi-clock me-1"></i> {{ recipe.total_time | timeFormat }} (@if (recipe.prep_time) {
+                <span>{{ recipe.prep_time | timeFormat }} prep</span>
+                }@if (recipe.chill_time) {
+                <span> / {{ recipe.chill_time | timeFormat }} chill</span>
+                }@if (recipe.cook_time) {
+                <span> / {{ recipe.cook_time | timeFormat }} cook</span>
+                })
+              </li>
+              <li class="servings">
+                <i class="bi bi-person me-1"></i> {{ recipe.serving_size }} servings
+              </li>
+            </ul>
+            <p class="mb-0">
+              {{ recipe.description }}
+            </p>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12 col-sm-12 col-md-5 col-lg-4">
-          <div class="ingredient-pane">
-            <div class="ingredient-header p-4">
-              <h3 class="mb-0">
-                Ingredients:
-              </h3>
-            </div>
-            <div class="ingredient-content p-4">
-              <p class="doubled-text" *ngIf="isDoubled">
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-12 col-md-5 col-lg-4">
+        <div class="ingredient-pane">
+          <div class="ingredient-header p-4">
+            <h3 class="mb-0">
+              Ingredients:
+            </h3>
+          </div>
+          <div class="ingredient-content p-4">
+            @if (isDoubled) {
+              <p class="doubled-text">
                 <i class="bi bi-asterisk"></i> Showing <u>doubled</u> quantities:
               </p>
-              <div class="ingredient-group" *ngFor="let ingredientGroup of recipe.ingredient_groups; let last = last" [ngClass]="{'last-group': last}">
-                <h4 *ngIf="recipe.ingredient_groups.length > 1">
-                  {{ ingredientGroup.ingredientGroupName }}
-                </h4>
+            }
+            @for (ingredientGroup of recipe.ingredient_groups; track ingredientGroup; let last = $last) {
+              <div class="ingredient-group" [ngClass]="{'last-group': last}">
+                @if (recipe.ingredient_groups.length > 1) {
+                  <h4>
+                    {{ ingredientGroup.ingredientGroupName }}
+                  </h4>
+                }
                 <ul class="ps-1">
-                  <li *ngFor="let ingredient of ingredientGroup.ingredients">
-                    <strong>{{ ingredient.ingredientAmount | ingredientAmountConverter: isDoubled}}
-                    <span *ngIf="ingredient.ingredientMeasurementType != 'Count'">{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount | lowercase}}</span></strong>
-                    {{ ingredient.ingredientName | lowerFirstLetter}}
-                  </li>
-                </ul>
-                <hr class="mt-4 mb-4" />
-              </div>
-              <div class="notes-card fst-italic mt-5" *ngIf="recipe.notes">
-                <h5 class="fw-bold">
-                  Notes for this recipe:
-                </h5>
-                <p class="mb-0">
-                  {{ recipe.notes }}
-                </p>
-              </div>
+                  @for (ingredient of ingredientGroup.ingredients; track ingredient) {
+                    <li>
+                      <strong>{{ ingredient.ingredientAmount | ingredientAmountConverter: isDoubled}}
+                        @if (ingredient.ingredientMeasurementType != 'Count') {
+                          <span>{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount | lowercase}}</span>
+                        }</strong>
+                        {{ ingredient.ingredientName | lowerFirstLetter}}
+                      </li>
+                    }
+                  </ul>
+                  <hr class="mt-4 mb-4" />
+                </div>
+              }
+              @if (recipe.notes) {
+                <div class="notes-card fst-italic mt-5">
+                  <h5 class="fw-bold">
+                    Notes for this recipe:
+                  </h5>
+                  <p class="mb-0">
+                    {{ recipe.notes }}
+                  </p>
+                </div>
+              }
               <button type="button" class="double-button mt-4" (click)="toggleDouble()">
                 <i class="bi bi-question-circle"></i> {{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}
               </button>
@@ -90,17 +112,25 @@
               Steps:
             </h3>
             <ol class="pe-3">
-              <li *ngFor="let step of recipe.steps">
-                <div>
-                  {{ recipe.steps.indexOf(step) + 1 + '.'}}
-                </div>
-                <div>
-                  {{ step.step }}
-                  <ul class="step-ingredient-list ps-0 mt-2" *ngIf="step.stepIngredients?.length">
-                    <li *ngFor="let si of step.stepIngredients">{{ si.ingredientAmount | ingredientAmountConverter: isDoubled }}<ng-container *ngIf="si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count'"> {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount | lowercase }}</ng-container> {{ si.ingredientName | lowerFirstLetter }}</li>
-                  </ul>
-                </div>
-              </li>
+              @for (step of recipe.steps; track step) {
+                <li>
+                  <div>
+                    {{ recipe.steps.indexOf(step) + 1 + '.'}}
+                  </div>
+                  <div>
+                    {{ step.step }}
+                    @if (step.stepIngredients?.length) {
+                      <ul class="step-ingredient-list ps-0 mt-2">
+                        @for (si of step.stepIngredients; track si) {
+                          <li>{{ si.ingredientAmount | ingredientAmountConverter: isDoubled }}@if (si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count') {
+                            {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount | lowercase }}
+                          } {{ si.ingredientName | lowerFirstLetter }}</li>
+                        }
+                      </ul>
+                    }
+                  </div>
+                </li>
+              }
             </ol>
           </div>
         </div>

@@ -10,12 +10,16 @@
             Where every meal is a celebration of family, love, and good food.
           </p>
 
-          <ul class="stat-list mb-4" *ngIf="recipes.length">
-            <li *ngFor="let stat of stats">
-              <span class="stat-value">{{ stat.display }}</span>
-              <span class="stat-label">{{ stat.label }}</span>
-            </li>
-          </ul>
+          @if (recipes.length) {
+            <ul class="stat-list mb-4">
+              @for (stat of stats; track stat) {
+                <li>
+                  <span class="stat-value">{{ stat.display }}</span>
+                  <span class="stat-label">{{ stat.label }}</span>
+                </li>
+              }
+            </ul>
+          }
 
           <div class="cta-row">
             <a routerLink="/recipes" class="cta cta-primary">
@@ -27,19 +31,23 @@
             </button>
           </div>
 
-          <div class="category-links mt-5" *ngIf="categories.length">
-            <h2 class="section-heading mb-3" id="browse-heading">
-              Browse by category
-            </h2>
-            <ul class="category-list" aria-labelledby="browse-heading">
-              <li *ngFor="let category of categories; let i = index" [appRevealOnScroll]="i * 40">
-                <a [routerLink]="['/recipes']" [queryParams]="{ category: category }">
-                  <img [src]="'../../assets/icons/categories/' + category + '.png'" alt="" aria-hidden="true">
-                  {{ category }}
-                </a>
-              </li>
-            </ul>
-          </div>
+          @if (categories.length) {
+            <div class="category-links mt-5">
+              <h2 class="section-heading mb-3" id="browse-heading">
+                Browse by category
+              </h2>
+              <ul class="category-list" aria-labelledby="browse-heading">
+                @for (category of categories; track category; let i = $index) {
+                  <li [appRevealOnScroll]="i * 40">
+                    <a [routerLink]="['/recipes']" [queryParams]="{ category: category }">
+                      <img [src]="'../../assets/icons/categories/' + category + '.png'" alt="" aria-hidden="true">
+                      {{ category }}
+                    </a>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
         </div>
 
         <div class="col-12 col-lg-5">

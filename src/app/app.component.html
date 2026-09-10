@@ -1,4 +1,6 @@
-<app-intro *ngIf="showIntro" (finished)="onIntroFinished()"></app-intro>
+@if (showIntro) {
+  <app-intro (finished)="onIntroFinished()"></app-intro>
+}
 
 <div class="site-wrapper fade-in">
   <a class="skip-link" href="#main-content">Skip to content</a>

@@ -6,9 +6,11 @@
           <h1>
             Find a recipe
           </h1>
-          <p class="result-count" *ngIf="resultCount">
-            {{ resultCount }}
-          </p>
+          @if (resultCount) {
+            <p class="result-count">
+              {{ resultCount }}
+            </p>
+          }
         </div>
         <div class="search-filter-wrapper">
 
@@ -21,10 +23,12 @@
                 <i class="bi bi-search search-icon" aria-hidden="true"></i>
                 <input id="recipe-search" type="search" [(ngModel)]="searchInput" (input)="applyFilters()"
                   placeholder="Search name, ingredient, tag...">
-                <button class="clear-search" type="button" (click)="clearSearchInput()" *ngIf="searchInput"
-                  aria-label="Clear search">
-                  <i class="bi bi-x-lg" aria-hidden="true"></i>
-                </button>
+                @if (searchInput) {
+                  <button class="clear-search" type="button" (click)="clearSearchInput()"
+                    aria-label="Clear search">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                  </button>
+                }
               </div>
             </div>
 
@@ -32,9 +36,11 @@
               Sort recipes
             </label>
             <select class="sort-select" id="recipe-sort" [(ngModel)]="sortOption" (ngModelChange)="applyFilters()">
-              <option *ngFor="let option of sortOptions" [value]="option.value">
-                {{ option.label }}
-              </option>
+              @for (option of sortOptions; track option) {
+                <option [value]="option.value">
+                  {{ option.label }}
+                </option>
+              }
             </select>
 
             <button class="filter-toggle" type="button" (click)="showFilters()"
@@ -42,46 +48,58 @@
               [attr.aria-expanded]="filtersShowing" aria-controls="category-filter-panel">
               <i class="bi bi-sliders" aria-hidden="true"></i>
               Categories
-              <span class="count-badge" *ngIf="selectedCategories.length" aria-hidden="true">
-                {{ selectedCategories.length }}
-              </span>
+              @if (selectedCategories.length) {
+                <span class="count-badge" aria-hidden="true">
+                  {{ selectedCategories.length }}
+                </span>
+              }
               <i class="bi" [ngClass]="filtersShowing ? 'bi-chevron-up' : 'bi-chevron-down'" aria-hidden="true"></i>
             </button>
           </div>
 
           <div class="filter-options" id="category-filter-panel" role="group" aria-label="Filter by category"
             [hidden]="!filtersShowing">
-            <button class="filter-option" type="button" *ngFor="let category of recipeCategories"
-              (click)="toggleCategory(category)"
-              [class.active]="isCategorySelected(category)"
-              [attr.aria-pressed]="isCategorySelected(category)">
-              <i class="bi bi-check-lg check-icon" aria-hidden="true" *ngIf="isCategorySelected(category)"></i>
-              <img [src]="'../../../assets/icons/categories/' + category + '.png'" alt="" aria-hidden="true">
-              {{ category }}
-            </button>
+            @for (category of recipeCategories; track category) {
+              <button class="filter-option" type="button"
+                (click)="toggleCategory(category)"
+                [class.active]="isCategorySelected(category)"
+                [attr.aria-pressed]="isCategorySelected(category)">
+                @if (isCategorySelected(category)) {
+                  <i class="bi bi-check-lg check-icon" aria-hidden="true"></i>
+                }
+                <img [src]="'../../../assets/icons/categories/' + category + '.png'" alt="" aria-hidden="true">
+                {{ category }}
+              </button>
+            }
           </div>
 
-          <div class="panel-footer" *ngIf="hasActiveFilters || hasActiveSort">
-            <ul class="chip-list" aria-label="Active filters">
-              <li *ngFor="let category of selectedCategories">
-                <button class="chip" type="button" (click)="toggleCategory(category)"
-                  [attr.aria-label]="'Remove ' + category + ' filter'">
-                  {{ category }}
-                  <i class="bi bi-x-lg" aria-hidden="true"></i>
-                </button>
-              </li>
-              <li *ngIf="searchInput.trim()">
-                <button class="chip" type="button" (click)="clearSearchInput()"
-                  [attr.aria-label]="'Clear search for ' + searchInput.trim()">
-                  &ldquo;{{ searchInput.trim() }}&rdquo;
-                  <i class="bi bi-x-lg" aria-hidden="true"></i>
-                </button>
-              </li>
-            </ul>
-            <button class="clear-all" type="button" (click)="clearAll()">
-              <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Clear all
-            </button>
-          </div>
+          @if (hasActiveFilters || hasActiveSort) {
+            <div class="panel-footer">
+              <ul class="chip-list" aria-label="Active filters">
+                @for (category of selectedCategories; track category) {
+                  <li>
+                    <button class="chip" type="button" (click)="toggleCategory(category)"
+                      [attr.aria-label]="'Remove ' + category + ' filter'">
+                      {{ category }}
+                      <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                  </li>
+                }
+                @if (searchInput.trim()) {
+                  <li>
+                    <button class="chip" type="button" (click)="clearSearchInput()"
+                      [attr.aria-label]="'Clear search for ' + searchInput.trim()">
+                      &ldquo;{{ searchInput.trim() }}&rdquo;
+                      <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                  </li>
+                }
+              </ul>
+              <button class="clear-all" type="button" (click)="clearAll()">
+                <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Clear all
+              </button>
+            </div>
+          }
 
         </div>
 
@@ -92,28 +110,31 @@
     </div>
 
     <div class="row recipe-grid">
-      <ng-container *ngIf="isLoading">
-        <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4" *ngFor="let placeholder of skeletonCards">
-          <div class="skeleton-card" aria-hidden="true">
-            <div class="skeleton-image"></div>
-            <div class="skeleton-body">
-              <div class="skeleton-line title"></div>
-              <div class="skeleton-line meta"></div>
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line short"></div>
+      @if (isLoading) {
+        @for (placeholder of skeletonCards; track placeholder) {
+          <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4">
+            <div class="skeleton-card" aria-hidden="true">
+              <div class="skeleton-image"></div>
+              <div class="skeleton-body">
+                <div class="skeleton-line title"></div>
+                <div class="skeleton-line meta"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+              </div>
             </div>
           </div>
-        </div>
-      </ng-container>
+        }
+      }
 
-      <ng-container *ngIf="!isLoading">
-        <ng-container *ngIf="selectedRecipes.length; else noResults">
-          <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4" *ngFor="let recipe of selectedRecipes; let i = index">
-            <app-recipe-card [recipe]="recipe" [index]="i" [activeTags]="selectedCategories"
+      @if (!isLoading) {
+        @if (selectedRecipes.length) {
+          @for (recipe of selectedRecipes; track recipe; let i = $index) {
+            <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4">
+              <app-recipe-card [recipe]="recipe" [index]="i" [activeTags]="selectedCategories"
               (tagSelected)="toggleCategory($event)"></app-recipe-card>
-          </div>
-        </ng-container>
-        <ng-template #noResults>
+            </div>
+          }
+        } @else {
           <div class="col-12">
             <div class="empty-state">
               <i class="bi bi-search" aria-hidden="true"></i>
@@ -123,13 +144,15 @@
               <p class="empty-state-hint">
                 Try a different search term, or widen your search by removing a category.
               </p>
-              <button class="clear-all" type="button" (click)="clearAll()" *ngIf="hasActiveFilters">
-                <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Clear all filters
-              </button>
+              @if (hasActiveFilters) {
+                <button class="clear-all" type="button" (click)="clearAll()">
+                  <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Clear all filters
+                </button>
+              }
             </div>
           </div>
-        </ng-template>
-      </ng-container>
+        }
+      }
     </div>
   </div>
 </section>

@@ -42,21 +42,29 @@
               class="btn btn-scan ms-auto"
               (click)="onScanRecipe()"
               [disabled]="isScanningRecipe">
-              <span *ngIf="!isScanningRecipe">
-                <i class="bi bi-camera me-2"></i>Scan recipe photo
-              </span>
-              <span *ngIf="isScanningRecipe">
-                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Analyzing…
-              </span>
+              @if (!isScanningRecipe) {
+                <span>
+                  <i class="bi bi-camera me-2"></i>Scan recipe photo
+                </span>
+              }
+              @if (isScanningRecipe) {
+                <span>
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Analyzing…
+                </span>
+              }
             </button>
           </div>
-          <div *ngIf="scanError" class="alert alert-danger mt-3 mb-0 py-2">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ scanError }}
-          </div>
-          <div *ngIf="scanSuccess" class="alert alert-success mt-3 mb-0 py-2">
-            <i class="bi bi-check-circle-fill me-2"></i>Recipe scanned! Review the fields below and adjust anything that needs a tweak.
-          </div>
+          @if (scanError) {
+            <div class="alert alert-danger mt-3 mb-0 py-2">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ scanError }}
+            </div>
+          }
+          @if (scanSuccess) {
+            <div class="alert alert-success mt-3 mb-0 py-2">
+              <i class="bi bi-check-circle-fill me-2"></i>Recipe scanned! Review the fields below and adjust anything that needs a tweak.
+            </div>
+          }
         </div>
 
         <form [formGroup]="recipeForm" (ngSubmit)="onSubmitNew()">
@@ -75,10 +83,12 @@
                     class="form-control mb-0"
                     (input)="onNameInput($event)">
                 </div>
-                <div class="form-group mb-3 slug-wrapper" *ngIf="recipeForm.get('name').value">
-                  <label class="d-inline">Slug:</label>
-                  <p class="d-inline">{{ recipeForm.get('slug').value | slugGenerator }}</p>
-                </div>
+                @if (recipeForm.get('name').value) {
+                  <div class="form-group mb-3 slug-wrapper">
+                    <label class="d-inline">Slug:</label>
+                    <p class="d-inline">{{ recipeForm.get('slug').value | slugGenerator }}</p>
+                  </div>
+                }
               </div>
               <div class="col-6 col-md-3">
                 <div class="form-group">
@@ -151,50 +161,62 @@
                   <!-- Source toggle -->
                   <div class="btn-group image-source-toggle mb-3" role="group" aria-label="Image source">
                     <input type="radio" class="btn-check" name="imageSource" id="imageSourceUpload"
-                           [checked]="imageSource === 'upload'" (change)="setImageSource('upload')">
+                      [checked]="imageSource === 'upload'" (change)="setImageSource('upload')">
                     <label class="btn btn-outline-secondary btn-sm" for="imageSourceUpload">
                       <i class="bi bi-upload me-1"></i> Upload a photo
                     </label>
 
                     <input type="radio" class="btn-check" name="imageSource" id="imageSourceUrl"
-                           [checked]="imageSource === 'url'" (change)="setImageSource('url')">
+                      [checked]="imageSource === 'url'" (change)="setImageSource('url')">
                     <label class="btn btn-outline-secondary btn-sm" for="imageSourceUrl">
                       <i class="bi bi-link-45deg me-1"></i> Paste a link
                     </label>
                   </div>
 
                   <!-- Upload -->
-                  <div *ngIf="imageSource === 'upload'">
-                    <input type="file" accept="image/*" class="form-control mb-0"
-                           (change)="onImageFileSelected($event)" [disabled]="isUploadingImage">
-                    <small class="d-block mt-2" *ngIf="!isUploadingImage && !imageUploadError">
-                      Photos are resized automatically before uploading.
-                    </small>
-                    <div class="mt-2" *ngIf="isUploadingImage">
-                      <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                      Uploading…
+                  @if (imageSource === 'upload') {
+                    <div>
+                      <input type="file" accept="image/*" class="form-control mb-0"
+                        (change)="onImageFileSelected($event)" [disabled]="isUploadingImage">
+                      @if (!isUploadingImage && !imageUploadError) {
+                        <small class="d-block mt-2">
+                          Photos are resized automatically before uploading.
+                        </small>
+                      }
+                      @if (isUploadingImage) {
+                        <div class="mt-2">
+                          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          Uploading…
+                        </div>
+                      }
+                      @if (imageUploadError) {
+                        <div class="alert alert-danger mt-2 mb-0 py-2">
+                          <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ imageUploadError }}
+                        </div>
+                      }
                     </div>
-                    <div class="alert alert-danger mt-2 mb-0 py-2" *ngIf="imageUploadError">
-                      <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ imageUploadError }}
-                    </div>
-                  </div>
+                  }
 
                   <!-- Link -->
-                  <div *ngIf="imageSource === 'url'">
-                    <small class="d-block mb-2">
-                      No image yet? No worries! Use our placeholder URL for now: https://i.imgur.com/qkklRA1.png
-                    </small>
-                    <input type="text" id="image_path" formControlName="image_path" class="form-control mb-0">
-                  </div>
+                  @if (imageSource === 'url') {
+                    <div>
+                      <small class="d-block mb-2">
+                        No image yet? No worries! Use our placeholder URL for now: https://i.imgur.com/qkklRA1.png
+                      </small>
+                      <input type="text" id="image_path" formControlName="image_path" class="form-control mb-0">
+                    </div>
+                  }
                 </div>
               </div>
             </div>
-            <div class="row" *ngIf="recipeForm.get('image_path').value">
-              <div class="col-12">
-                <p class="mt-3">Image preview</p>
-                <img [src]="recipeForm.get('image_path').value" class="img-responsive mb-3">
+            @if (recipeForm.get('image_path').value) {
+              <div class="row">
+                <div class="col-12">
+                  <p class="mt-3">Image preview</p>
+                  <img [src]="recipeForm.get('image_path').value" class="img-responsive mb-3">
+                </div>
               </div>
-            </div>
+            }
           </div>
 
           <!-- ── Ingredients ─────────────────────────────────────────────── -->
@@ -205,83 +227,82 @@
 
               <!-- Ingredient groups drop list -->
               <div class="col-12"
-                   formArrayName="ingredient_groups"
-                   cdkDropList
-                   (cdkDropListDropped)="dropIngredientGroup($event)">
+                formArrayName="ingredient_groups"
+                cdkDropList
+                (cdkDropListDropped)="dropIngredientGroup($event)">
 
                 <!-- Each ingredient group is a drag item -->
-                <div class="ingredient-group-item"
-                     *ngFor="let ingredientGroup of recipeIngredientGroupControls.controls; let i = index"
-                     [formGroupName]="i"
-                     cdkDrag>
-
-                  <!-- Group header: drag handle + name + delete -->
-                  <div class="row align-items-center mb-2">
-                    <div class="col-auto pe-0">
-                      <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder group">
-                        <i class="bi bi-grip-vertical"></i>
-                      </button>
-                    </div>
-                    <div class="col-sm-12 col-md-5">
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="ingredientGroupName"
-                        placeholder="Ingredient group name">
-                    </div>
-                    <div class="col-sm-12 col-md-5">
-                      <button type="button" class="btn btn-danger" (click)="deleteIngredientGroup(i)">X</button>
-                    </div>
-                  </div>
-
-                  <!-- Ingredients drop list (nested) -->
-                  <div class="ingredients-wrapper"
-                       formArrayName="ingredients"
-                       cdkDropList
-                       (cdkDropListDropped)="dropIngredient($event, i)">
-
-                    <!-- Each ingredient is a drag item -->
-                    <div class="row ingredient-item"
-                         *ngFor="let ingredient of getIngredients(i).controls; let j = index"
-                         [formGroupName]="j"
-                         cdkDrag>
+                @for (ingredientGroup of recipeIngredientGroupControls.controls; track ingredientGroup; let i = $index) {
+                  <div class="ingredient-group-item"
+                    [formGroupName]="i"
+                    cdkDrag>
+                    <!-- Group header: drag handle + name + delete -->
+                    <div class="row align-items-center mb-2">
                       <div class="col-auto pe-0">
-                        <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder ingredient">
+                        <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder group">
                           <i class="bi bi-grip-vertical"></i>
                         </button>
                       </div>
-                      <div class="col-sm-12 col-md-4">
-                        <input type="text" class="form-control" formControlName="ingredientName" placeholder="Ingredient name">
+                      <div class="col-sm-12 col-md-5">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="ingredientGroupName"
+                          placeholder="Ingredient group name">
                       </div>
-                      <div class="col-sm-6 col-md-3">
-                        <input type="number" class="form-control" formControlName="ingredientAmount" placeholder="Ingredient amount">
-                      </div>
-                      <div class="col-sm-6 col-md-3">
-                        <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
-                          <option [ngValue]="null" [disabled]="true">Amount type</option>
-                          <option *ngFor="let ingredientMeasurementType of ingredientAmountTypeOptions" [value]="ingredientMeasurementType">
-                            {{ ingredientMeasurementType }}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="col-sm-1">
-                        <button type="button" class="btn btn-danger" (click)="deleteIngredient(i, j)">X</button>
-                      </div>
-                      <div *cdkDragPlaceholder class="drag-placeholder"></div>
-                    </div>
-
-                    <div class="row border-bottom">
-                      <div class="col-12">
-                        <button type="button" class="btn btn-success" (click)="addIngredient(i)">
-                          <i class="bi bi-plus-square"></i> Add ingredient
-                        </button>
+                      <div class="col-sm-12 col-md-5">
+                        <button type="button" class="btn btn-danger" (click)="deleteIngredientGroup(i)">X</button>
                       </div>
                     </div>
+                    <!-- Ingredients drop list (nested) -->
+                    <div class="ingredients-wrapper"
+                      formArrayName="ingredients"
+                      cdkDropList
+                      (cdkDropListDropped)="dropIngredient($event, i)">
+                      <!-- Each ingredient is a drag item -->
+                      @for (ingredient of getIngredients(i).controls; track ingredient; let j = $index) {
+                        <div class="row ingredient-item"
+                          [formGroupName]="j"
+                          cdkDrag>
+                          <div class="col-auto pe-0">
+                            <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder ingredient">
+                              <i class="bi bi-grip-vertical"></i>
+                            </button>
+                          </div>
+                          <div class="col-sm-12 col-md-4">
+                            <input type="text" class="form-control" formControlName="ingredientName" placeholder="Ingredient name">
+                          </div>
+                          <div class="col-sm-6 col-md-3">
+                            <input type="number" class="form-control" formControlName="ingredientAmount" placeholder="Ingredient amount">
+                          </div>
+                          <div class="col-sm-6 col-md-3">
+                            <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
+                              <option [ngValue]="null" [disabled]="true">Amount type</option>
+                              @for (ingredientMeasurementType of ingredientAmountTypeOptions; track ingredientMeasurementType) {
+                                <option [value]="ingredientMeasurementType">
+                                  {{ ingredientMeasurementType }}
+                                </option>
+                              }
+                            </select>
+                          </div>
+                          <div class="col-sm-1">
+                            <button type="button" class="btn btn-danger" (click)="deleteIngredient(i, j)">X</button>
+                          </div>
+                          <div *cdkDragPlaceholder class="drag-placeholder"></div>
+                        </div>
+                      }
+                      <div class="row border-bottom">
+                        <div class="col-12">
+                          <button type="button" class="btn btn-success" (click)="addIngredient(i)">
+                            <i class="bi bi-plus-square"></i> Add ingredient
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Placeholder shown while this group is being dragged -->
+                    <div *cdkDragPlaceholder class="drag-placeholder drag-placeholder--group"></div>
                   </div>
-
-                  <!-- Placeholder shown while this group is being dragged -->
-                  <div *cdkDragPlaceholder class="drag-placeholder drag-placeholder--group"></div>
-                </div>
+                }
 
                 <div class="row">
                   <div class="col-12">
@@ -302,85 +323,91 @@
 
               <!-- Steps drop list -->
               <div class="col-12 steps-wrapper"
-                   formArrayName="steps"
-                   cdkDropList
-                   (cdkDropListDropped)="dropStep($event)">
+                formArrayName="steps"
+                cdkDropList
+                (cdkDropListDropped)="dropStep($event)">
 
                 <!-- Each step is a drag item -->
-                <div class="step-item"
-                     *ngFor="let stepControl of recipeStepsControls; let i = index"
-                     [formGroupName]="i"
-                     cdkDrag>
-                  <div class="row align-items-start">
-                    <div class="col-auto pe-0 d-flex align-items-center pt-2">
-                      <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder step">
-                        <i class="bi bi-grip-vertical"></i>
-                      </button>
-                      <span class="step-number">{{ i + 1 }}.</span>
-                    </div>
-                    <div class="col">
-                      <textarea type="text" class="form-control" formControlName="step" rows="2"></textarea>
-                    </div>
-                    <div class="col-auto">
-                      <button type="button" class="btn btn-danger" (click)="onDeleteStep(i)">X</button>
-                    </div>
-                  </div>
-
-                  <!-- Step ingredients -->
-                  <div class="step-ingredients-section" formArrayName="stepIngredients">
-                    <p class="step-ingredients-label mb-2">
-                      <i class="bi bi-list-check me-1"></i> Ingredients used in this step:
-                    </p>
-                    <div class="step-ingredient-row"
-                         *ngFor="let si of getStepIngredients(i).controls; let j = index"
-                         [formGroupName]="j">
-                      <div class="row align-items-center g-2 mb-2">
-                        <div class="col-sm-12 col-md-5">
-                          <select class="form-select form-select-sm"
-                                  formControlName="ingredientName"
-                                  (change)="onStepIngredientNameChange(i, j)">
-                            <option [ngValue]="null" disabled>Select ingredient</option>
-                            <option *ngFor="let ing of allIngredients" [value]="ing.name">{{ ing.name }}</option>
-                          </select>
-                        </div>
-                        <div class="col-sm-6 col-md-3">
-                          <input type="number"
-                                 class="form-control form-control-sm"
-                                 [class.is-invalid]="getStepIngredients(i).at(j).get('ingredientAmount').errors?.['max']"
-                                 formControlName="ingredientAmount"
-                                 placeholder="Amount"
-                                 [max]="maxAmountFor(getStepIngredients(i).at(j).get('ingredientName').value)"
-                                 min="0.001"
-                                 step="any">
-                          <div class="invalid-feedback d-block"
-                               *ngIf="getStepIngredients(i).at(j).get('ingredientAmount').errors?.['max']">
-                            Max for this ingredient is {{ maxAmountFor(getStepIngredients(i).at(j).get('ingredientName').value) }}
-                          </div>
-                        </div>
-                        <div class="col-sm-4 col-md-3">
-                          <span class="step-ingredient-unit"
-                                *ngIf="getStepIngredients(i).at(j).get('ingredientMeasurementType').value">
-                            {{ getStepIngredients(i).at(j).get('ingredientMeasurementType').value }}
-                          </span>
-                        </div>
-                        <div class="col-auto">
-                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteStepIngredient(i, j)" title="Remove">
-                            <i class="bi bi-x"></i>
-                          </button>
-                        </div>
+                @for (stepControl of recipeStepsControls; track stepControl; let i = $index) {
+                  <div class="step-item"
+                    [formGroupName]="i"
+                    cdkDrag>
+                    <div class="row align-items-start">
+                      <div class="col-auto pe-0 d-flex align-items-center pt-2">
+                        <button type="button" class="drag-handle" cdkDragHandle title="Drag to reorder step">
+                          <i class="bi bi-grip-vertical"></i>
+                        </button>
+                        <span class="step-number">{{ i + 1 }}.</span>
+                      </div>
+                      <div class="col">
+                        <textarea type="text" class="form-control" formControlName="step" rows="2"></textarea>
+                      </div>
+                      <div class="col-auto">
+                        <button type="button" class="btn btn-danger" (click)="onDeleteStep(i)">X</button>
                       </div>
                     </div>
-                    <button type="button"
-                            class="btn btn-sm btn-outline-secondary"
-                            (click)="addStepIngredient(i)"
-                            [disabled]="allIngredients.length === 0"
-                            [title]="allIngredients.length === 0 ? 'Add ingredients above first' : ''">
-                      <i class="bi bi-plus-square me-1"></i> Add ingredient to this step
-                    </button>
+                    <!-- Step ingredients -->
+                    <div class="step-ingredients-section" formArrayName="stepIngredients">
+                      <p class="step-ingredients-label mb-2">
+                        <i class="bi bi-list-check me-1"></i> Ingredients used in this step:
+                      </p>
+                      @for (si of getStepIngredients(i).controls; track si; let j = $index) {
+                        <div class="step-ingredient-row"
+                          [formGroupName]="j">
+                          <div class="row align-items-center g-2 mb-2">
+                            <div class="col-sm-12 col-md-5">
+                              <select class="form-select form-select-sm"
+                                formControlName="ingredientName"
+                                (change)="onStepIngredientNameChange(i, j)">
+                                <option [ngValue]="null" disabled>Select ingredient</option>
+                                @for (ing of allIngredients; track ing) {
+                                  <option [value]="ing.name">{{ ing.name }}</option>
+                                }
+                              </select>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                              <input type="number"
+                                class="form-control form-control-sm"
+                                [class.is-invalid]="getStepIngredients(i).at(j).get('ingredientAmount').errors?.['max']"
+                                formControlName="ingredientAmount"
+                                placeholder="Amount"
+                                [max]="maxAmountFor(getStepIngredients(i).at(j).get('ingredientName').value)"
+                                min="0.001"
+                                step="any">
+                              @if (getStepIngredients(i).at(j).get('ingredientAmount').errors?.['max']) {
+                                <div class="invalid-feedback d-block"
+                                  >
+                                  Max for this ingredient is {{ maxAmountFor(getStepIngredients(i).at(j).get('ingredientName').value) }}
+                                </div>
+                              }
+                            </div>
+                            <div class="col-sm-4 col-md-3">
+                              @if (getStepIngredients(i).at(j).get('ingredientMeasurementType').value) {
+                                <span class="step-ingredient-unit"
+                                  >
+                                  {{ getStepIngredients(i).at(j).get('ingredientMeasurementType').value }}
+                                </span>
+                              }
+                            </div>
+                            <div class="col-auto">
+                              <button type="button" class="btn btn-sm btn-danger" (click)="deleteStepIngredient(i, j)" title="Remove">
+                                <i class="bi bi-x"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                      <button type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        (click)="addStepIngredient(i)"
+                        [disabled]="allIngredients.length === 0"
+                        [title]="allIngredients.length === 0 ? 'Add ingredients above first' : ''">
+                        <i class="bi bi-plus-square me-1"></i> Add ingredient to this step
+                      </button>
+                    </div>
+                    <div *cdkDragPlaceholder class="drag-placeholder"></div>
                   </div>
-
-                  <div *cdkDragPlaceholder class="drag-placeholder"></div>
-                </div>
+                }
 
                 <div class="row">
                   <div class="col-12">
@@ -401,7 +428,9 @@
                 <div class="form-group">
                   <label class="required">Tags</label>
                   <select name="recipeTags" id="recipeTags" formControlName="tags" class="form-select" multiple>
-                    <option *ngFor="let tag of recipeTagOptions" [value]="tag" class="tag-option">{{ tag }}</option>
+                    @for (tag of recipeTagOptions; track tag) {
+                      <option [value]="tag" class="tag-option">{{ tag }}</option>
+                    }
                   </select>
                 </div>
               </div>

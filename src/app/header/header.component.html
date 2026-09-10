@@ -17,14 +17,18 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/recipes" routerLinkActive="active-link" (click)="closeNavOnClick()">Recipes</a>
         </li>
-        <li class="nav-item" *ngIf="userIsAdmin">
-          <a class="nav-link" routerLink="/admin" routerLinkActive="active-link" (click)="closeNavOnClick()">Admin</a>
-        </li>
-        <li class="nav-item" *ngIf="userIsAdmin">
-          <button class="nav-logout-btn" (click)="onLogout()" title="Log out" aria-label="Log out">
-            <i class="bi bi-box-arrow-right"></i>
-          </button>
-        </li>
+        @if (userIsAdmin) {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active-link" (click)="closeNavOnClick()">Admin</a>
+          </li>
+        }
+        @if (userIsAdmin) {
+          <li class="nav-item">
+            <button class="nav-logout-btn" (click)="onLogout()" title="Log out" aria-label="Log out">
+              <i class="bi bi-box-arrow-right"></i>
+            </button>
+          </li>
+        }
       </ul>
     </div>
   </div>
