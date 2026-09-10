@@ -1,3 +1,5 @@
+@use '../../../styles/tokens' as *;
+
 section{
   height: 100%;
   background: url('../../../assets/images/hero-background.png');
@@ -21,7 +23,7 @@ ol{
     div{
       &:first-child{
         font-size: 2rem;
-        color: #574b90;
+        color: $purple;
         text-shadow: 2px 2px 2px #efefef;
         padding-right: 1rem;
         min-width: 40px;
@@ -39,7 +41,7 @@ ol{
   display: flex;
   flex-direction: column;
   .ingredient-header{
-    background-color: #2d3436;
+    background-color: $ink;
     color: #fff;
   }
   .ingredient-content{
@@ -62,7 +64,7 @@ ol{
     transition: transform .25s ease-in-out;
   }
   &:hover{
-    color: #574b90;
+    color: $purple;
     i{
       transform: translateX(-4px);
     }
@@ -90,7 +92,7 @@ ol{
 .notes-card{
   padding: 1rem;
   background-color: #fff;
-  border-top: 3px solid #574b90;
+  border-top: 3px solid $purple;
   border-radius: 0.25rem;
 }
 
@@ -101,7 +103,7 @@ ol{
 }
 
 .btn-edit {
-  background-color: #574b90;
+  background-color: $purple;
   color: #fff;
   font-size: 0.85rem;
   padding: 0.3rem 0.75rem;
@@ -149,4 +151,32 @@ ol{
   color: #000;
   padding: 0.3rem 0.5rem 0.3rem 0.25rem;
   text-align: left;
+}
+
+// Tags in the header link straight back into the filtered grid, matching the
+// pills the recipe cards use.
+.recipe-header-info{
+  .tag-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    padding: 0;
+    a{
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.25rem;
+      background-color: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+      &:hover{
+        background-color: rgba(255, 255, 255, 0.32);
+        color: #fff;
+      }
+    }
+  }
 }

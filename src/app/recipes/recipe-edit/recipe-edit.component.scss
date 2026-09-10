@@ -1,27 +1,53 @@
+@use '../../../styles/tokens' as *;
+
+// Without this the black body background shows through and the breadcrumb
+// above the banner is unreadable. add-recipe already carried the same fix.
+section {
+  background-color: $white;
+  min-height: 100%;
+}
+
 .breadcrumb{
   i{
     transition: transform .25s ease-in-out;
   }
   &:hover{
-    color: #574b90;
+    color: $purple;
     i{
       transform: translateX(-4px);
     }
   }
 }
 
+// Matches the banner on the recipes page. The accent chip behind the icon is
+// what still distinguishes editing from adding at a glance.
 .banner{
-  background-color: #fdcb6e;
+  background-color: $ink;
   border-radius: 0.25rem;
   h1 {
-    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: $white;
+    font-size: 1.75rem;
     margin: 0;
-    padding: 0.5em;
+    padding: 1rem 1.5rem;
+    .bi{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.25rem;
+      background-color: #fdcb6e;
+      color: $ink;
+      font-size: 1.125rem;
+    }
   }
 }
 
 .form-group-wrapper{
-  background-color: #f2f2f2;
+  background-color: $grey-100;
   padding: 2rem;
   border-radius: 0.5rem;
   &:not(:last-child){
@@ -64,8 +90,8 @@ input[type=checkbox]{
   width: 2rem;
   border-radius: 0.375rem;
   &:checked{
-    background-color: #574b90;
-    border-color: #574b90;
+    background-color: $purple;
+    border-color: $purple;
     font-weight: bold;
   }
 }
@@ -117,8 +143,8 @@ img{
   background-color: #198754;
   color: #fff;
   .modal-body{
-    background-color: #f2f2f2;
-    color: #2d3436;
+    background-color: $grey-100;
+    color: $ink;
   }
   .modal-footer{
     button{
@@ -149,7 +175,7 @@ small{
   .step-ingredients-label {
     font-size: 0.78rem;
     font-weight: 600;
-    color: #574b90;
+    color: $purple;
     text-transform: uppercase;
     letter-spacing: 0.03em;
   }
@@ -188,7 +214,7 @@ small{
   transition: color 0.15s ease, background-color 0.15s ease;
 
   &:hover {
-    color: #574b90;
+    color: $purple;
     background-color: rgba(87, 75, 144, 0.08);
   }
 
@@ -218,7 +244,7 @@ small{
 .drag-placeholder {
   min-height: 52px;
   background: rgba(87, 75, 144, 0.08);
-  border: 2px dashed #574b90;
+  border: 2px dashed $purple;
   border-radius: 0.375rem;
   margin: 0.25rem 0;
 }
@@ -249,12 +275,17 @@ small{
 .required{
   &:after{
     content: "Required";
-    background-color: #ff6b6b;
-    color: #fff;
+    // Muted, not red: this marks a field as required, which is not an error.
+    // Red here competes with real validation messages.
+    background-color: transparent;
+    color: $grey-600;
     font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     margin-left: 0.5rem;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
+    padding: 0;
+    border-radius: 0;
   }
 }
 

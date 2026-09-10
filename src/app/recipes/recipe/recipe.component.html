@@ -2,7 +2,9 @@
   <div class="container pt-5 pb-5">
     <div class="row">
       <div class="col-12 pb-2 d-flex align-items-center justify-content-between">
-        <a class="breadcrumb" [routerLink]="['/recipes']">
+        <!-- preserve keeps whatever filters brought you here, so going back lands
+             on the same filtered grid rather than the full list. -->
+        <a class="breadcrumb" [routerLink]="['/recipes']" queryParamsHandling="preserve">
           <i class="bi bi-chevron-double-left me-1"></i> Back to all recipes
         </a>
         @if (isAdmin) {
@@ -51,6 +53,16 @@
             <p class="mb-0">
               {{ recipe.description }}
             </p>
+            @if (recipe.tags?.length) {
+              <ul class="tag-list mt-3 mb-0">
+                @for (tag of recipe.tags; track $index) {
+                  <li>
+                    <a [routerLink]="['/recipes']" [queryParams]="{ category: tag }"
+                      [attr.aria-label]="'Browse ' + tag + ' recipes'">{{ tag }}</a>
+                  </li>
+                }
+              </ul>
+            }
           </div>
         </div>
       </div>

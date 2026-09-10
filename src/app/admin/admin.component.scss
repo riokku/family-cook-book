@@ -1,3 +1,5 @@
+@use '../../styles/tokens' as *;
+
 
 .admin-wrapper{
   height: 100%;
@@ -11,7 +13,7 @@
   border-radius: 0.25rem;
   cursor: pointer;
   font-size: 14px;
-  color: #2d3436;
+  color: $ink;
   padding: 0.5rem 1rem;
   text-decoration: none;
   text-align: center;
@@ -36,7 +38,7 @@
 
 .unauthorized-error-message{
   padding: 0.5rem 1rem;
-  background-color: #574b90;
+  background-color: $purple;
   color: #fff;
   border-radius: 0.25rem;
   width: fit-content;
@@ -44,7 +46,7 @@
 
 .user-name-wrapper{
   padding: 0.5rem 1rem;
-  background-color: #574b90;
+  background-color: $purple;
   color: #fff;
   border-radius: 0.25rem 0.25rem 0 0;
   button{
@@ -58,7 +60,7 @@
 }
 
 .banner{
-  background-color: #2d3436;
+  background-color: $ink;
   border-radius: 0 0 0.25rem 0.25rem;
   h1 {
     color: #fff;
@@ -112,7 +114,7 @@ a{
 }
 
 .recipe-blade{
-  background-color: #f2f2f2;
+  background-color: $grey-100;
   border-radius: 0.25rem;
   padding: 1rem 2rem;
   min-height: 70px;
@@ -184,19 +186,19 @@ button{
 
 .deleted-recipe-name{
   padding: 0.5rem 1rem;
-  background-color: #f2f2f2;
+  background-color: $grey-100;
 }
 
 
 // Pagination
 :host ::ng-deep ngb-pagination {
   .page-item.active .page-link {
-    background-color: #574b90;
-    border-color: #574b90;
+    background-color: $purple;
+    border-color: $purple;
     color: #fff;
   }
   .page-link {
-    color: #574b90;
+    color: $purple;
     &:focus { box-shadow: 0 0 0 0.2rem rgba(87, 75, 144, 0.25); }
   }
 }

@@ -44,7 +44,7 @@ nav{
     }
     a{
       &.active-link{
-        background-color: #6457a8;
+        background-color: $purple-light;
         border-radius: 0.25rem;
         &:after{
           content: none;
