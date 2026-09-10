@@ -4,8 +4,15 @@
   height: 100%;
 }
 
+// No fill mode, deliberately. A forwards fill leaves the opacity animation
+// attached to the wrapper for the life of the page, and an element with an
+// animation on a stacking-context property keeps a stacking context of its own —
+// which trapped every Bootstrap modal inside .site-wrapper below the backdrop
+// that Bootstrap appends to <body>, so the delete confirmation could not be
+// clicked. The keyframes end where the element already sits (opacity: 1), so
+// dropping the fill changes nothing on screen.
 .fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .header{
