@@ -9,10 +9,64 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <div class="banner mb-4">
-          <h1>
-            <i class="bi bi-plus-square-fill"></i> Add a recipe:
-          </h1>
+        <div class="page-banner mb-4">
+          <!-- Sprinkles from the splash screen, so the form reads as part of the
+               same kitchen. Purely decorative, hidden from assistive tech. -->
+          <svg class="page-banner__sprinkles" viewBox="0 0 210 100" aria-hidden="true">
+              <ellipse style="--i: 0; --r: -48deg" cx="14" cy="33" rx="3.2" ry="8" fill="#ff6b81"/>
+              <ellipse style="--i: 1; --r: -31deg" cx="15" cy="59" rx="3.2" ry="8" fill="#ffd32a"/>
+              <ellipse style="--i: 2; --r: 45deg" cx="45" cy="28" rx="3.2" ry="8" fill="#00d2d3"/>
+              <ellipse style="--i: 3; --r: 34deg" cx="30" cy="86" rx="3.2" ry="8" fill="#1dd1a1"/>
+              <ellipse style="--i: 4; --r: -40deg" cx="46" cy="46" rx="3.2" ry="8" fill="#a29bfe"/>
+              <ellipse style="--i: 5; --r: -27deg" cx="47" cy="66" rx="3.2" ry="8" fill="#fd79a8"/>
+              <ellipse style="--i: 6; --r: -25deg" cx="68" cy="12" rx="3.2" ry="8" fill="#ff6348"/>
+              <ellipse style="--i: 7; --r: -14deg" cx="69" cy="51" rx="3.2" ry="8" fill="#ff6b81"/>
+              <ellipse style="--i: 8; --r: 9deg" cx="58" cy="86" rx="3.2" ry="8" fill="#ffd32a"/>
+              <ellipse style="--i: 9; --r: 2deg" cx="89" cy="13" rx="3.2" ry="8" fill="#00d2d3"/>
+              <ellipse style="--i: 10; --r: 8deg" cx="87" cy="37" rx="3.2" ry="8" fill="#1dd1a1"/>
+              <ellipse style="--i: 11; --r: -54deg" cx="89" cy="79" rx="3.2" ry="8" fill="#a29bfe"/>
+              <ellipse style="--i: 12; --r: 3deg" cx="106" cy="31" rx="3.2" ry="8" fill="#fd79a8"/>
+              <ellipse style="--i: 13; --r: 55deg" cx="115" cy="13" rx="3.2" ry="8" fill="#ff6348"/>
+              <ellipse style="--i: 14; --r: 19deg" cx="103" cy="56" rx="3.2" ry="8" fill="#ff6b81"/>
+              <ellipse style="--i: 15; --r: -15deg" cx="134" cy="38" rx="3.2" ry="8" fill="#ffd32a"/>
+              <ellipse style="--i: 16; --r: 19deg" cx="144" cy="13" rx="3.2" ry="8" fill="#00d2d3"/>
+              <ellipse style="--i: 17; --r: -5deg" cx="130" cy="66" rx="3.2" ry="8" fill="#1dd1a1"/>
+              <ellipse style="--i: 18; --r: -17deg" cx="149" cy="57" rx="3.2" ry="8" fill="#a29bfe"/>
+              <ellipse style="--i: 19; --r: 42deg" cx="161" cy="29" rx="3.2" ry="8" fill="#fd79a8"/>
+              <ellipse style="--i: 20; --r: 41deg" cx="154" cy="86" rx="3.2" ry="8" fill="#ff6348"/>
+              <ellipse style="--i: 21; --r: 27deg" cx="168" cy="51" rx="3.2" ry="8" fill="#ff6b81"/>
+              <ellipse style="--i: 22; --r: 28deg" cx="185" cy="13" rx="3.2" ry="8" fill="#ffd32a"/>
+              <ellipse style="--i: 23; --r: 10deg" cx="196" cy="33" rx="3.2" ry="8" fill="#00d2d3"/>
+              <ellipse style="--i: 24; --r: -20deg" cx="187" cy="79" rx="3.2" ry="8" fill="#1dd1a1"/>
+              <ellipse style="--i: 25; --r: -6deg" cx="196" cy="57" rx="3.2" ry="8" fill="#a29bfe"/>
+          </svg>
+          <!-- The ones on the edges, which the header cuts off as it clips. -->
+          <div class="page-banner__spill" aria-hidden="true">
+              <span style="--i: 26; --r: -22deg; --x: 41%; --y: -7px; --c: #ff6b81"></span>
+              <span style="--i: 27; --r: 34deg; --x: 52%; --y: -10px; --c: #ffd32a"></span>
+              <span style="--i: 28; --r: -8deg; --x: 63%; --y: -5px; --c: #00d2d3"></span>
+              <span style="--i: 29; --r: 44deg; --x: 74%; --y: -9px; --c: #1dd1a1"></span>
+              <span style="--i: 30; --r: -30deg; --x: 85%; --y: -6px; --c: #a29bfe"></span>
+              <span style="--i: 31; --r: 18deg; --x: 95%; --y: -10px; --c: #fd79a8"></span>
+              <span style="--i: 32; --r: 16deg; --x: calc(100% - 5px); --y: 22px; --c: #ff6348"></span>
+              <span style="--i: 33; --r: -36deg; --x: calc(100% - 2px); --y: 52px; --c: #ffd32a"></span>
+              <span style="--i: 34; --r: 24deg; --x: calc(100% - 6px); --y: 82px; --c: #00d2d3"></span>
+              <span style="--i: 35; --r: -18deg; --x: 46%; --y: calc(100% - 6px); --c: #a29bfe"></span>
+              <span style="--i: 36; --r: 38deg; --x: 60%; --y: calc(100% - 10px); --c: #ff6b81"></span>
+              <span style="--i: 37; --r: -44deg; --x: 73%; --y: calc(100% - 5px); --c: #1dd1a1"></span>
+              <span style="--i: 38; --r: 12deg; --x: 88%; --y: calc(100% - 9px); --c: #fd79a8"></span>
+          </div>
+          <div class="page-banner__content">
+            <span class="page-banner__icon" aria-hidden="true">
+              <i class="bi bi-journal-plus"></i>
+            </span>
+            <div>
+              <h1 class="page-banner__title">Add a recipe</h1>
+              <p class="page-banner__subtitle">
+                One more family favourite for the collection.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -279,7 +333,10 @@
                             <input type="number" class="form-control" formControlName="ingredientAmount" placeholder="Ingredient amount">
                           </div>
                           <div class="col-sm-6 col-md-3">
-                            <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
+                            <select name="ingredientMeasurementType" id="ingredientMeasurementType"
+                              formControlName="ingredientMeasurementType"
+                              class="form-select"
+                              [class.is-placeholder]="!ingredient.get('ingredientMeasurementType')?.value">
                               <option [ngValue]="null" [disabled]="true">Amount type</option>
                               @for (ingredientMeasurementType of ingredientAmountTypeOptions; track ingredientMeasurementType) {
                                 <option [value]="ingredientMeasurementType">

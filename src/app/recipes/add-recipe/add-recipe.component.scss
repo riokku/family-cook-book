@@ -67,33 +67,6 @@ section {
   }
 }
 
-// Matches the banner on the recipes page. The accent chip behind the icon is
-// what still distinguishes adding from editing at a glance.
-.banner{
-  background-color: $ink;
-  border-radius: 0.25rem;
-  h1 {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: $white;
-    font-size: 1.75rem;
-    margin: 0;
-    padding: 1rem 1.5rem;
-    .bi{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.25rem;
-      height: 2.25rem;
-      border-radius: 0.25rem;
-      background-color: #198754;
-      color: $white;
-      font-size: 1.125rem;
-    }
-  }
-}
-
 .form-group-wrapper{
   background-color: $grey-100;
   padding: 2rem;
@@ -297,6 +270,13 @@ small{
   border-radius: 0.375rem;
   padding: 0.75rem 1rem 0.25rem;
   margin-bottom: 1rem;
+
+  // Step a group's ingredients in from its header so the form reads as a list
+  // of groups rather than one flat column of fields. Roughly a drag handle's
+  // width: enough to show the nesting, not enough to cost the fields their room.
+  .ingredients-wrapper{
+    padding-left: 1.5rem;
+  }
 }
 
 // Placeholder shown in the drop zone while dragging
@@ -372,6 +352,9 @@ small{
         padding: 0.15rem 0.55rem;
       }
     }
+  }
+  .ingredient-group-item .ingredients-wrapper{
+    padding-left: 0.5rem;
   }
   .ingredients-wrapper{
     input, select{

@@ -200,6 +200,215 @@ summary,
   }
 }
 
+// ── Recipe form page header ───────────────────────────────────────────────────
+// Both recipe forms used to open with the same flat ink bar the recipes list
+// uses, which read like a table header on the two pages meant to feel like an
+// invitation. Brand purple, the splash screen's sprinkles and a lift on the icon
+// give them some occasion. Shared here, like the form buttons, so the add and
+// edit pages cannot drift apart; each page supplies its own icon and title.
+.page-banner{
+  position: relative;
+  overflow: hidden;
+  // Contains the decorative layers: they sit above this element's own gradient
+  // but must not fall behind the page background.
+  isolation: isolate;
+  border-radius: 0.5rem;
+  padding: 1.75rem 2rem;
+  background: linear-gradient(115deg, #372f5c 0%, $purple 48%, $purple-light 100%);
+  color: $white;
+
+  // Glow behind the title, so the gradient has some depth under the text.
+  &::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(115% 130% at 10% 0%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 55%);
+  }
+
+  // One shine sweep on arrival rather than a loop: flashy when the page opens,
+  // and out of the way while a long form is being filled in. The app-wide
+  // reduced-motion rule collapses it to nothing, and its end state is off-frame.
+  &::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    z-index: -1;
+    background: linear-gradient(105deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: banner-shine 1.4s ease-out 0.2s both;
+  }
+
+  &__sprinkles{
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    width: 210px;
+    height: 100px;
+    z-index: -1;
+    pointer-events: none;
+    // The pop-in would otherwise clip against the viewBox at the top of its
+    // overshoot; the banner's own overflow still keeps the cluster inside.
+    overflow: visible;
+
+    ellipse{
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+  }
+
+  &__content{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    // Leaves the sprinkles their corner, so the subtitle never runs under them.
+    padding-right: 14rem;
+  }
+
+  &__icon{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 0.875rem;
+    background-color: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  &__title{
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  &__subtitle{
+    margin: 0.35rem 0 0;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.85);
+    // The edit page puts the recipe's own name here, and some of them are long.
+    overflow-wrap: anywhere;
+  }
+
+  // Below this width there is no room for both a decorative corner and a
+  // subtitle that fits on a line or two, so the title takes the whole banner.
+  @media (max-width: 767px){
+    padding: 1.25rem;
+    &__sprinkles{
+      display: none;
+    }
+    // Off with the cluster: below this width the header is a compact title bar
+    // with no room to spare along its edges.
+    &__spill{
+      display: none;
+    }
+    &__content{
+      gap: 0.75rem;
+      padding-right: 0;
+    }
+    &__icon{
+      width: 2.75rem;
+      height: 2.75rem;
+      font-size: 1.3rem;
+    }
+    &__subtitle{
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// One sprinkle, wherever it sits: in the cluster inside the header, or in the
+// layer that hangs off its edges.
+.page-banner__sprinkles ellipse,
+.page-banner__spill span{
+  opacity: 0;
+  // Gloss, so each one catches the light instead of reading as a flat dot.
+  // brightness() is carried at 1 because a filter list only interpolates
+  // against a matching list — without it the twinkle would jump, not glow.
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.35)) brightness(1);
+  // Pop in on arrival, then keep catching the light. --i is the sprinkle's
+  // place in the order, set in the markup, so the entrance sweeps across the
+  // field instead of firing as one block, and no two glint in step. Longhands
+  // rather than the shorthand: two animations with calc() delays read better
+  // apart than packed into one line.
+  animation-name: sprinkle-pop, sprinkle-twinkle;
+  animation-duration: 0.3s, 3.6s;
+  animation-timing-function: ease-out, ease-in-out;
+  animation-delay: calc(0.4s + var(--i) * 0.03s), calc(1.4s + var(--i) * 0.07s);
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+}
+
+// The sprinkles lying along the header's edges. Positions are given in the
+// header's own box, so a --x past 100% or a negative --y is the part that runs
+// off it — and because this sits inside the header, that part is clipped, which
+// is what makes them read as confetti caught mid-scatter rather than as dots
+// arranged along a border.
+.page-banner__spill{
+  position: absolute;
+  inset: 0;
+  // Behind the title, like the cluster, and never in the way of a click.
+  z-index: -1;
+  pointer-events: none;
+
+  span{
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    // The size the cluster's ellipses render at, so both read as one confetti.
+    width: 6.4px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--c);
+  }
+}
+
+@keyframes banner-shine{
+  from{ transform: translateX(-120%); }
+  to{ transform: translateX(280%); }
+}
+
+// Each sprinkle carries its own tilt in --r. It has to be re-stated in every
+// keyframe: transform is one property, so a keyframe that set only scale would
+// drop the rotation for the length of the animation.
+@keyframes sprinkle-pop{
+  0%   { opacity: 0; transform: rotate(var(--r)) scale(0); }
+  70%  { opacity: 1; transform: rotate(var(--r)) scale(1.3); }
+  100% { opacity: 1; transform: rotate(var(--r)) scale(1); }
+}
+
+// The glint. Opacity is left alone so there is no step where this takes over
+// from the pop-in's forwards fill.
+@keyframes sprinkle-twinkle{
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.35)) brightness(1); transform: rotate(var(--r)) scale(1); }
+  50%      { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.6)) brightness(1.18); transform: rotate(var(--r)) scale(1.06); }
+}
+
+// An unanswered <select> should read as a prompt, the way the placeholder in
+// each text input beside it does: Bootstrap's placeholder grey (#6c757d) at the
+// same 0.8rem. A browser paints the closed control in the select's own colour,
+// so styling the disabled placeholder <option> would not show here — the
+// template flags the empty state with .is-placeholder instead.
+.form-select.is-placeholder{
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+// The smaller placeholder text would otherwise leave the unit dropdown shorter
+// than the inputs beside it, so the row would resize the moment a unit was
+// picked. 38px is the height Bootstrap gives those inputs.
+.ingredient-item .form-select{
+  min-height: 38px;
+}
+
 // Applied by RevealOnScrollDirective. Global rather than component-scoped so
 // any template can use the directive; the directive adds .reveal-pending
 // itself, so nothing is ever left hidden if its script does not run.
