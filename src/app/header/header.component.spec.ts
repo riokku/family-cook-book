@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
 import { HeaderComponent } from './header.component';
+import { SupaService } from 'src/app/shared/services/supa.service';
+import { SupaServiceStub } from 'src/testing/test-doubles';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,9 +12,14 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
-    })
-    .compileComponents();
+      declarations: [HeaderComponent],
+      providers: [
+        provideRouter([]),
+        { provide: SupaService, useClass: SupaServiceStub }
+      ],
+      // Child components and third-party elements are not under test here.
+      schemas: [NO_ERRORS_SCHEMA]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
