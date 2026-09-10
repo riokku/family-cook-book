@@ -205,6 +205,12 @@
       max-height: 20px;
       max-width: 20px;
     }
+    // The category art is solid white line-work on transparent, so it
+    // disappears against the white selected chip. Flipping it to black keeps
+    // the icon readable without needing a second set of files.
+    &.active img{
+      filter: brightness(0);
+    }
     .check-icon{
       font-size: 0.8rem;
     }
