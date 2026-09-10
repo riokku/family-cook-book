@@ -250,8 +250,11 @@
                           formControlName="ingredientGroupName"
                           placeholder="Ingredient group name">
                       </div>
-                      <div class="col-sm-12 col-md-5">
-                        <button type="button" class="btn btn-danger" (click)="deleteIngredientGroup(i)">X</button>
+                      <div class="col-auto">
+                        <button type="button" class="btn-remove" (click)="deleteIngredientGroup(i)"
+                          [attr.aria-label]="'Remove ingredient group ' + (i + 1)">
+                          <i class="bi bi-trash" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </div>
                     <!-- Ingredients drop list (nested) -->
@@ -286,7 +289,10 @@
                             </select>
                           </div>
                           <div class="col-sm-1">
-                            <button type="button" class="btn btn-danger" (click)="deleteIngredient(i, j)">X</button>
+                            <button type="button" class="btn-remove" (click)="deleteIngredient(i, j)"
+                              [attr.aria-label]="'Remove ingredient ' + (j + 1)">
+                              <i class="bi bi-trash" aria-hidden="true"></i>
+                            </button>
                           </div>
                           <div *cdkDragPlaceholder class="drag-placeholder"></div>
                         </div>
@@ -343,7 +349,10 @@
                         <textarea type="text" class="form-control" formControlName="step" rows="2"></textarea>
                       </div>
                       <div class="col-auto">
-                        <button type="button" class="btn btn-danger" (click)="onDeleteStep(i)">X</button>
+                        <button type="button" class="btn-remove" (click)="onDeleteStep(i)"
+                          [attr.aria-label]="'Remove step ' + (i + 1)">
+                          <i class="bi bi-trash" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </div>
                     <!-- Step ingredients -->
@@ -390,8 +399,9 @@
                               }
                             </div>
                             <div class="col-auto">
-                              <button type="button" class="btn btn-sm btn-danger" (click)="deleteStepIngredient(i, j)" title="Remove">
-                                <i class="bi bi-x"></i>
+                              <button type="button" class="btn-remove btn-remove-sm" (click)="deleteStepIngredient(i, j)"
+                                aria-label="Remove this ingredient from the step">
+                                <i class="bi bi-x-lg" aria-hidden="true"></i>
                               </button>
                             </div>
                           </div>
