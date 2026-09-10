@@ -381,6 +381,194 @@ summary,
   min-height: 38px;
 }
 
+// Marks a field as needed. Shared by both recipe forms, so the phone rules
+// below can shrink it without a component-scoped copy outranking them.
+.required{
+  &:after{
+    content: "Required";
+    // Brand purple rather than red: this marks a field as needed, not as an
+    // error, so it should stand out without competing with validation.
+    background-color: $purple-tint;
+    color: $purple;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+  }
+}
+
+// The buttons that finish a recipe form, plus whatever note sits beside them.
+.form-actions{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  .recipe-date{
+    margin-left: auto;
+  }
+}
+
+// ── The recipe forms below Bootstrap's md ─────────────────────────────────────
+// A recipe row is one line from 768px up, where col-md-* applies. Below that
+// the col-sm-* classes leave it sprawling over four or five lines with the
+// remove button stranded on the last of them, so these widths get a compact
+// layout of their own. It used to start at 390px, which is narrower than most
+// phones in use: a 412 or 430px screen got the desktop layout and none of this.
+@media (max-width: 767px){
+  // iOS zooms the page in when a control's text is under 16px and does not zoom
+  // back out, which leaves you scrolled sideways in the middle of a form.
+  // Nothing here goes below it, the smaller placeholder included.
+  .form-control,
+  .form-select,
+  .form-control-sm,
+  .form-select-sm,
+  .form-select.is-placeholder{
+    font-size: 1rem;
+  }
+
+  // Rows are two lines tall here rather than one, so the fields inside them sit
+  // closer together than they do on a desktop.
+  .ingredient-item,
+  .step-item,
+  .ingredient-group-item{
+    input, select, textarea{
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  // An ingredient over two lines instead of five: its name on the first, beside
+  // the handle and the bin, and the amount and its unit sharing the second.
+  // Grid rather than more column classes, because the bin is last in the markup
+  // and belongs up on the first line.
+  .ingredient-item{
+    display: grid;
+    grid-template-columns: auto 1fr 1fr auto;
+    grid-template-areas:
+      "handle name   name  remove"
+      "amount amount unit  unit";
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    > *{
+      padding: 0;
+      // The col-sm-* widths would otherwise size these against the row rather
+      // than against the area the grid gives them.
+      width: auto;
+      max-width: none;
+    }
+    > *:nth-child(1){ grid-area: handle; }
+    > *:nth-child(2){ grid-area: name; }
+    > *:nth-child(3){ grid-area: amount; }
+    > *:nth-child(4){ grid-area: unit; }
+    > *:nth-child(5){
+      grid-area: remove;
+      justify-self: end;
+    }
+    // Only in the DOM mid-drag, and it stands in for the whole row.
+    > .drag-placeholder{
+      grid-column: 1 / -1;
+    }
+    .form-select{
+      // Releases the fixed height the desktop rows are held at, now that the
+      // unit dropdown has a line rather than a column.
+      min-height: 44px;
+    }
+  }
+
+  // A step's text takes the full width, with its handle and its remove button
+  // on the line above, for the same reason.
+  .step-item > .row{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "handle remove"
+      "text   text";
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    > *{
+      padding: 0;
+      width: auto;
+      max-width: none;
+    }
+    > *:nth-child(1){ grid-area: handle; }
+    > *:nth-child(2){ grid-area: text; }
+    > *:nth-child(3){
+      grid-area: remove;
+      justify-self: end;
+    }
+  }
+
+  // Fingertips, not mouse pointers.
+  .btn-remove{
+    width: 44px;
+    height: 44px;
+    &.btn-remove-sm{
+      width: 36px;
+      height: 36px;
+    }
+  }
+  .drag-handle{
+    padding: 0.5rem 0.55rem;
+  }
+}
+
+// ── The recipe forms on a phone ───────────────────────────────────────────────
+@media (max-width: 575px){
+  .form-group-wrapper{
+    padding: 1rem;
+  }
+
+  // A shallower step in: at this width the fields need the room more than the
+  // nesting needs the emphasis.
+  .ingredient-group-item .ingredients-wrapper{
+    padding-left: 0.5rem;
+  }
+
+  // The short numeric fields pair up two to a row on wider screens. At 390px
+  // that leaves a label about 139px wide, and "Serving size" plus its Required
+  // chip needs more than that however far the chip is shrunk — so they each
+  // take a line here, like every other field on the page.
+  .form-group-wrapper .row > [class*="col-6"]{
+    width: 100%;
+  }
+
+  // Labels are not controls, so unlike the fields they can come down a little
+  // without putting iOS's zoom-on-focus in play.
+  label{
+    font-size: 0.9375rem;
+  }
+  .required:after{
+    font-size: 0.6rem;
+    padding: 0.1rem 0.3rem;
+    margin-left: 0.35rem;
+  }
+
+  // Photographing a recipe is the thing you are most likely to be doing on a
+  // phone, so its button gets the full width rather than a corner.
+  .btn-scan{
+    width: 100%;
+    justify-content: center;
+  }
+
+  // Full width and stacked: two small buttons side by side at the end of a long
+  // form are easy to mis-tap.
+  .form-actions{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    .btn-submit,
+    .btn-cancel{
+      justify-content: center;
+      width: 100%;
+    }
+    .recipe-date{
+      margin-left: 0;
+    }
+  }
+}
+
 // Applied by RevealOnScrollDirective. Global rather than component-scoped so
 // any template can use the directive; the directive adds .reveal-pending
 // itself, so nothing is ever left hidden if its script does not run.

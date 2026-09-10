@@ -111,7 +111,6 @@ img{
 }
 
 .recipe-date{
-  float: right;
   color: #999;
   font-size: 0.8rem;
 }
@@ -256,58 +255,3 @@ small{
   transition: transform 220ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.required{
-  &:after{
-    content: "Required";
-    // Brand purple rather than red: this marks a field as needed, not as an
-    // error, so it should stand out without competing with validation.
-    background-color: $purple-tint;
-    color: $purple;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-left: 0.5rem;
-    padding: 0.15rem 0.4rem;
-    border-radius: 0.25rem;
-  }
-}
-
-
-//Media queries
-
-@media (max-width: 390px){
-  .form-group-wrapper{
-    padding: 0.75rem;
-  }
-  .recipe-date{
-    margin-top: 1rem;
-    float: left;
-  }
-  .ingredients-wrapper, .steps-wrapper{
-    textarea{
-      margin-bottom: 0.5rem;
-    }
-    button{
-      &.btn-danger{
-        float: right;
-        margin-bottom: 0.5rem;
-        padding: 0.15rem 0.55rem;
-      }
-    }
-  }
-  .ingredient-group-item .ingredients-wrapper{
-    padding-left: 0.5rem;
-  }
-  .ingredients-wrapper{
-    input, select{
-      margin-bottom: 0.5rem;
-    }
-    .form-select{
-      width: fit-content;
-    }
-    select{
-      font-size: 0.75rem;
-    }
-  }
-}
