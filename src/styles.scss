@@ -95,6 +95,111 @@ summary,
   }
 }
 
+// Action hierarchy for the recipe forms, shared so add and edit cannot drift.
+// One solid primary per form, quiet dashed outlines for the "add another"
+// actions that repeat down the page, neutral for cancel. Destructive stays red
+// on .btn-remove above.
+//
+// Previously Submit and "Add ingredient" were both solid green, so the one
+// action that finishes the form looked identical to the one that repeats.
+
+.btn-submit{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid $purple;
+  border-radius: 0.25rem;
+  background-color: $purple;
+  color: $white;
+  font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  @include focus-ring($focus-on-light);
+  &:hover:not(:disabled){
+    background-color: $purple-light;
+    border-color: $purple-light;
+    color: $white;
+  }
+  &:disabled{
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+// Dashed, because these create a new row rather than completing anything.
+.btn-add{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 38px;
+  padding: 0.35rem 0.85rem;
+  border: 1px dashed rgba(87, 75, 144, 0.5);
+  border-radius: 0.25rem;
+  background-color: transparent;
+  color: $purple;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  @include focus-ring($focus-on-light);
+  &:hover:not(:disabled){
+    background-color: $purple-tint;
+    border-color: $purple;
+    color: $purple;
+  }
+  &:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  &.btn-add-sm{
+    min-height: 30px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+  }
+}
+
+.btn-cancel{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #c9c9c9;
+  border-radius: 0.25rem;
+  background-color: $white;
+  color: $ink;
+  font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  @include focus-ring($focus-on-light);
+  &:hover{
+    background-color: $grey-100;
+    border-color: #9d9d9d;
+    color: $ink;
+  }
+}
+
+// Bootstrap's radio group defaults to grey; the checked half should read as
+// the brand's selected state, matching the category chips.
+.image-source-toggle{
+  .btn-outline-secondary{
+    border-color: #c9c9c9;
+    color: $ink;
+    &:hover{
+      background-color: $grey-100;
+      color: $ink;
+    }
+  }
+  .btn-check:checked + .btn-outline-secondary{
+    background-color: $purple;
+    border-color: $purple;
+    color: $white;
+  }
+  .btn-check:focus-visible + .btn-outline-secondary{
+    outline: 3px solid $focus-on-light;
+    outline-offset: 2px;
+  }
+}
+
 // Applied by RevealOnScrollDirective. Global rather than component-scoped so
 // any template can use the directive; the directive adds .reveal-pending
 // itself, so nothing is ever left hidden if its script does not run.

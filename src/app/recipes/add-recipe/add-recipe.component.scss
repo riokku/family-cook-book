@@ -179,6 +179,10 @@ img{
     }
     &:checked{
       font-weight: 900;
+      // Chromium ignores background-color on a checked <option>; a gradient
+      // image is the one declaration it does honour here.
+      background: $purple linear-gradient(0deg, $purple 0%, $purple 100%);
+      color: $white;
     }
     &:not(:last-child){
       margin-right: 0.5rem;

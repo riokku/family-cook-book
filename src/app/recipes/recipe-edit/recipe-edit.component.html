@@ -302,7 +302,7 @@
                       }
                       <div class="row border-bottom">
                         <div class="col-12">
-                          <button type="button" class="btn btn-success" (click)="addIngredient(i)">
+                          <button type="button" class="btn-add" (click)="addIngredient(i)">
                             <i class="bi bi-plus-square"></i> Add ingredient
                           </button>
                         </div>
@@ -315,7 +315,7 @@
 
                 <div class="row">
                   <div class="col-12">
-                    <button type="button" class="btn btn-secondary" (click)="addIngredientGroup()">
+                    <button type="button" class="btn-add" (click)="addIngredientGroup()">
                       <i class="bi bi-plus-square"></i> Add ingredient group
                     </button>
                   </div>
@@ -375,7 +375,7 @@
                 <div class="col-12">
                   <button
                     type="button"
-                    class="btn btn-success"
+                    class="btn-add"
                     (click)="onAddIngredient()"><i class="bi bi-plus-square"></i> Add ingredient</button>
                   </div>
                 </div>
@@ -471,7 +471,7 @@
                         </div>
                       }
                       <button type="button"
-                        class="btn btn-sm btn-outline-secondary"
+                        class="btn-add btn-add-sm"
                         (click)="addStepIngredient(i)"
                         [disabled]="allIngredients.length === 0"
                         [title]="allIngredients.length === 0 ? 'Add ingredients above first' : ''">
@@ -484,7 +484,7 @@
 
                 <div class="row">
                   <div class="col-12">
-                    <button type="button" class="btn btn-success" (click)="onAddStep()">
+                    <button type="button" class="btn-add" (click)="onAddStep()">
                       <i class="bi bi-plus-square"></i> Add Step
                     </button>
                   </div>
@@ -529,8 +529,8 @@
           </div>
           <div class="row">
             <div class="col-8">
-              <button type="submit" class="btn btn-success me-3" [disabled]="!editRecipeForm.valid">Save changes</button>
-              <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+              <button type="submit" class="btn-submit me-3" [disabled]="!editRecipeForm.valid">Save changes</button>
+              <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
             </div>
             <div class="col-4 d-flex align-items-center justify-content-end">
               <div class="form-group">
