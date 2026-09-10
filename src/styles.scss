@@ -243,20 +243,10 @@ summary,
 
   &__sprinkles{
     position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    width: 210px;
-    height: 100px;
+    inset: 0;
+    // Behind the title, and never in the way of a click.
     z-index: -1;
     pointer-events: none;
-    // The pop-in would otherwise clip against the viewBox at the top of its
-    // overshoot; the banner's own overflow still keeps the cluster inside.
-    overflow: visible;
-
-    ellipse{
-      transform-box: fill-box;
-      transform-origin: center;
-    }
   }
 
   &__content{
@@ -302,12 +292,9 @@ summary,
   // subtitle that fits on a line or two, so the title takes the whole banner.
   @media (max-width: 767px){
     padding: 1.25rem;
+    // Below this width the header is a compact title bar with no room for a
+    // confetti field that keeps clear of the title.
     &__sprinkles{
-      display: none;
-    }
-    // Off with the cluster: below this width the header is a compact title bar
-    // with no room to spare along its edges.
-    &__spill{
       display: none;
     }
     &__content{
@@ -325,10 +312,19 @@ summary,
   }
 }
 
-// One sprinkle, wherever it sits: in the cluster inside the header, or in the
-// layer that hangs off its edges.
-.page-banner__sprinkles ellipse,
-.page-banner__spill span{
+// A single sprinkle. --x and --y place its top-left corner in the header's own
+// box, so a value past an edge is the part the header clips — which is what
+// makes the ones on the edges read as confetti caught mid-scatter rather than
+// as dots arranged along a border. The layout keeps clear of the title; the
+// corridor .page-banner__content reserves is the same one, from the other side.
+.page-banner__sprinkles span{
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 6.4px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--c);
   opacity: 0;
   // Gloss, so each one catches the light instead of reading as a flat dot.
   // brightness() is carried at 1 because a filter list only interpolates
@@ -342,33 +338,9 @@ summary,
   animation-name: sprinkle-pop, sprinkle-twinkle;
   animation-duration: 0.3s, 3.6s;
   animation-timing-function: ease-out, ease-in-out;
-  animation-delay: calc(0.4s + var(--i) * 0.03s), calc(1.4s + var(--i) * 0.07s);
+  animation-delay: calc(0.4s + var(--i) * 0.02s), calc(1.4s + var(--i) * 0.05s);
   animation-fill-mode: forwards, none;
   animation-iteration-count: 1, infinite;
-}
-
-// The sprinkles lying along the header's edges. Positions are given in the
-// header's own box, so a --x past 100% or a negative --y is the part that runs
-// off it — and because this sits inside the header, that part is clipped, which
-// is what makes them read as confetti caught mid-scatter rather than as dots
-// arranged along a border.
-.page-banner__spill{
-  position: absolute;
-  inset: 0;
-  // Behind the title, like the cluster, and never in the way of a click.
-  z-index: -1;
-  pointer-events: none;
-
-  span{
-    position: absolute;
-    left: var(--x);
-    top: var(--y);
-    // The size the cluster's ellipses render at, so both read as one confetti.
-    width: 6.4px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: var(--c);
-  }
 }
 
 @keyframes banner-shine{

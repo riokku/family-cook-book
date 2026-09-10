@@ -10,51 +10,66 @@
     <div class="row">
       <div class="col-12">
         <div class="page-banner mb-4">
-          <!-- Sprinkles from the splash screen, so the form reads as part of the
-               same kitchen. Purely decorative, hidden from assistive tech. -->
-          <svg class="page-banner__sprinkles" viewBox="0 0 210 100" aria-hidden="true">
-              <ellipse style="--i: 0; --r: -48deg" cx="14" cy="33" rx="3.2" ry="8" fill="#ff6b81"/>
-              <ellipse style="--i: 1; --r: -31deg" cx="15" cy="59" rx="3.2" ry="8" fill="#ffd32a"/>
-              <ellipse style="--i: 2; --r: 45deg" cx="45" cy="28" rx="3.2" ry="8" fill="#00d2d3"/>
-              <ellipse style="--i: 3; --r: 34deg" cx="30" cy="86" rx="3.2" ry="8" fill="#1dd1a1"/>
-              <ellipse style="--i: 4; --r: -40deg" cx="46" cy="46" rx="3.2" ry="8" fill="#a29bfe"/>
-              <ellipse style="--i: 5; --r: -27deg" cx="47" cy="66" rx="3.2" ry="8" fill="#fd79a8"/>
-              <ellipse style="--i: 6; --r: -25deg" cx="68" cy="12" rx="3.2" ry="8" fill="#ff6348"/>
-              <ellipse style="--i: 7; --r: -14deg" cx="69" cy="51" rx="3.2" ry="8" fill="#ff6b81"/>
-              <ellipse style="--i: 8; --r: 9deg" cx="58" cy="86" rx="3.2" ry="8" fill="#ffd32a"/>
-              <ellipse style="--i: 9; --r: 2deg" cx="89" cy="13" rx="3.2" ry="8" fill="#00d2d3"/>
-              <ellipse style="--i: 10; --r: 8deg" cx="87" cy="37" rx="3.2" ry="8" fill="#1dd1a1"/>
-              <ellipse style="--i: 11; --r: -54deg" cx="89" cy="79" rx="3.2" ry="8" fill="#a29bfe"/>
-              <ellipse style="--i: 12; --r: 3deg" cx="106" cy="31" rx="3.2" ry="8" fill="#fd79a8"/>
-              <ellipse style="--i: 13; --r: 55deg" cx="115" cy="13" rx="3.2" ry="8" fill="#ff6348"/>
-              <ellipse style="--i: 14; --r: 19deg" cx="103" cy="56" rx="3.2" ry="8" fill="#ff6b81"/>
-              <ellipse style="--i: 15; --r: -15deg" cx="134" cy="38" rx="3.2" ry="8" fill="#ffd32a"/>
-              <ellipse style="--i: 16; --r: 19deg" cx="144" cy="13" rx="3.2" ry="8" fill="#00d2d3"/>
-              <ellipse style="--i: 17; --r: -5deg" cx="130" cy="66" rx="3.2" ry="8" fill="#1dd1a1"/>
-              <ellipse style="--i: 18; --r: -17deg" cx="149" cy="57" rx="3.2" ry="8" fill="#a29bfe"/>
-              <ellipse style="--i: 19; --r: 42deg" cx="161" cy="29" rx="3.2" ry="8" fill="#fd79a8"/>
-              <ellipse style="--i: 20; --r: 41deg" cx="154" cy="86" rx="3.2" ry="8" fill="#ff6348"/>
-              <ellipse style="--i: 21; --r: 27deg" cx="168" cy="51" rx="3.2" ry="8" fill="#ff6b81"/>
-              <ellipse style="--i: 22; --r: 28deg" cx="185" cy="13" rx="3.2" ry="8" fill="#ffd32a"/>
-              <ellipse style="--i: 23; --r: 10deg" cx="196" cy="33" rx="3.2" ry="8" fill="#00d2d3"/>
-              <ellipse style="--i: 24; --r: -20deg" cx="187" cy="79" rx="3.2" ry="8" fill="#1dd1a1"/>
-              <ellipse style="--i: 25; --r: -6deg" cx="196" cy="57" rx="3.2" ry="8" fill="#a29bfe"/>
-          </svg>
-          <!-- The ones on the edges, which the header cuts off as it clips. -->
-          <div class="page-banner__spill" aria-hidden="true">
-              <span style="--i: 26; --r: -22deg; --x: 41%; --y: -7px; --c: #ff6b81"></span>
-              <span style="--i: 27; --r: 34deg; --x: 52%; --y: -10px; --c: #ffd32a"></span>
-              <span style="--i: 28; --r: -8deg; --x: 63%; --y: -5px; --c: #00d2d3"></span>
-              <span style="--i: 29; --r: 44deg; --x: 74%; --y: -9px; --c: #1dd1a1"></span>
-              <span style="--i: 30; --r: -30deg; --x: 85%; --y: -6px; --c: #a29bfe"></span>
-              <span style="--i: 31; --r: 18deg; --x: 95%; --y: -10px; --c: #fd79a8"></span>
-              <span style="--i: 32; --r: 16deg; --x: calc(100% - 5px); --y: 22px; --c: #ff6348"></span>
-              <span style="--i: 33; --r: -36deg; --x: calc(100% - 2px); --y: 52px; --c: #ffd32a"></span>
-              <span style="--i: 34; --r: 24deg; --x: calc(100% - 6px); --y: 82px; --c: #00d2d3"></span>
-              <span style="--i: 35; --r: -18deg; --x: 46%; --y: calc(100% - 6px); --c: #a29bfe"></span>
-              <span style="--i: 36; --r: 38deg; --x: 60%; --y: calc(100% - 10px); --c: #ff6b81"></span>
-              <span style="--i: 37; --r: -44deg; --x: 73%; --y: calc(100% - 5px); --c: #1dd1a1"></span>
-              <span style="--i: 38; --r: 12deg; --x: 88%; --y: calc(100% - 9px); --c: #fd79a8"></span>
+          <!-- Confetti from the splash screen, so the form reads as part of the
+               same kitchen. The ones on the edges are cut off by the header
+               itself. Purely decorative, hidden from assistive tech. -->
+          <div class="page-banner__sprinkles" aria-hidden="true">
+            <span style="--i: 0; --r: 9deg; --x: 0.4%; --y: 97.4%; --c: #ff6b81"></span>
+            <span style="--i: 1; --r: -46deg; --x: 4.1%; --y: 10.5%; --c: #ffd32a"></span>
+            <span style="--i: 2; --r: -8deg; --x: 5.6%; --y: 88.3%; --c: #00d2d3"></span>
+            <span style="--i: 3; --r: 36deg; --x: 9.2%; --y: 4.9%; --c: #1dd1a1"></span>
+            <span style="--i: 4; --r: 3deg; --x: 9.8%; --y: 97.2%; --c: #a29bfe"></span>
+            <span style="--i: 5; --r: -21deg; --x: 13.0%; --y: -0.9%; --c: #fd79a8"></span>
+            <span style="--i: 6; --r: -47deg; --x: 16.3%; --y: 13.1%; --c: #ff6348"></span>
+            <span style="--i: 7; --r: 2deg; --x: 17.0%; --y: 87.6%; --c: #ff6b81"></span>
+            <span style="--i: 8; --r: -46deg; --x: 19.1%; --y: 3.7%; --c: #ffd32a"></span>
+            <span style="--i: 9; --r: 44deg; --x: 21.6%; --y: -1.5%; --c: #00d2d3"></span>
+            <span style="--i: 10; --r: -35deg; --x: 24.2%; --y: 94.4%; --c: #1dd1a1"></span>
+            <span style="--i: 11; --r: 51deg; --x: 24.7%; --y: 0.6%; --c: #a29bfe"></span>
+            <span style="--i: 12; --r: -43deg; --x: 27.2%; --y: 90.1%; --c: #fd79a8"></span>
+            <span style="--i: 13; --r: 13deg; --x: 29.2%; --y: 1.8%; --c: #ff6348"></span>
+            <span style="--i: 14; --r: -5deg; --x: 32.0%; --y: 91.0%; --c: #ff6b81"></span>
+            <span style="--i: 15; --r: -19deg; --x: 33.8%; --y: 5.7%; --c: #ffd32a"></span>
+            <span style="--i: 16; --r: 26deg; --x: 36.4%; --y: 94.9%; --c: #00d2d3"></span>
+            <span style="--i: 17; --r: 50deg; --x: 37.2%; --y: -5.5%; --c: #1dd1a1"></span>
+            <span style="--i: 18; --r: -38deg; --x: 39.8%; --y: 87.5%; --c: #a29bfe"></span>
+            <span style="--i: 19; --r: -48deg; --x: 40.7%; --y: 8.2%; --c: #fd79a8"></span>
+            <span style="--i: 20; --r: -27deg; --x: 44.4%; --y: -5.7%; --c: #ff6348"></span>
+            <span style="--i: 21; --r: 6deg; --x: 44.4%; --y: 91.0%; --c: #ff6b81"></span>
+            <span style="--i: 22; --r: -36deg; --x: 48.4%; --y: 4.2%; --c: #ffd32a"></span>
+            <span style="--i: 23; --r: 8deg; --x: 49.3%; --y: 96.4%; --c: #00d2d3"></span>
+            <span style="--i: 24; --r: -31deg; --x: 52.5%; --y: 1.6%; --c: #1dd1a1"></span>
+            <span style="--i: 25; --r: 2deg; --x: 54.3%; --y: 86.1%; --c: #a29bfe"></span>
+            <span style="--i: 26; --r: 36deg; --x: 58.1%; --y: 94.6%; --c: #fd79a8"></span>
+            <span style="--i: 27; --r: -36deg; --x: 59.8%; --y: -2.3%; --c: #ff6348"></span>
+            <span style="--i: 28; --r: 50deg; --x: 62.0%; --y: 97.3%; --c: #ff6b81"></span>
+            <span style="--i: 29; --r: 11deg; --x: 63.7%; --y: -0.1%; --c: #ffd32a"></span>
+            <span style="--i: 30; --r: 38deg; --x: 67.6%; --y: 0.7%; --c: #00d2d3"></span>
+            <span style="--i: 31; --r: -43deg; --x: 68.1%; --y: 92.6%; --c: #1dd1a1"></span>
+            <span style="--i: 32; --r: 2deg; --x: 70.4%; --y: 11.9%; --c: #a29bfe"></span>
+            <span style="--i: 33; --r: -28deg; --x: 72.1%; --y: 35.9%; --c: #fd79a8"></span>
+            <span style="--i: 34; --r: -19deg; --x: 73.4%; --y: 97.9%; --c: #ff6348"></span>
+            <span style="--i: 35; --r: -24deg; --x: 74.8%; --y: 73.8%; --c: #ff6b81"></span>
+            <span style="--i: 36; --r: 4deg; --x: 75.6%; --y: 33.2%; --c: #ffd32a"></span>
+            <span style="--i: 37; --r: 10deg; --x: 76.5%; --y: -0.9%; --c: #00d2d3"></span>
+            <span style="--i: 38; --r: -39deg; --x: 78.7%; --y: 57.3%; --c: #1dd1a1"></span>
+            <span style="--i: 39; --r: 12deg; --x: 81.1%; --y: 32.6%; --c: #a29bfe"></span>
+            <span style="--i: 40; --r: -44deg; --x: 81.5%; --y: 94.4%; --c: #fd79a8"></span>
+            <span style="--i: 41; --r: 0deg; --x: 83.3%; --y: 55.9%; --c: #ff6348"></span>
+            <span style="--i: 42; --r: 4deg; --x: 84.6%; --y: 30.8%; --c: #ff6b81"></span>
+            <span style="--i: 43; --r: 3deg; --x: 85.0%; --y: 2.7%; --c: #ffd32a"></span>
+            <span style="--i: 44; --r: 29deg; --x: 85.8%; --y: 80.3%; --c: #00d2d3"></span>
+            <span style="--i: 45; --r: 37deg; --x: 87.9%; --y: 41.0%; --c: #1dd1a1"></span>
+            <span style="--i: 46; --r: 1deg; --x: 90.1%; --y: 21.0%; --c: #a29bfe"></span>
+            <span style="--i: 47; --r: 46deg; --x: 91.9%; --y: 54.2%; --c: #fd79a8"></span>
+            <span style="--i: 48; --r: 52deg; --x: 92.0%; --y: 88.1%; --c: #ff6348"></span>
+            <span style="--i: 49; --r: 3deg; --x: 92.1%; --y: -1.8%; --c: #ff6b81"></span>
+            <span style="--i: 50; --r: 42deg; --x: 94.9%; --y: 57.2%; --c: #ffd32a"></span>
+            <span style="--i: 51; --r: 25deg; --x: 95.2%; --y: 24.8%; --c: #00d2d3"></span>
+            <span style="--i: 52; --r: -18deg; --x: 95.9%; --y: 92.0%; --c: #1dd1a1"></span>
+            <span style="--i: 53; --r: -14deg; --x: 98.1%; --y: 75.2%; --c: #a29bfe"></span>
+            <span style="--i: 54; --r: -48deg; --x: 98.2%; --y: 40.1%; --c: #fd79a8"></span>
+            <span style="--i: 55; --r: 14deg; --x: 98.4%; --y: -4.2%; --c: #ff6348"></span>
           </div>
           <div class="page-banner__content">
             <span class="page-banner__icon" aria-hidden="true">
