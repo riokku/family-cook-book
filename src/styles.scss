@@ -323,8 +323,24 @@ summary,
   top: var(--y);
   width: 6.4px;
   height: 16px;
-  border-radius: 50%;
+  // A stadium rather than an ellipse: full width the whole way to the caps.
+  // At 50% these tapered to a point at each end, which is what made them read
+  // as grains of rice instead of cut rods of sugar. An outsized radius gets
+  // clamped back to half the short side, so the caps stay semicircular on
+  // their own if the size above ever changes.
+  border-radius: 100px;
   background-color: var(--c);
+  // Shades each rod like a tube: a bright specular band just off centre, the
+  // colour falling away to a shaded edge on both sides. The gradient crosses
+  // the short axis and turns with the sprinkle, which is how a real cylinder
+  // behaves — its highlight runs parallel to its own axis whatever the tilt.
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.22) 0%,
+    rgba(255, 255, 255, 0.42) 34%,
+    rgba(255, 255, 255, 0.08) 62%,
+    rgba(0, 0, 0, 0.26) 100%
+  );
   opacity: 0;
   // Gloss, so each one catches the light instead of reading as a flat dot.
   // brightness() is carried at 1 because a filter list only interpolates
