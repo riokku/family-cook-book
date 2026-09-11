@@ -112,8 +112,18 @@
                   </p>
                 </div>
               }
-              <button type="button" class="double-button mt-4" (click)="toggleDouble()">
-                <i class="bi bi-question-circle"></i> {{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}
+              <!-- A toggle rather than a link, so it carries aria-pressed: on its
+                   own the changing label reads as a different button each time
+                   rather than as one button in two states. The badge shows what
+                   the press will switch to, matching the label beside it. -->
+              <button type="button"
+                      class="double-button mt-4"
+                      [class.double-button--on]="isDoubled"
+                      [attr.aria-pressed]="isDoubled"
+                      (click)="toggleDouble()">
+                <span class="double-button__badge" aria-hidden="true">{{ isDoubled ? '×1' : '×2' }}</span>
+                <span class="double-button__label">{{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}</span>
+                <i class="bi bi-arrow-repeat double-button__swap" aria-hidden="true"></i>
               </button>
             </div>
           </div>
