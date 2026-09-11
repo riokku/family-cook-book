@@ -545,13 +545,6 @@ summary,
     margin-left: 0.35rem;
   }
 
-  // Photographing a recipe is the thing you are most likely to be doing on a
-  // phone, so its button gets the full width rather than a corner.
-  .btn-scan{
-    width: 100%;
-    justify-content: center;
-  }
-
   // Full width and stacked: two small buttons side by side at the end of a long
   // form are easy to mis-tap.
   .form-actions{

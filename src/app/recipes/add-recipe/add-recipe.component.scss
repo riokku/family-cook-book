@@ -9,6 +9,11 @@ section {
 
 // ── AI Recipe Scanner banner ──────────────────────────────────────────────────
 
+// One height for every control in the banner. The photo button, the URL field
+// and its button share a row, and each was sizing itself off its own padding
+// and line-height, so no two of them landed on the same edge.
+$scan-control-height: 2.375rem;
+
 .scan-banner {
   background: #ede9ff;
   border: 1.5px solid #c5b8f5;
@@ -26,6 +31,81 @@ section {
   &__subtitle {
     font-size: 0.82rem;
     color: $purple;
+    display: block;
+  }
+
+  &__options {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  &__or {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $purple;
+  }
+
+  // The field and its button are one control, so they share an edge. Growing
+  // from an 18rem basis keeps them on the first line on a laptop and drops
+  // them onto their own line when there is no room.
+  &__url {
+    display: flex;
+    flex: 1 1 18rem;
+    min-width: 0;
+
+    // Stated outright rather than left to stretch to the row: browsers decline
+    // to stretch a form control the way they stretch a div, so the field came
+    // out at its text height while the button beside it was full size.
+    .form-control {
+      height: $scan-control-height;
+      min-width: 0;
+      font-size: 0.85rem;
+      // The blanket `input` spacing further down is for the stacked form
+      // fields. Here it added 24px below the field, making this group the
+      // tallest thing on the row and pushing the photo button off centre.
+      margin-bottom: 0;
+      border: 1.5px solid #c5b8f5;
+      border-right: none;
+      border-radius: 0.375rem 0 0 0.375rem;
+
+      &:focus {
+        border-color: $purple;
+        box-shadow: none;
+      }
+
+      &:disabled {
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+    }
+
+    .btn-scan {
+      border-radius: 0 0.375rem 0.375rem 0;
+    }
+  }
+}
+
+// On a phone the three pieces stack, and "or" becomes the divider between them.
+@media (max-width: 575px) {
+  .scan-banner {
+    padding: 1rem 1.1rem;
+
+    // Photographing a recipe is the thing you are most likely to be doing on a
+    // phone, so its button gets the full width rather than a corner. The
+    // Import button is not in this list: it stays paired with its field.
+    &__options > .btn-scan,
+    &__or,
+    &__url {
+      flex: 1 1 100%;
+    }
+
+    &__or {
+      text-align: center;
+    }
   }
 }
 
@@ -35,9 +115,15 @@ section {
   border: none;
   font-weight: 600;
   font-size: 0.85rem;
-  padding: 0.45rem 1rem;
+  height: $scan-control-height;
+  padding: 0 1rem;
   border-radius: 0.375rem;
   white-space: nowrap;
+  // Centring the label in a fixed height, rather than letting padding set the
+  // height, is also what stops the spinner nudging the button taller mid-read.
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: background 0.15s ease, box-shadow 0.15s ease;
 
   &:hover:not(:disabled) {

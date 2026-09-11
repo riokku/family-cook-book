@@ -1,27 +1,19 @@
 // Supabase Edge Function: scan-recipe
 //
-// Accepts a base64-encoded photo of a recipe, sends it to the Gemini API, and
-// returns structured recipe JSON shaped to match the add-recipe form.
+// Reads a recipe out of either a photo or a URL and returns structured recipe
+// JSON shaped to match the add-recipe form. A photo arrives as base64 and goes
+// straight to Gemini; a URL is fetched and distilled here first (see page.ts)
+// so the model reads the recipe rather than the website around it.
 //
 // The Gemini API key lives only in this function's environment (set it as the
 // GEMINI_API_KEY secret in the Supabase dashboard) — it is never shipped to the
 // browser. Callers must be signed in AND present in the `admins` table.
 
 import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { distillPage, PageError } from './page.ts';
+import { buildImagePrompt, buildPagePrompt } from './prompt.ts';
 
 const GEMINI_MODEL = 'gemini-3.6-flash';
-
-const VALID_UNITS = [
-  'Cups', 'Teaspoons', 'Tablespoons', 'Fluid ounces', 'Pints',
-  'Quarts', 'Milliliters', 'Liters', 'Grams', 'Kilograms',
-  'Ounces', 'Pounds', 'Count'
-];
-
-const VALID_TAGS = [
-  'Appetizer', 'Dinner', 'Cast iron', 'Beverage', 'Breakfast',
-  'Dessert', 'Cookies', 'Grilling', 'Italian', 'Mexican',
-  'Salad', 'Seafood', 'Soup'
-];
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -36,45 +28,80 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-function buildPrompt(): string {
-  return `You are a recipe extraction assistant. Analyze this recipe image and extract all information into a structured JSON object.
-
-Return ONLY a valid JSON object — no markdown, no code fences, no explanation — with exactly this structure:
-{
-  "name": "recipe name",
-  "description": "a brief 1-2 sentence description of the dish",
-  "author": "author or source if visible, otherwise empty string",
-  "prep_time": <number in minutes, or null>,
-  "cook_time": <number in minutes, or null>,
-  "chill_time": <number in minutes, or null>,
-  "total_time": <number in minutes, or null>,
-  "serving_size": <number, or null>,
-  "ingredient_groups": [
-    {
-      "ingredientGroupName": "group label (use 'Main' if there is no group label)",
-      "ingredients": [
-        {
-          "ingredientName": "ingredient name",
-          "ingredientAmount": <number>,
-          "ingredientMeasurementType": "<one value from the allowed units list>"
-        }
-      ]
-    }
-  ],
-  "steps": [
-    { "step": "full step text", "stepIngredients": [] }
-  ],
-  "tags": ["tag1"],
-  "notes": "any tips or notes from the recipe, or empty string"
+/** Raised where the caller is at fault and the message is meant for them. */
+class RequestError extends Error {
+  constructor(message: string, readonly status = 400) {
+    super(message);
+    this.name = 'RequestError';
+  }
 }
 
-Rules:
-- ingredientMeasurementType MUST be exactly one of: ${VALID_UNITS.join(', ')}
-- Use "Count" for whole items without a unit (e.g. 2 eggs, 3 cloves of garlic)
-- tags MUST only contain values from: ${VALID_TAGS.join(', ')}
-- All times must be plain integers in minutes
-- If a value is not visible or not applicable, use null for numbers and "" for strings
-- If the recipe has distinct ingredient sections (e.g. "Sauce", "Dough"), create one group per section`;
+type GeminiPart = { text: string } | { inlineData: { mimeType: string; data: string } };
+
+/**
+ * Sends the parts to Gemini and returns the recipe object it answers with.
+ *
+ * The key goes in a header rather than the query string so it can never surface
+ * in an error message, log line, or stack trace.
+ */
+async function askGemini(parts: GeminiPart[], apiKey: string): Promise<Record<string, unknown>> {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey
+      },
+      body: JSON.stringify({
+        contents: [{ parts }],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          temperature: 0.1
+        }
+      })
+    }
+  );
+
+  if (!response.ok) {
+    const detail = await response.text();
+    console.error('Gemini API error:', response.status, detail);
+    // Surface Gemini's own reason: a retired model, a rejected key and a
+    // tripped quota are indistinguishable without it.
+    throw new RequestError(
+      `Gemini rejected the request (${response.status}): ${detail.slice(0, 400)}`,
+      502
+    );
+  }
+
+  const result = await response.json();
+  const rawText: string | undefined = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!rawText) {
+    console.error('Unexpected Gemini response shape:', JSON.stringify(result));
+    throw new RequestError('Could not read a recipe from that.', 422);
+  }
+
+  // Strip any accidental markdown fences before parsing
+  const cleaned = rawText
+    .replace(/^```json\s*/i, '')
+    .replace(/^```\s*/i, '')
+    .replace(/```\s*$/g, '')
+    .trim();
+
+  let recipe: unknown;
+  try {
+    recipe = JSON.parse(cleaned);
+  } catch {
+    console.error('Gemini returned non-JSON:', cleaned.slice(0, 500));
+    throw new RequestError('Could not read a recipe from that.', 422);
+  }
+
+  if (!recipe || typeof recipe !== 'object' || Array.isArray(recipe)) {
+    console.error('Gemini returned a non-object:', cleaned.slice(0, 500));
+    throw new RequestError('Could not read a recipe from that.', 422);
+  }
+
+  return recipe as Record<string, unknown>;
 }
 
 Deno.serve(async (req: Request) => {
@@ -119,72 +146,32 @@ Deno.serve(async (req: Request) => {
     }
 
     // ── Payload ───────────────────────────────────────────────────────────────
-    const { image, mimeType } = await req.json();
-    if (!image || typeof image !== 'string') {
-      return json({ error: 'Missing image data' }, 400);
+    const { image, mimeType, url } = await req.json();
+
+    // A URL import knows two things the model is not asked for: where the
+    // recipe came from, and which photo the page shows. Both are handed to the
+    // form alongside what Gemini read.
+    if (typeof url === 'string' && url.trim()) {
+      const page = await distillPage(url);
+      const recipe = await askGemini([{ text: buildPagePrompt(page) }], geminiKey);
+      return json({ ...recipe, link: page.sourceUrl, image_path: page.imageUrl });
     }
 
-    // ── Gemini ────────────────────────────────────────────────────────────────
-    // The key goes in a header rather than the query string so it can never
-    // surface in an error message, log line, or stack trace.
-    const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': geminiKey
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [
-              { inlineData: { mimeType: mimeType || 'image/jpeg', data: image } },
-              { text: buildPrompt() }
-            ]
-          }],
-          generationConfig: {
-            responseMimeType: 'application/json',
-            temperature: 0.1
-          }
-        })
-      }
-    );
-
-    if (!geminiResponse.ok) {
-      const detail = await geminiResponse.text();
-      console.error('Gemini API error:', geminiResponse.status, detail);
-      // Surface Gemini's own reason: a retired model, a rejected key and a
-      // tripped quota are indistinguishable without it.
-      return json({
-        error: `Gemini rejected the request (${geminiResponse.status}): ${detail.slice(0, 400)}`
-      }, 502);
+    if (typeof image === 'string' && image) {
+      const recipe = await askGemini([
+        { inlineData: { mimeType: mimeType || 'image/jpeg', data: image } },
+        { text: buildImagePrompt() }
+      ], geminiKey);
+      return json(recipe);
     }
 
-    const result = await geminiResponse.json();
-    const rawText: string | undefined = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!rawText) {
-      console.error('Unexpected Gemini response shape:', JSON.stringify(result));
-      return json({ error: 'Could not read a recipe from that photo.' }, 422);
-    }
-
-    // Strip any accidental markdown fences before parsing
-    const cleaned = rawText
-      .replace(/^```json\s*/i, '')
-      .replace(/^```\s*/i, '')
-      .replace(/```\s*$/g, '')
-      .trim();
-
-    let recipe: unknown;
-    try {
-      recipe = JSON.parse(cleaned);
-    } catch {
-      console.error('Gemini returned non-JSON:', cleaned.slice(0, 500));
-      return json({ error: 'Could not read a recipe from that photo.' }, 422);
-    }
-
-    return json(recipe);
+    return json({ error: 'Send either an image or a url to read a recipe from.' }, 400);
 
   } catch (err) {
+    if (err instanceof PageError || err instanceof RequestError) {
+      return json({ error: err.message }, err.status);
+    }
+
     console.error('scan-recipe failed:', err);
     // Callers are verified admins and the API key is never in the URL, so the
     // real message is safe to return — and saves a trip to the function logs.

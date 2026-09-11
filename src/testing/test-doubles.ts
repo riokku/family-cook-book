@@ -78,4 +78,7 @@ export class AiServiceStub {
   async extractRecipeFromImage() {
     return {} as never;
   }
+  async extractRecipeFromUrl() {
+    return {} as never;
+  }
 }

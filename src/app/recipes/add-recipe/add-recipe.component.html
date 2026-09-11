@@ -97,41 +97,73 @@
 
         <!-- ── AI Recipe Scanner ──────────────────────────────────────────── -->
         <div class="scan-banner mb-4">
-          <div class="d-flex align-items-center flex-wrap gap-3">
-            <div>
-              <h5 class="scan-banner__title mb-1">
-                <i class="bi bi-camera-fill me-2"></i>Got a recipe on paper?
-              </h5>
-              <small class="scan-banner__subtitle">
-                Take or upload a photo and AI will fill in the form for you.
-              </small>
-            </div>
+          <h5 class="scan-banner__title mb-1">
+            <i class="bi bi-stars me-2"></i>Already have this recipe somewhere?
+          </h5>
+          <small class="scan-banner__subtitle">
+            Scan a photo of it or paste a link, and AI will fill in the form for you.
+          </small>
+
+          <div class="scan-banner__options">
             <button
               type="button"
-              class="btn btn-scan ms-auto"
+              class="btn btn-scan"
               (click)="onScanRecipe()"
-              [disabled]="isScanningRecipe">
-              @if (!isScanningRecipe) {
+              [disabled]="isReadingRecipe">
+              @if (!isScanningPhoto) {
                 <span>
-                  <i class="bi bi-camera me-2"></i>Scan recipe photo
+                  <i class="bi bi-camera me-2"></i>Scan a photo
                 </span>
               }
-              @if (isScanningRecipe) {
+              @if (isScanningPhoto) {
                 <span>
                   <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Analyzing…
+                  Reading the photo…
                 </span>
               }
             </button>
+
+            <span class="scan-banner__or">or</span>
+
+            <div class="scan-banner__url">
+              <label class="visually-hidden" for="importUrl">Link to a recipe online</label>
+              <input
+                type="url"
+                id="importUrl"
+                class="form-control"
+                placeholder="Paste a recipe link…"
+                [(ngModel)]="importUrl"
+                [ngModelOptions]="{ standalone: true }"
+                [disabled]="isReadingRecipe"
+                (keydown.enter)="onImportFromUrl()">
+              <button
+                type="button"
+                class="btn btn-scan"
+                (click)="onImportFromUrl()"
+                [disabled]="isReadingRecipe || !importUrl.trim()">
+                @if (!isImportingUrl) {
+                  <span>
+                    <i class="bi bi-box-arrow-in-down me-2"></i>Import
+                  </span>
+                }
+                @if (isImportingUrl) {
+                  <span>
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Reading…
+                  </span>
+                }
+              </button>
+            </div>
           </div>
-          @if (scanError) {
+
+          @if (aiError) {
             <div class="alert alert-danger mt-3 mb-0 py-2">
-              <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ scanError }}
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ aiError }}
             </div>
           }
-          @if (scanSuccess) {
+          @if (aiSuccess) {
             <div class="alert alert-success mt-3 mb-0 py-2">
-              <i class="bi bi-check-circle-fill me-2"></i>Recipe scanned! Review the fields below and adjust anything that needs a tweak.
+              <i class="bi bi-check-circle-fill me-2"></i>{{ aiSuccess }}
             </div>
           }
         </div>

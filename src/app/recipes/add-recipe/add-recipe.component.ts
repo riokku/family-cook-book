@@ -23,10 +23,14 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
 
   latestRecipeName: string;
 
-  // ── AI scan state ──────────────────────────────────────────────────────────
-  isScanningRecipe = false;
-  scanError: string | null = null;
-  scanSuccess = false;
+  // ── AI fill state ──────────────────────────────────────────────────────────
+  // A photo and a link are two ways into the same form, and only one of them
+  // can be running at a time, so they report through one banner between them.
+  isScanningPhoto = false;
+  isImportingUrl = false;
+  importUrl = '';
+  aiError: string | null = null;
+  aiSuccess: string | null = null;
 
   // ── Recipe image state ─────────────────────────────────────────────────────
   imageSource: 'upload' | 'url' = 'upload';
@@ -105,6 +109,11 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
 
   // ── AI Recipe Scanner ──────────────────────────────────────────────────────
 
+  /** True while either reader is working; both buttons wait on the other. */
+  get isReadingRecipe(): boolean {
+    return this.isScanningPhoto || this.isImportingUrl;
+  }
+
   /** Opens the hidden file input so the user can pick an image or use the camera. */
   onScanRecipe(): void {
     this.scanInput.nativeElement.click();
@@ -116,21 +125,53 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
     const file = input.files?.[0];
     if (!file) return;
 
-    this.isScanningRecipe = true;
-    this.scanError = null;
-    this.scanSuccess = false;
+    this.isScanningPhoto = true;
+    this.aiError = null;
+    this.aiSuccess = null;
 
     try {
       const { data, mimeType } = await this.fileToScaledBase64(file);
       const scanned = await this.aiService.extractRecipeFromImage(data, mimeType);
       this.populateFormFromScan(scanned);
-      this.scanSuccess = true;
+      this.aiSuccess = 'Recipe scanned! Review the fields below and adjust anything that needs a tweak.';
     } catch (err) {
       console.error('Recipe scan error:', err);
-      this.scanError = this.describeScanError(err);
+      this.aiError = this.describeAiError(
+        err, 'Could not reach the recipe scanner. Check your connection and try again.'
+      );
     } finally {
-      this.isScanningRecipe = false;
+      this.isScanningPhoto = false;
       input.value = ''; // reset so the same file can be chosen again
+    }
+  }
+
+  /** Reads the recipe at the pasted link and populates the form from it. */
+  async onImportFromUrl(): Promise<void> {
+    const url = this.importUrl.trim();
+    if (!url || this.isReadingRecipe) return;
+
+    this.isImportingUrl = true;
+    this.aiError = null;
+    this.aiSuccess = null;
+
+    try {
+      const imported = await this.aiService.extractRecipeFromUrl(url);
+      this.populateFormFromScan(imported);
+
+      // The page's own photo beats a placeholder, and it is already hosted.
+      if (imported.image_path) {
+        this.imageSource = 'url';
+        await this.replaceImagePath(imported.image_path);
+      }
+
+      this.aiSuccess = 'Recipe imported! Recipe sites vary, so check the fields below before saving.';
+    } catch (err) {
+      console.error('Recipe import error:', err);
+      this.aiError = this.describeAiError(
+        err, 'Could not reach the recipe importer. Check your connection and try again.'
+      );
+    } finally {
+      this.isImportingUrl = false;
     }
   }
 
@@ -138,9 +179,8 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
    * AiService already unwraps the function's own error message, so surface that
    * directly. Only a genuine network failure arrives without one.
    */
-  private describeScanError(err: any): string {
-    if (err?.message) return err.message;
-    return 'Could not reach the recipe scanner. Check your connection and try again.';
+  private describeAiError(err: any, fallback: string): string {
+    return err?.message || fallback;
   }
 
   /** Downscales a photo and returns it as base64, ready for the scan request. */
@@ -169,15 +209,8 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
       const scaled = await downscaleImage(file);
       const publicUrl = await this.supaService.uploadRecipeImage(scaled);
 
-      // Swapping one upload for another orphans the first straight away
-      const replaced = this.recipeForm.get('image_path').value;
-      if (this.pendingImageUrls.includes(replaced)) {
-        this.pendingImageUrls = this.pendingImageUrls.filter(url => url !== replaced);
-        await this.supaService.deleteRecipeImage(replaced);
-      }
-
+      await this.replaceImagePath(publicUrl);
       this.pendingImageUrls.push(publicUrl);
-      this.recipeForm.get('image_path').setValue(publicUrl);
     } catch (err: any) {
       console.error('Image upload failed:', err);
       this.imageUploadError =
@@ -186,6 +219,20 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
       this.isUploadingImage = false;
       input.value = ''; // reset so the same file can be chosen again
     }
+  }
+
+  /**
+   * Points the form at a new image. Whatever it displaces is orphaned straight
+   * away if it was an upload from this session — swapping one photo for
+   * another, or letting an imported recipe bring its own.
+   */
+  private async replaceImagePath(newUrl: string): Promise<void> {
+    const replaced = this.recipeForm.get('image_path').value;
+    if (replaced !== newUrl && this.pendingImageUrls.includes(replaced)) {
+      this.pendingImageUrls = this.pendingImageUrls.filter(url => url !== replaced);
+      await this.supaService.deleteRecipeImage(replaced);
+    }
+    this.recipeForm.get('image_path').setValue(newUrl);
   }
 
   /**
@@ -200,8 +247,14 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Populates every form field from the AI-scanned recipe object. */
+  /** Populates every form field from the recipe the AI read. */
   private populateFormFromScan(scanned: ScannedRecipe): void {
+    // Only a URL import knows a source link, and a blank one would wipe
+    // anything already typed in.
+    if (scanned.link) {
+      this.recipeForm.get('link').setValue(scanned.link);
+    }
+
     // General fields
     this.recipeForm.patchValue({
       name:         scanned.name        || '',
@@ -429,6 +482,9 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
     this.pendingImageUrls = [];
     this.recipeForm.reset();
     this.imageSource = 'upload';
+    this.importUrl = '';
+    this.aiError = null;
+    this.aiSuccess = null;
   }
 
   onCancel() {
