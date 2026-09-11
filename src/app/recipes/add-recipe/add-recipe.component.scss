@@ -255,22 +255,54 @@ img{
   font-size: 0.8rem;
 }
 
-.modal-content{
-  background-color: #198754;
-  color: #fff;
-  .modal-body{
-    background-color: $grey-100;
-    color: $ink;
-  }
-  .modal-footer{
-    button{
-      &:first-child{
-        color: #fff;
-        &:hover{
-          color: #efefef;
-        }
-      }
+// Success modal.
+//
+// Same shape as the delete confirmation on admin: one coloured band across the
+// top to carry the meaning, then plain surfaces underneath for the message and
+// the buttons. Previously the green ran the full height of the dialog, which
+// cost it three separate contrast problems:
+//
+//   * "Go to admin" is a white button, and the footer rule below painted its
+//     label white too — white on white, so the button read as an empty box.
+//   * "Add another recipe" is the purple primary, and purple on green is
+//     1.6:1, below the 3:1 a control needs to separate from its background.
+//   * The title was white on #198754, which is 4.5:1 — passing by hundredths.
+//
+// On white the same two buttons come out at 7.5:1 and 12:1, and the darker
+// green below carries the white title at 6.4:1.
+.success-modal{
+  .modal-header{
+    // Bootstrap spaces a header's children apart to push a close button to the
+    // right; there is no close button here, so the icon and the title need
+    // pulling back together.
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.6rem;
+    background-color: #146c43;
+    color: $white;
+    border-bottom: 0;
+
+    // Says "success" without relying on the green, which is the half of the
+    // message a colour-blind reader is least likely to get.
+    .bi-check-circle-fill{
+      flex: none;
+      margin-top: 0.15rem;
+      font-size: 1.15rem;
     }
+  }
+
+  .modal-title{
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  // Echoes .deleted-recipe-name on admin: the name the action applied to,
+  // set off from the sentence around it.
+  .added-recipe-name{
+    padding: 0.5rem 0.75rem;
+    background-color: $grey-100;
+    border-radius: 0.25rem;
+    color: $ink;
   }
 }
 

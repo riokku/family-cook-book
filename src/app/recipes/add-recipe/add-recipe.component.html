@@ -581,14 +581,16 @@
 
     <!-- Success modal -->
     <div class="row">
-      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModal" aria-hidden="true">
+      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
+          <div class="modal-content success-modal">
             <div class="modal-header">
-              <h5 class="modal-title">Success! Your recipe has been added.</h5>
+              <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+              <h5 class="modal-title" id="successModalTitle">Success! Your recipe has been added.</h5>
             </div>
             <div class="modal-body">
-              <p class="mb-0">Latest recipe: <strong>{{ latestRecipeName }}</strong></p>
+              <p class="mb-1">Latest recipe:</p>
+              <p class="added-recipe-name mb-0"><strong>{{ latestRecipeName }}</strong></p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn-cancel" data-bs-dismiss="modal" (click)="onCancel()">Go to admin</button>

@@ -115,25 +115,6 @@ img{
   font-size: 0.8rem;
 }
 
-.modal-content{
-  background-color: #198754;
-  color: #fff;
-  .modal-body{
-    background-color: $grey-100;
-    color: $ink;
-  }
-  .modal-footer{
-    button{
-      &:first-child{
-        color: #fff;
-        &:hover{
-          color: #efefef;
-        }
-      }
-    }
-  }
-}
-
 small{
   color: #999;
 }
