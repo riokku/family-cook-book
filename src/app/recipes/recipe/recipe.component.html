@@ -91,9 +91,13 @@
                 <ul class="ps-1">
                   @for (ingredient of ingredientGroup.ingredients; track ingredient) {
                     <li>
-                      <strong>{{ ingredient.ingredientAmount | ingredientAmountConverter: isDoubled}}
+                      <strong><app-ingredient-amount [amount]="ingredient.ingredientAmount" [doubled]="isDoubled"></app-ingredient-amount>
                         @if (ingredient.ingredientMeasurementType != 'Count') {
-                          <span>{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount : isDoubled | lowercase}}</span>
+                          <!-- An explicit space: the amount is an element now, and the
+                               whitespace between two elements is a text node of nothing
+                               but whitespace, which the compiler drops. Left to itself
+                               this renders "1 1/2cups". -->
+                          &ngsp;<span>{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount : isDoubled | lowercase}}</span>
                         }</strong>
                         {{ ingredient.ingredientName | lowerFirstLetter}}
                       </li>
@@ -144,7 +148,7 @@
                     @if (step.stepIngredients?.length) {
                       <ul class="step-ingredient-list ps-0 mt-2">
                         @for (si of step.stepIngredients; track si) {
-                          <li>{{ si.ingredientAmount | ingredientAmountConverter: isDoubled }}@if (si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count') {
+                          <li><app-ingredient-amount [amount]="si.ingredientAmount" [doubled]="isDoubled"></app-ingredient-amount>@if (si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count') {
                             {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount : isDoubled | lowercase }}
                           } {{ si.ingredientName | lowerFirstLetter }}</li>
                         }

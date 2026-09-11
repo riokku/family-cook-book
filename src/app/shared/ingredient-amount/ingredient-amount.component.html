@@ -1,0 +1,10 @@
+@if (parts.whole) {
+  <span class="amount__whole">{{ parts.whole }}</span>
+}
+@if (parts.numerator !== null) {
+  <span class="amount__fraction" [class.amount__fraction--after-whole]="parts.whole"
+    ><sup>{{ parts.numerator }}</sup
+    ><span class="amount__slash">&#8260;</span
+    ><sub>{{ parts.denominator }}</sub
+  ></span>
+}

@@ -1,0 +1,42 @@
+// An amount is one thing, so it never breaks across a line: not "1" at the end
+// of one and "1/2" at the start of the next.
+:host{
+  white-space: nowrap;
+}
+
+.amount__fraction{
+  white-space: nowrap;
+
+  sup,
+  sub{
+    // Small enough to read as a fraction rather than as more digits, large
+    // enough to still be legible at list size.
+    font-size: 0.62em;
+    // Keeps the raised and lowered halves from stretching the line box, which
+    // would open the gaps between ingredients wherever a fraction appeared.
+    line-height: 0;
+  }
+
+  sup{
+    vertical-align: 0.45em;
+  }
+
+  sub{
+    // Barely below the baseline. Any lower and the denominator collides with
+    // the ingredient on the following line.
+    vertical-align: -0.08em;
+  }
+}
+
+// The gap that does the actual separating, set in em so it tracks the text size
+// wherever an amount is used.
+.amount__fraction--after-whole{
+  margin-left: 0.28em;
+}
+
+.amount__slash{
+  font-size: 0.85em;
+  // The fraction slash is drawn with its own side bearings; pulling them in
+  // keeps the numerator and denominator tucked against it.
+  margin: 0 -0.04em;
+}
