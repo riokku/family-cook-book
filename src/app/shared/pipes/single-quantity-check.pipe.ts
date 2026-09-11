@@ -7,11 +7,18 @@ import { Pipe, PipeTransform } from "@angular/core";
 
 export class IngredientSanitizerPipe implements PipeTransform{
 
-  transform(incomingString: string, incomingQuantity:number){
+  // doubled has to be passed here as well as to ingredientAmountConverter, and
+  // for the same reason: the unit is plural or not according to the number
+  // printed beside it, which is the doubled one when the page is doubled.
+  // Reading the stored amount alone put "2 cup" on screen for every ingredient
+  // measured in a single one.
+  transform(incomingString: string, incomingQuantity: number, doubled: boolean = false){
 
     let outgoingString: string = incomingString;
 
-    if (incomingQuantity <= 1){
+    const quantity = doubled ? incomingQuantity * 2 : incomingQuantity;
+
+    if (quantity <= 1){
       let lastLetter = incomingString.charAt(incomingString.length -1);
       if(lastLetter === 's'){
         outgoingString = incomingString.slice(0, -1);

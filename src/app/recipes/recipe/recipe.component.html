@@ -93,7 +93,7 @@
                     <li>
                       <strong>{{ ingredient.ingredientAmount | ingredientAmountConverter: isDoubled}}
                         @if (ingredient.ingredientMeasurementType != 'Count') {
-                          <span>{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount | lowercase}}</span>
+                          <span>{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount : isDoubled | lowercase}}</span>
                         }</strong>
                         {{ ingredient.ingredientName | lowerFirstLetter}}
                       </li>
@@ -135,7 +135,7 @@
                       <ul class="step-ingredient-list ps-0 mt-2">
                         @for (si of step.stepIngredients; track si) {
                           <li>{{ si.ingredientAmount | ingredientAmountConverter: isDoubled }}@if (si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count') {
-                            {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount | lowercase }}
+                            {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount : isDoubled | lowercase }}
                           } {{ si.ingredientName | lowerFirstLetter }}</li>
                         }
                       </ul>
