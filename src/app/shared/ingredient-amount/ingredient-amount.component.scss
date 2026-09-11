@@ -9,22 +9,29 @@
 
   sup,
   sub{
-    // Small enough to read as a fraction rather than as more digits, large
-    // enough to still be legible at list size.
-    font-size: 0.62em;
+    // The size the whole thing turns on. Too small and the fraction is a
+    // squint; too large and it stops reading as subordinate to the whole
+    // number, which is the contrast holding "1 1/2" apart from "11/2" in the
+    // first place. At 0.84 the raised numerator starts to match the weight of
+    // the whole number beside it, so this stops short of that.
+    font-size: 0.76em;
     // Keeps the raised and lowered halves from stretching the line box, which
     // would open the gaps between ingredients wherever a fraction appeared.
     line-height: 0;
   }
 
   sup{
-    vertical-align: 0.45em;
+    // Sits the numerator against the top of the slash, its cap roughly level
+    // with the whole number beside it, so the three parts read as one mark.
+    // Raised much past this and it floats clear of the slash with a gap under
+    // it, which is what makes a fraction look like two separate things.
+    vertical-align: 0.26em;
   }
 
   sub{
     // Barely below the baseline. Any lower and the denominator collides with
     // the ingredient on the following line.
-    vertical-align: -0.08em;
+    vertical-align: -0.05em;
   }
 }
 
