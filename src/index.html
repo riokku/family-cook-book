@@ -6,6 +6,26 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+
+    <!-- The site-wide fallback card. SeoService replaces these per page once
+         the app has booted, which is enough for Google — it runs JavaScript —
+         but not for the crawlers behind iMessage, WhatsApp and Slack, which
+         read the HTML as served and stop. Until the routes are prerendered,
+         these are what a pasted link shows, so they describe the site rather
+         than being left empty. -->
+    <meta name="description" content="The family recipe collection — everything we actually cook, in one place.">
+    <meta property="og:site_name" content="Gogo's Kitchen">
+    <meta property="og:title" content="Gogo's Kitchen">
+    <meta property="og:description" content="The family recipe collection — everything we actually cook, in one place.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#574b90">
+    <!-- iOS ignores the manifest for the home-screen icon and reads this. -->
+    <link rel="apple-touch-icon" href="assets/icons/pwa/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Gogo's">
   </head>
   <body>
     <app-root></app-root>

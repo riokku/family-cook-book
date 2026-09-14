@@ -1,0 +1,82 @@
+@use '../../../styles/tokens' as *;
+
+// The host generates no box of its own, so the button inside positions against
+// the card rather than against a wrapper, and an absolutely positioned button
+// leaves no empty line box behind in the card's flow.
+:host{
+  display: contents;
+}
+
+.favorite{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+  @include focus-ring($focus-on-light);
+
+  &:hover{
+    transform: scale(1.08);
+  }
+
+  &:active{
+    transform: scale(0.96);
+  }
+}
+
+// On a card: a round chip floated over the photo's top-left. It has to read
+// against whatever the photo happens to be, so it carries its own surface
+// rather than sitting directly on the image.
+.favorite:not(.favorite--page){
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  left: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: $ink;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  &:hover{
+    background-color: $white;
+  }
+}
+
+// On the recipe page it sits in a row of real buttons, so it is one too.
+.favorite--page{
+  min-height: 38px;
+  padding: 0.3rem 0.85rem;
+  border-radius: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: $white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  @include focus-ring($focus-on-dark);
+
+  &:hover{
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// Saved. Red rather than the brand purple: a heart that fills in any other
+// colour reads as a decoration rather than as a state.
+.favorite--on{
+  color: #d63031;
+
+  &.favorite--page{
+    background-color: $white;
+    border-color: $white;
+    color: #d63031;
+
+    &:hover{
+      background-color: $white;
+    }
+  }
+}

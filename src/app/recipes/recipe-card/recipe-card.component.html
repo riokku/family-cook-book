@@ -4,15 +4,32 @@
       Featured
     </div>
   }
+  <app-favorite-button [slug]="recipe.slug" [recipeName]="recipe.name"></app-favorite-button>
   <div class="image-container">
+    <!-- No width/height attributes: the stylesheet already gives this image
+         `aspect-ratio: 16/9` against a full-width box, which reserves its
+         height before it loads. Adding the attributes as well made the height
+         definite at 9px, which is the one thing that turns aspect-ratio off.
+         sizes tells the browser how wide the card will be at each breakpoint,
+         so it picks from srcset before layout; srcset itself is only ever set
+         once smaller renditions are known to exist. -->
     <img class="mw-100" [src]="imageSource" [alt]="recipe.name" [attr.loading]="imageLoading"
+      [attr.srcset]="srcset"
+      sizes="(min-width: 1200px) 33vw, (min-width: 768px) 50vw, 100vw"
       decoding="async" (error)="onImageError($event)">
   </div>
   <div class="info-container p-4  pb-0">
     <h5 class="fw-bold mb-3">
       <!-- Stretched link: the whole card is clickable, but the tag buttons below
-      sit above it rather than being nested inside an anchor. -->
-      <a class="recipe-link stretched-link" [routerLink]="[recipe.slug]" queryParamsHandling="preserve">
+      sit above it rather than being nested inside an anchor.
+
+      Absolute, not relative. A card is dropped on three different routes now,
+      and a relative link resolves against whichever one it lands on: right on
+      the recipes grid, but /<slug> from the home page and
+      /recipes/<this recipe>/<slug> from the related row at the foot of a
+      recipe. Both of those miss every route, so the wildcard sent them back to
+      the home page and the card looked like it simply did not work. -->
+      <a class="recipe-link stretched-link" [routerLink]="['/recipes', recipe.slug]" queryParamsHandling="preserve">
         {{ recipe.name }}
       </a>
     </h5>

@@ -1,0 +1,12 @@
+@use '../../../styles/tokens' as *;
+
+.related{
+  margin-top: 3rem;
+}
+
+.related-heading{
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $ink;
+  margin-bottom: 1.25rem;
+}

@@ -31,19 +31,19 @@ describe('IngredientSanitizerPipe', () => {
     // to agree with that rather than with the stored amount. Reading the
     // stored amount alone put "2 cup" on screen.
     it('pluralises a single unit that doubling takes past one', () => {
-      expect(pipe.transform('Cups', 1, true)).toBe('Cups');
+      expect(pipe.transform('Cups', 1, 2)).toBe('Cups');
     });
 
     it('pluralises three quarters doubled to one and a half', () => {
-      expect(pipe.transform('Cups', 0.75, true)).toBe('Cups');
+      expect(pipe.transform('Cups', 0.75, 2)).toBe('Cups');
     });
 
     it('leaves a half doubled to exactly one singular', () => {
-      expect(pipe.transform('Cups', 0.5, true)).toBe('Cup');
+      expect(pipe.transform('Cups', 0.5, 2)).toBe('Cup');
     });
 
     it('leaves a third doubled to two thirds singular', () => {
-      expect(pipe.transform('Cups', 0.33, true)).toBe('Cup');
+      expect(pipe.transform('Cups', 0.33, 2)).toBe('Cup');
     });
 
     it('treats a missing flag as not doubled', () => {
@@ -61,7 +61,7 @@ describe('IngredientSanitizerPipe', () => {
     });
 
     it('abbreviates a unit the doubling pluralised', () => {
-      expect(pipe.transform('Teaspoons', 1, true)).toBe('Teaspoons (tsp)');
+      expect(pipe.transform('Teaspoons', 1, 2)).toBe('Teaspoons (tsp)');
     });
 
     it('handles the two word units', () => {

@@ -1,0 +1,43 @@
+{
+  "name": "Gogo's Kitchen",
+  "short_name": "Gogo's",
+  "description": "The family recipe collection — everything we actually cook, in one place.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#2d3436",
+  "theme_color": "#574b90",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icons/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Find a recipe",
+      "url": "/recipes",
+      "icons": [{ "src": "assets/icons/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Saved recipes",
+      "url": "/recipes?saved=1",
+      "icons": [{ "src": "assets/icons/pwa/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

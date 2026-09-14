@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Recipe } from '../shared/models/recipe.model';
 import { SupaService } from '../shared/services/supa.service';
+import { RecentlyViewedService } from '../shared/services/recently-viewed.service';
+import { SeoService } from '../shared/services/seo.service';
 
 interface HomeStat {
   label: string;
@@ -20,12 +22,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   recipes: Recipe[] = [];
   categories: string[] = [];
   stats: HomeStat[] = [];
+  recentRecipes: Recipe[] = [];
 
   private countUpFrame: number;
 
   constructor(
     private supaService: SupaService,
-    private router: Router
+    private router: Router,
+    private recentlyViewed: RecentlyViewedService,
+    private seo: SeoService
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +45,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       { label: this.categories.length === 1 ? 'Category' : 'Categories', value: this.categories.length, display: 0 },
       { label: cooks.size === 1 ? 'Author' : 'Authors', value: cooks.size, display: 0 }
     ];
+
+    this.recentRecipes = this.findRecentRecipes();
+
+    this.seo.setPage(
+      'Home',
+      'The family recipe collection — everything we actually cook, in one place.'
+    );
 
     this.countUp();
   }
@@ -66,6 +78,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     };
     this.countUpFrame = requestAnimationFrame(step);
+  }
+
+  /**
+   * The recipes opened on this device most recently, newest first.
+   *
+   * Resolved against the cache rather than stored whole, so a recipe that has
+   * since been renamed or deleted drops out of the row instead of showing a
+   * stale card that leads to a redirect.
+   */
+  private findRecentRecipes(): Recipe[] {
+    const bySlug = new Map(this.recipes.map(recipe => [recipe.slug, recipe]));
+    return this.recentlyViewed.slugs
+      .map(slug => bySlug.get(slug))
+      .filter((recipe): recipe is Recipe => !!recipe)
+      // Three keeps it to one row beside the rest of the page's furniture.
+      .slice(0, 3);
   }
 
   surpriseMe(){

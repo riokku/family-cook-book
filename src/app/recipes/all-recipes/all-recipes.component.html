@@ -43,6 +43,18 @@
               }
             </select>
 
+            <!-- Left out entirely until something has been saved: a filter that
+                 can only ever return nothing is not worth the toolbar room. -->
+            @if (savedCount || showSavedOnly) {
+              <button class="saved-toggle" type="button" (click)="toggleSavedOnly()"
+                [class.active]="showSavedOnly"
+                [attr.aria-pressed]="showSavedOnly">
+                <i class="bi" [ngClass]="showSavedOnly ? 'bi-heart-fill' : 'bi-heart'" aria-hidden="true"></i>
+                Saved
+                <span class="count-badge" aria-hidden="true">{{ savedCount }}</span>
+              </button>
+            }
+
             <button class="filter-toggle" type="button" (click)="showFilters()"
               [class.has-selection]="selectedCategories.length"
               [attr.aria-expanded]="filtersShowing" aria-controls="category-filter-panel">
@@ -76,6 +88,15 @@
           @if (hasActiveFilters || hasActiveSort) {
             <div class="panel-footer">
               <ul class="chip-list" aria-label="Active filters">
+                @if (showSavedOnly) {
+                  <li>
+                    <button class="chip" type="button" (click)="toggleSavedOnly()"
+                      aria-label="Stop showing only saved recipes">
+                      Saved only
+                      <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                  </li>
+                }
                 @for (category of selectedCategories; track category) {
                   <li>
                     <button class="chip" type="button" (click)="toggleCategory(category)"
@@ -137,13 +158,26 @@
         } @else {
           <div class="col-12">
             <div class="empty-state">
-              <i class="bi bi-search" aria-hidden="true"></i>
-              <p class="empty-state-title">
-                No recipes match your filters
-              </p>
-              <p class="empty-state-hint">
-                Try a different search term, or widen your search by removing a category.
-              </p>
+              <!-- Nothing saved yet is not the same as nothing matching, and
+                   "try a different search term" is no help at all when the
+                   answer is that the heart has never been pressed. -->
+              @if (showSavedOnly && !savedCount) {
+                <i class="bi bi-heart" aria-hidden="true"></i>
+                <p class="empty-state-title">
+                  You haven&rsquo;t saved any recipes yet
+                </p>
+                <p class="empty-state-hint">
+                  Press the heart on any recipe to keep it here. Saved recipes stay on this device.
+                </p>
+              } @else {
+                <i class="bi bi-search" aria-hidden="true"></i>
+                <p class="empty-state-title">
+                  No recipes match your filters
+                </p>
+                <p class="empty-state-hint">
+                  Try a different search term, or widen your search by removing a category.
+                </p>
+              }
               @if (hasActiveFilters) {
                 <button class="clear-all" type="button" (click)="clearAll()">
                   <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Clear all filters

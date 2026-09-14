@@ -12,7 +12,7 @@ describe('toAmountParts', () => {
     });
 
     it('separates a doubled third', () => {
-      expect(toAmountParts(0.67, true)).toEqual({ text: '1 1/3', whole: '1', numerator: 1, denominator: 3 });
+      expect(toAmountParts(0.67, 2)).toEqual({ text: '1 1/3', whole: '1', numerator: 1, denominator: 3 });
     });
   });
 
@@ -47,7 +47,7 @@ describe('toAmountParts', () => {
 
     it('returns empty parts for null, doubled or not', () => {
       expect(toAmountParts(null)).toEqual(empty);
-      expect(toAmountParts(null, true)).toEqual(empty);
+      expect(toAmountParts(null, 2)).toEqual(empty);
     });
 
     it('returns empty parts for undefined', () => {
@@ -56,6 +56,38 @@ describe('toAmountParts', () => {
 
     it('returns empty parts for text that is not a number', () => {
       expect(toAmountParts('a pinch')).toEqual(empty);
+    });
+  });
+
+  // The scale is what the recipe is being multiplied by. Halving is the case
+  // worth pinning: it turns whole numbers into fractions, which is the opposite
+  // direction to the one doubling exercises.
+  describe('scaling', () => {
+    it('halves a whole number into a fraction', () => {
+      expect(toAmountParts(3, 0.5)).toEqual({ text: '1 1/2', whole: '1', numerator: 1, denominator: 2 });
+    });
+
+    it('halves a fraction into a finer one', () => {
+      expect(toAmountParts(0.5, 0.5)).toEqual({ text: '1/4', whole: '', numerator: 1, denominator: 4 });
+    });
+
+    it('triples', () => {
+      expect(toAmountParts(0.5, 3)).toEqual({ text: '1 1/2', whole: '1', numerator: 1, denominator: 2 });
+    });
+
+    it('leaves the amount alone at a scale of one', () => {
+      expect(toAmountParts(1.5, 1)).toEqual(toAmountParts(1.5));
+    });
+
+    // A scale of zero would empty the list rather than scale it, so the recipe
+    // as written is the safer thing to fall back to.
+    it('ignores a scale of zero', () => {
+      expect(toAmountParts(1.5, 0).text).toBe('1 1/2');
+    });
+
+    it('ignores a negative or unusable scale', () => {
+      expect(toAmountParts(1.5, -2).text).toBe('1 1/2');
+      expect(toAmountParts(1.5, NaN).text).toBe('1 1/2');
     });
   });
 

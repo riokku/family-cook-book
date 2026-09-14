@@ -1,0 +1,14 @@
+@if (related.length) {
+  <section class="related" aria-labelledby="related-heading">
+    <h2 class="related-heading" id="related-heading">
+      More like this
+    </h2>
+    <div class="row">
+      @for (match of related; track match.slug) {
+        <div class="col-12 col-md-6 col-lg-4 d-flex mb-4">
+          <app-recipe-card [recipe]="match" [index]="$index" [tagsLinkToFilter]="true"></app-recipe-card>
+        </div>
+      }
+    </div>
+  </section>
+}

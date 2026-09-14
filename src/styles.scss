@@ -609,3 +609,188 @@ summary,
     scroll-behavior: auto !important;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Printing
+// ---------------------------------------------------------------------------
+//
+// A family cookbook gets printed. Recipes end up taped inside a cupboard door,
+// handed to someone who does not want a phone near the stove, or posted to a
+// relative who would rather have the paper.
+//
+// Screen-first, this page prints badly: the nav bar and the footer take a
+// third of the first sheet, the photo backgrounds do not print at all in most
+// browsers' default settings — leaving white text on white paper — and the
+// ingredients and the steps break across sheets independently of each other.
+//
+// The rules here are deliberately app-wide rather than in the recipe
+// component: view encapsulation means a component stylesheet cannot reach the
+// header and the footer that surround it.
+
+@media print{
+
+  // Paper is white and ink is expensive. The site's black page background
+  // would otherwise be an entire sheet of toner, in the browsers that honour
+  // it at all.
+  html, body{
+    height: auto;
+    background: $white !important;
+    color: #000 !important;
+  }
+
+  // Chrome that means nothing on paper. The skip link, the nav, the footer,
+  // the intro animation.
+  app-header,
+  app-footer,
+  app-intro,
+  .skip-link,
+  .jump-nav,
+  .toolbar-actions,
+  // Listed in its own right, not just via .toolbar-actions: it lives in the
+  // steps heading now, which prints.
+  .btn-cook,
+  .breadcrumb,
+  .shopping,
+  app-favorite-button,
+  app-related-recipes,
+  .cook-note,
+  .featured-carousel .carousel-nav{
+    display: none !important;
+  }
+
+  // The scale control is interactive, but which scale the page is set to is
+  // not — so the chosen one is printed as a line of text instead. Radios that
+  // print as radios read as a form someone is meant to fill in.
+  .scale-control{
+    display: none !important;
+  }
+
+  // The router outlet's wrapper and every page shell inside it carry the site's
+  // photographic and textured backgrounds. Faint on screen is still a full
+  // sheet of toner on paper, so the images go and the surfaces turn white.
+  main,
+  main section,
+  .home-wrapper,
+  .all-recipes-wrapper{
+    background-image: none !important;
+    background-color: $white !important;
+  }
+
+  // The home page's Ken Burns layer and its scrim are pseudo elements, so they
+  // are not reachable by the rule above.
+  .home-wrapper::before,
+  .home-wrapper::after{
+    display: none !important;
+  }
+
+  a{
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  // Every surface that is white-on-dark on screen has to turn over, or it
+  // prints as a blank rectangle.
+  .recipe-wrapper,
+  .recipe-header-wrapper,
+  .recipe-header-info,
+  .ingredient-header,
+  .ingredient-content,
+  .steps-pane,
+  .notes-card{
+    background: $white !important;
+    background-image: none !important;
+    color: #000 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .recipe-header-wrapper{
+    // The photo is the biggest thing on the page and the least useful on
+    // paper. The recipe is why it was printed.
+    margin-bottom: 0.5rem;
+  }
+
+  .recipe-header-info{
+    display: block !important;
+    h1{
+      font-size: 20pt;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  // Tags are navigation. On paper they are a row of grey boxes that lead
+  // nowhere.
+  .recipe-header-info .tag-list{
+    display: none !important;
+  }
+
+  // Two columns on screen, and they should stay two columns on paper: the
+  // ingredients beside the method is how a printed recipe is read.
+  .recipe-wrapper .row{
+    display: flex !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .ingredient-pane{
+    // A little air between the two columns, since the grid gutters go.
+    padding-right: 1rem !important;
+    border-right: 1pt solid #999 !important;
+  }
+
+  // An empty box beside each ingredient and step is genuinely useful on paper.
+  // The real ones only exist in cook mode, though, so print draws its own
+  // rather than depending on one being in the DOM — which also means a page
+  // printed from cook mode and one printed from reading mode come out the same.
+  .check-list{
+    .check-box,
+    .check-input{
+      display: none !important;
+    }
+
+    // Flattened from a flex row to inline, so the drawn box and the text that
+    // follows it share a line instead of the text stacking underneath.
+    .check-line{
+      display: inline !important;
+    }
+
+    // A struck-through ingredient on screen should print as ordinary text:
+    // whoever is holding the paper has not crossed anything off yet.
+    li.checked .check-text{
+      text-decoration: none !important;
+      opacity: 1 !important;
+    }
+  }
+
+  .ingredient-content .check-list li::before,
+  .steps-pane .check-list .step-body::before{
+    content: '';
+    display: inline-block;
+    width: 10pt;
+    height: 10pt;
+    margin-right: 6pt;
+    border: 1pt solid #000;
+    // Sits the box on the text's baseline rather than hanging it above.
+    vertical-align: -1pt;
+  }
+
+  // Breaking an instruction across two sheets is the one thing that makes a
+  // printed recipe unusable.
+  li,
+  .ingredient-group,
+  .notes-card{
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5{
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  // Sensible margins, and the URL in the corner of every sheet so a printout
+  // found in a drawer can be traced back to the site.
+  @page{
+    margin: 1.5cm;
+  }
+}

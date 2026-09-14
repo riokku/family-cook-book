@@ -1,22 +1,35 @@
 <section>
   <div class="container pt-5 pb-5">
     <div class="row">
-      <div class="col-12 pb-2 d-flex align-items-center justify-content-between">
+      <div class="col-12 pb-2 recipe-toolbar">
         <!-- preserve keeps whatever filters brought you here, so going back lands
              on the same filtered grid rather than the full list. -->
         <a class="breadcrumb" [routerLink]="['/recipes']" queryParamsHandling="preserve">
           <i class="bi bi-chevron-double-left me-1"></i> Back to all recipes
         </a>
-        @if (isAdmin) {
-          <a
-            class="btn-edit"
-            [routerLink]="['/recipes', recipe.slug, 'edit']">
-            <i class="bi bi-pencil-square me-1"></i> Edit recipe
-          </a>
-        }
+        <div class="toolbar-actions">
+          <!-- Only while the ticks are on screen. Outside cook mode this would
+               offer to clear something the page is not showing. -->
+          @if (cookMode && checkedCount) {
+            <button class="btn-quiet" type="button" (click)="resetProgress()">
+              <i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i>
+              Clear {{ checkedCount }} checked
+            </button>
+          }
+          <button class="btn-quiet" type="button" (click)="print()">
+            <i class="bi bi-printer me-1" aria-hidden="true"></i>
+            Print
+          </button>
+          @if (isAdmin) {
+            <a class="btn-edit" [routerLink]="['/recipes', recipe.slug, 'edit']">
+              <i class="bi bi-pencil-square me-1"></i> Edit recipe
+            </a>
+          }
+        </div>
       </div>
     </div>
-    <div class="recipe-wrapper">
+
+    <div class="recipe-wrapper" [class.cooking]="cookMode">
       <div class="row">
         <div class="col-12">
           <div class="recipe-header-wrapper" [ngStyle]="recipe.image_path ? {
@@ -47,7 +60,10 @@
                 })
               </li>
               <li class="servings">
-                <i class="bi bi-person me-1"></i> {{ recipe.serving_size }} servings
+                <i class="bi bi-person me-1"></i> {{ servings }} servings
+                @if (isScaled) {
+                  <span class="servings-scaled">at &times;{{ scaleLabel(scale) }}</span>
+                }
               </li>
             </ul>
             <p class="mb-0">
@@ -63,51 +79,145 @@
                 }
               </ul>
             }
+            <div class="header-actions mt-3">
+              <app-favorite-button [slug]="recipe.slug" [recipeName]="recipe.name"
+                variant="page"></app-favorite-button>
+            </div>
           </div>
+        </div>
+
+        <!-- Cook mode says what it did rather than only looking different: the
+             larger type is obvious, the screen lock is not. The wrapper is
+             always in the DOM, empty or not — a live region announces what
+             changes inside it, so one that appears along with its own message
+             has nothing to announce. -->
+        <div class="col-12" role="status" aria-live="polite">
+          @if (cookMode) {
+            <p class="cook-note">
+              <i class="bi bi-fire me-1" aria-hidden="true"></i>
+              Cook mode is on — bigger text, and steps fade as you tick them off.
+              @if (screenHeldAwake) {
+                Your screen will stay awake.
+              } @else if (keepAwakeFailed) {
+                Your screen may still sleep — the browser turned the request down.
+              }
+            </p>
+          }
         </div>
       </div>
     </div>
+
+    <!-- Phone-only, and only worth the room it takes because the two panes sit
+         one above the other there: without it, checking an ingredient against a
+         step means scrolling the length of the list each time. -->
+    <nav class="jump-nav" aria-label="Jump to a section">
+      <button type="button" (click)="jumpTo('ingredients')">
+        <i class="bi bi-basket me-1" aria-hidden="true"></i> Ingredients
+      </button>
+      <button type="button" (click)="jumpTo('steps')">
+        <i class="bi bi-list-ol me-1" aria-hidden="true"></i>
+        Steps
+        @if (cookMode && stepsDone) {
+          <span class="jump-progress">{{ stepsDone }}/{{ recipe.steps.length }}</span>
+        }
+      </button>
+    </nav>
+
     <div class="row">
       <div class="col-12 col-sm-12 col-md-5 col-lg-4">
         <div class="ingredient-pane">
           <div class="ingredient-header p-4">
-            <h3 class="mb-0">
+            <h3 class="mb-0" id="ingredients" tabindex="-1">
               Ingredients:
             </h3>
           </div>
           <div class="ingredient-content p-4">
-            @if (isDoubled) {
-              <p class="doubled-text">
-                <i class="bi bi-asterisk"></i> Showing <u>doubled</u> quantities:
+
+            <!-- Radios rather than buttons: the scales are mutually exclusive,
+                 and a real radio group gets arrow-key navigation and "3 of 4"
+                 announcements without any of it being written here. -->
+            <fieldset class="scale-control">
+              <legend>Make</legend>
+              <div class="scale-options">
+                @for (option of scaleOptions; track option) {
+                  <div class="scale-option">
+                    <input type="radio" name="scale" [id]="'scale-' + option"
+                      [checked]="option === scale" (change)="setScale(option)">
+                    <label [for]="'scale-' + option">
+                      <span aria-hidden="true">&times;{{ scaleLabel(option) }}</span>
+                      <span class="visually-hidden">{{ scaleDescription(option) }}</span>
+                    </label>
+                  </div>
+                }
+              </div>
+            </fieldset>
+
+            @if (isScaled) {
+              <p class="scaled-text">
+                <i class="bi bi-asterisk"></i> Showing quantities for
+                <u>&times;{{ scaleLabel(scale) }}</u> the recipe:
               </p>
             }
-            @for (ingredientGroup of recipe.ingredient_groups; track ingredientGroup; let last = $last) {
+
+            @for (ingredientGroup of recipe.ingredient_groups; track ingredientGroup; let last = $last; let groupIndex = $index) {
               <div class="ingredient-group" [ngClass]="{'last-group': last}">
                 @if (recipe.ingredient_groups.length > 1) {
                   <h4>
                     {{ ingredientGroup.ingredientGroupName }}
                   </h4>
                 }
-                <ul class="ps-1">
-                  @for (ingredient of ingredientGroup.ingredients; track ingredient) {
-                    <li>
-                      <strong><app-ingredient-amount [amount]="ingredient.ingredientAmount" [doubled]="isDoubled"></app-ingredient-amount>
+                <ul class="ps-1 check-list">
+                  @for (ingredient of ingredientGroup.ingredients; track ingredient; let ingredientIndex = $index) {
+                    <li [class.checked]="cookMode && isIngredientChecked(groupIndex, ingredientIndex)">
+                      <!-- The ingredient itself, written once and rendered into
+                           whichever wrapper the mode calls for. Copying it into
+                           both branches would mean maintaining the spacing
+                           between the amount and its unit in two places, and
+                           that spacing is the whole reason "1 1/2cups" is a bug
+                           this file already knows about. -->
+                      <ng-template #ingredientLine>
+                        <span class="check-text"><strong><app-ingredient-amount [amount]="ingredient.ingredientAmount" [scale]="scale"></app-ingredient-amount>
                         @if (ingredient.ingredientMeasurementType != 'Count') {
                           <!-- An explicit space: the amount is an element now, and the
                                whitespace between two elements is a text node of nothing
                                but whitespace, which the compiler drops. Left to itself
                                this renders "1 1/2cups". -->
-                          &ngsp;<span>{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount : isDoubled | lowercase}}</span>
+                          &ngsp;<span>{{ ingredient.ingredientMeasurementType | ingredientSanitizer: ingredient.ingredientAmount : scale | lowercase}}</span>
                         }</strong>
-                        {{ ingredient.ingredientName | lowerFirstLetter}}
+                        {{ ingredient.ingredientName | lowerFirstLetter}}</span>
+                      </ng-template>
+
+                      @if (cookMode) {
+                        <label class="check-line">
+                          <input type="checkbox" class="check-input"
+                            [checked]="isIngredientChecked(groupIndex, ingredientIndex)"
+                            (change)="toggleIngredient(groupIndex, ingredientIndex)">
+                          <span class="check-box" aria-hidden="true">
+                            <i class="bi bi-check-lg"></i>
+                          </span>
+                          <ng-container *ngTemplateOutlet="ingredientLine"></ng-container>
+                        </label>
+                      } @else {
+                        <ng-container *ngTemplateOutlet="ingredientLine"></ng-container>
+                      }
                       </li>
                     }
                   </ul>
                   <hr class="mt-4 mb-4" />
                 </div>
               }
+
+              <div class="shopping">
+                <button class="shopping-toggle" type="button"
+                        data-bs-toggle="modal" data-bs-target="#shoppingListModal"
+                        (click)="openShoppingList()">
+                  <i class="bi bi-cart3 me-1" aria-hidden="true"></i>
+                  Create shopping list
+                </button>
+              </div>
+
               @if (recipe.notes) {
-                <div class="notes-card fst-italic mt-5">
+                <div class="notes-card fst-italic mt-4">
                   <h5 class="fw-bold">
                     Notes for this recipe:
                   </h5>
@@ -116,40 +226,60 @@
                   </p>
                 </div>
               }
-              <!-- A toggle rather than a link, so it carries aria-pressed: on its
-                   own the changing label reads as a different button each time
-                   rather than as one button in two states. The badge shows what
-                   the press will switch to, matching the label beside it. -->
-              <button type="button"
-                      class="double-button mt-4"
-                      [class.double-button--on]="isDoubled"
-                      [attr.aria-pressed]="isDoubled"
-                      (click)="toggleDouble()">
-                <span class="double-button__badge" aria-hidden="true">{{ isDoubled ? '×1' : '×2' }}</span>
-                <span class="double-button__label">{{ isDoubled ? "View original ingredient amounts" : "Have a large group? Double the recipe!" }}</span>
-                <i class="bi bi-arrow-repeat double-button__swap" aria-hidden="true"></i>
-              </button>
             </div>
           </div>
         </div>
         <div class="col-12 col-sm-12 col-md-7 col-lg-8">
           <div class="steps-pane p-4">
-            <h3 class="mb-3">
-              Steps:
-            </h3>
-            <ol class="pe-3">
-              @for (step of recipe.steps; track step) {
-                <li>
-                  <div>
-                    {{ recipe.steps.indexOf(step) + 1 + '.'}}
+            <div class="steps-header mb-3">
+              <h3 class="mb-0" id="steps" tabindex="-1">
+                Steps:
+              </h3>
+              <!-- One button in two states, so aria-pressed rather than a label
+                   that changes out from under a screen reader. It sits here
+                   rather than up in the page toolbar because the steps are what
+                   it is for: the thing you are reading at arm's length. -->
+              <button class="btn-cook" type="button"
+                      [class.btn-cook--on]="cookMode"
+                      [attr.aria-pressed]="cookMode"
+                      (click)="toggleCookMode()">
+                <i class="bi" [ngClass]="cookMode ? 'bi-fire' : 'bi-egg-fried'" aria-hidden="true"></i>
+                Cook mode
+              </button>
+            </div>
+            <ol class="pe-3 check-list">
+              @for (step of recipe.steps; track step; let stepIndex = $index) {
+                <li [class.checked]="cookMode && isStepChecked(stepIndex)">
+                  <!-- $index, not indexOf(step): identical step text appears in
+                       plenty of recipes ("Repeat with the remaining dough"), and
+                       indexOf finds the first of them for every one after it. -->
+                  <div aria-hidden="true">
+                    {{ stepIndex + 1 + '.'}}
                   </div>
-                  <div>
-                    {{ step.step }}
+                  <div class="step-body">
+                    <ng-template #stepLine>
+                      <span class="check-text">{{ step.step }}</span>
+                    </ng-template>
+
+                    @if (cookMode) {
+                      <label class="check-line">
+                        <input type="checkbox" class="check-input"
+                          [checked]="isStepChecked(stepIndex)"
+                          (change)="toggleStep(stepIndex)"
+                          [attr.aria-label]="'Step ' + (stepIndex + 1) + ' done'">
+                        <span class="check-box" aria-hidden="true">
+                          <i class="bi bi-check-lg"></i>
+                        </span>
+                        <ng-container *ngTemplateOutlet="stepLine"></ng-container>
+                      </label>
+                    } @else {
+                      <ng-container *ngTemplateOutlet="stepLine"></ng-container>
+                    }
                     @if (step.stepIngredients?.length) {
                       <ul class="step-ingredient-list ps-0 mt-2">
                         @for (si of step.stepIngredients; track si) {
-                          <li><app-ingredient-amount [amount]="si.ingredientAmount" [doubled]="isDoubled"></app-ingredient-amount>@if (si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count') {
-                            {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount : isDoubled | lowercase }}
+                          <li><app-ingredient-amount [amount]="si.ingredientAmount" [scale]="scale"></app-ingredient-amount>@if (si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count') {
+                            {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount : scale | lowercase }}
                           } {{ si.ingredientName | lowerFirstLetter }}</li>
                         }
                       </ul>
@@ -158,6 +288,63 @@
                 </li>
               }
             </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-related-recipes [recipe]="recipe"></app-related-recipes>
+
+    <!-- Outside .recipe-wrapper on purpose: that card sets overflow:hidden to
+         clip the header photo's corners, and a dialog is not something to put
+         inside a box whose job is to cut things off at its edges. -->
+    <div class="modal fade" id="shoppingListModal" tabindex="-1"
+      aria-labelledby="shoppingListModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- Its own id, not the dialog's, so aria-labelledby resolves to
+                 the title rather than to the dialog that contains it. -->
+            <h5 class="modal-title" id="shoppingListModalTitle">
+              <i class="bi bi-cart3 me-2" aria-hidden="true"></i>
+              Shopping list
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close the shopping list"></button>
+          </div>
+          <div class="modal-body">
+            <p class="shopping-intro">
+              Everything this recipe needs@if (isScaled) {<span>, at &times;{{ scaleLabel(scale) }}</span>}.
+              Copy it, or send it to whoever is going to the shop.
+            </p>
+            <!-- The list itself, not a summary of it: what is on screen is
+                 exactly what the buttons below will put on the clipboard, and
+                 on a browser that refuses the clipboard it is still here to
+                 select by hand. -->
+            <pre class="shopping-text">{{ shoppingListText }}</pre>
+          </div>
+          <div class="modal-footer">
+            <p class="shopping-status" role="status" aria-live="polite">
+              @if (copyState === 'copied') {
+                <i class="bi bi-check-lg me-1" aria-hidden="true"></i> Copied to your clipboard.
+              } @else if (copyState === 'failed') {
+                Could not reach the clipboard — select the list above to copy it.
+              }
+            </p>
+            <div class="shopping-actions">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">
+                Close
+              </button>
+              @if (canShare) {
+                <button type="button" class="shopping-action shopping-action--quiet"
+                  (click)="shareShoppingList()">
+                  <i class="bi bi-share me-1" aria-hidden="true"></i> Share
+                </button>
+              }
+              <button type="button" class="shopping-action" (click)="copyShoppingList()">
+                <i class="bi bi-clipboard me-1" aria-hidden="true"></i> Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>

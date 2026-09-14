@@ -185,6 +185,51 @@
     }
   }
 
+  // Deliberately the same shape as .filter-toggle beside it: they are two
+  // filters, and one of them looking like a different kind of control would
+  // suggest it does a different kind of thing.
+  .saved-toggle{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0.5rem 0.875rem;
+    border: 2px solid $white;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: $white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    @include focus-ring($focus-on-dark);
+    &:hover{
+      background-color: $purple-light;
+    }
+    &.active{
+      background-color: $white;
+      // The heart keeps its red when the button fills, so the on state is the
+      // same red as the hearts on the cards it is filtering to.
+      color: #d63031;
+      &:hover{
+        background-color: $grey-200;
+      }
+      .count-badge{
+        background-color: #d63031;
+      }
+    }
+    .count-badge{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.25rem;
+      height: 1.25rem;
+      padding: 0 0.25rem;
+      border-radius: 999px;
+      background-color: $purple;
+      color: $white;
+      font-size: 0.75rem;
+    }
+  }
+
   .filter-options{
     padding: 0.75rem;
     background-color: $purple-light;

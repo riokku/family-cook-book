@@ -7,7 +7,7 @@
             Welcome to Gogo&rsquo;s Kitchen!
           </h1>
           <p class="tagline mb-4">
-            Where every meal is a celebration of family, love, and good food.
+            Bringing together our favorite recipes from all over the internet and from our own family cook books.
           </p>
 
           @if (recipes.length) {
@@ -54,6 +54,23 @@
           <app-featured-recipes></app-featured-recipes>
         </div>
       </div>
+
+      <!-- Only ever appears once this device has opened something, so a first
+           visit is not given an empty shelf to look at. -->
+      @if (recentRecipes.length) {
+        <div class="row mt-5">
+          <div class="col-12">
+            <h2 class="section-heading mb-3" id="recent-heading">
+              Pick up where you left off
+            </h2>
+          </div>
+          @for (recipe of recentRecipes; track recipe.slug) {
+            <div class="col-12 col-md-6 col-xl-4 d-flex mb-4">
+              <app-recipe-card [recipe]="recipe" [index]="$index" [tagsLinkToFilter]="true"></app-recipe-card>
+            </div>
+          }
+        </div>
+      }
     </div>
   </section>
 </div>

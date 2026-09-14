@@ -18,6 +18,8 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { IntroComponent } from './intro/intro.component';
 import { SupaService } from './shared/services/supa.service';
 import { SharedModule } from './shared/shared.module';
+import { isDevMode } from '@angular/core';
+import { provideServiceWorker } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,14 @@ import { SharedModule } from './shared/shared.module';
   ],
   providers: [
     SupaService,
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()),
+    // Off in development, where a cached bundle would mean serving yesterday's
+    // build. The 30 second delay keeps the worker's own registration and its
+    // first prefetch out of the way of the page finishing loading.
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   bootstrap: [AppComponent]
 })

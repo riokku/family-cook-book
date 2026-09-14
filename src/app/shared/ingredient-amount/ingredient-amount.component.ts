@@ -22,7 +22,9 @@ import { AmountParts, toAmountParts } from '../utils/ingredient-amount.util';
 export class IngredientAmountComponent implements OnChanges {
 
   @Input() amount: number | string | null | undefined;
-  @Input() doubled: boolean = false;
+  // What the recipe is being multiplied by: 0.5 for half, 2 for double. 1 is
+  // the recipe as it was written down.
+  @Input() scale: number = 1;
 
   parts: AmountParts = { text: '', whole: '', numerator: null, denominator: null };
 
@@ -37,7 +39,7 @@ export class IngredientAmountComponent implements OnChanges {
   @HostBinding('attr.aria-label') hostLabel: string | null = null;
 
   ngOnChanges(): void {
-    this.parts = toAmountParts(this.amount, this.doubled);
+    this.parts = toAmountParts(this.amount, this.scale);
     this.hostRole = this.parts.text ? 'img' : null;
     this.hostLabel = this.parts.text || null;
   }

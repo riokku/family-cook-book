@@ -9,14 +9,14 @@ import { IngredientAmountComponent } from './ingredient-amount.component';
 // "1 1/2cups".
 @Component({
   standalone: false,
-  template: `<strong><app-ingredient-amount [amount]="amount" [doubled]="doubled"></app-ingredient-amount>
+  template: `<strong><app-ingredient-amount [amount]="amount" [scale]="scale"></app-ingredient-amount>
     @if (showUnit) {
       &ngsp;<span>cups</span>
     }</strong>`
 })
 class AmountHostComponent {
   amount: number | string | null | undefined = 1.5;
-  doubled = false;
+  scale = 1;
   showUnit = true;
 }
 
@@ -26,7 +26,7 @@ class AmountHostComponent {
 // worth its own check.
 @Component({
   standalone: false,
-  template: `<li><app-ingredient-amount [amount]="amount" [doubled]="false"></app-ingredient-amount>@if (showUnit) {
+  template: `<li><app-ingredient-amount [amount]="amount" [scale]="1"></app-ingredient-amount>@if (showUnit) {
     {{ unit }}
   } {{ name }}</li>`
 })
@@ -69,9 +69,9 @@ describe('IngredientAmountComponent', () => {
     });
   });
 
-  function render(amount: number | string | null | undefined, doubled = false): HTMLElement {
+  function render(amount: number | string | null | undefined, scale = 1): HTMLElement {
     host.amount = amount;
-    host.doubled = doubled;
+    host.scale = scale;
     fixture.detectChanges();
     return fixture.nativeElement as HTMLElement;
   }
@@ -137,7 +137,7 @@ describe('IngredientAmountComponent', () => {
     });
 
     it('announces a doubled amount as what is shown', () => {
-      expect(host(render(0.67, true)).getAttribute('aria-label')).toBe('1 1/3');
+      expect(host(render(0.67, 2)).getAttribute('aria-label')).toBe('1 1/3');
     });
 
     it('labels a whole number too', () => {
@@ -163,7 +163,7 @@ describe('IngredientAmountComponent', () => {
   describe('reacting to the doubling toggle', () => {
     it('re-reads the amount when the flag changes', () => {
       expect(render(0.75).querySelector('.amount__fraction sub').textContent).toBe('4');
-      const doubled = render(0.75, true);
+      const doubled = render(0.75, 2);
       expect(doubled.querySelector('.amount__whole').textContent).toBe('1');
       expect(doubled.querySelector('.amount__fraction sub').textContent).toBe('2');
     });

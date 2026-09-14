@@ -2,6 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from '../../shared/models/recipe.model';
 import { SupaService } from 'src/app/shared/services/supa.service';
+import { FavoritesService } from 'src/app/shared/services/favorites.service';
+import { SeoService } from 'src/app/shared/services/seo.service';
+import { Subscription } from 'rxjs';
 
 interface SortOption {
   value: string;
@@ -50,14 +53,38 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
   ];
   sortOption: string = 'featured';
 
+  // Saved recipes are a filter like any other rather than a page of their own:
+  // the search, the categories and the sort all still apply, which is the whole
+  // point of narrowing to the twelve you actually cook.
+  showSavedOnly: boolean = false;
+  savedCount: number = 0;
+
+  private favoritesSubscription: Subscription;
+
 
   constructor(
     private supaService: SupaService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private favorites: FavoritesService,
+    private seo: SeoService
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.seo.setPage(
+      'Recipes',
+      "Search the family's recipes by name, ingredient or category — and save the ones you cook most."
+    );
+
+    // Unsaving a recipe while the grid is narrowed to saved ones has to take it
+    // out of the grid; without this the card empties its heart and stays put.
+    this.favoritesSubscription = this.favorites.favorites$.subscribe(slugs => {
+      this.savedCount = slugs.length;
+      if(this.showSavedOnly && !this.isLoading){
+        this.applyFilters();
+      }
+    });
+
     this.readFiltersFromUrl();
     await this.loadRecipes();
     this.setFilterOptions();
@@ -79,6 +106,8 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
 
     this.searchInput = params.get('search') ?? '';
 
+    this.showSavedOnly = params.get('saved') === '1';
+
     const sort = params.get('sort');
     if(sort && this.sortOptions.some(option => option.value === sort)){
       this.sortOption = sort;
@@ -92,7 +121,8 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
       queryParams: {
         category: this.selectedCategories.length ? this.selectedCategories.join(',') : null,
         search: this.searchInput.trim() || null,
-        sort: this.sortOption !== 'featured' ? this.sortOption : null
+        sort: this.sortOption !== 'featured' ? this.sortOption : null,
+        saved: this.showSavedOnly ? '1' : null
       },
       queryParamsHandling: 'merge',
       replaceUrl: true
@@ -128,6 +158,10 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
   // then sort. Anything that changes one of those calls this.
   applyFilters(){
     let results = [...this.allRecipes];
+
+    if(this.showSavedOnly){
+      results = results.filter(recipe => this.favorites.isFavorite(recipe.slug));
+    }
 
     // Categories combine with OR, so adding one always widens the results
     // rather than risking a dead end between tags that never co-occur.
@@ -172,6 +206,7 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearTimeout(this.liveSummaryTimeout);
+    this.favoritesSubscription?.unsubscribe();
   }
 
   // Searching only the title hides recipes whose name never mentions what is
@@ -217,7 +252,13 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
   clearAll(){
     this.selectedCategories = [];
     this.searchInput = '';
+    this.showSavedOnly = false;
     this.resetSort();
+  }
+
+  toggleSavedOnly(){
+    this.showSavedOnly = !this.showSavedOnly;
+    this.applyFilters();
   }
 
   resetSort(){
@@ -226,7 +267,7 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
   }
 
   get hasActiveFilters(): boolean {
-    return this.selectedCategories.length > 0 || this.searchInput.trim().length > 0;
+    return this.selectedCategories.length > 0 || this.searchInput.trim().length > 0 || this.showSavedOnly;
   }
 
   get hasActiveSort(): boolean {
@@ -254,6 +295,9 @@ export class AllRecipesComponent implements OnInit, OnDestroy {
     }
     if(this.searchInput.trim()){
       summary += ` matching "${this.searchInput.trim()}"`;
+    }
+    if(this.showSavedOnly){
+      summary += ' from your saved recipes';
     }
     return summary;
   }

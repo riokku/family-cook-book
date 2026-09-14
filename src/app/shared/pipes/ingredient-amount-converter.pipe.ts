@@ -16,8 +16,8 @@ import { toAmountParts } from "../utils/ingredient-amount.util";
 
 export class IngredientAmountConverterPipe implements PipeTransform{
 
-  transform(incomingQuantity: number | string | null | undefined, doubled: boolean = false): string {
-    return toAmountParts(incomingQuantity, doubled).text;
+  transform(incomingQuantity: number | string | null | undefined, scale: number = 1): string {
+    return toAmountParts(incomingQuantity, scale).text;
   }
 
 }

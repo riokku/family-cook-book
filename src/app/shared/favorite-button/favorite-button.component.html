@@ -1,0 +1,15 @@
+<!-- aria-pressed rather than a changing label alone: this is one button in two
+     states, not two different buttons. -->
+<button type="button"
+        class="favorite"
+        [class.favorite--on]="isFavorite"
+        [class.favorite--page]="variant === 'page'"
+        [attr.aria-pressed]="isFavorite"
+        [attr.aria-label]="label"
+        [attr.title]="label"
+        (click)="onClick($event)">
+  <i class="bi" [ngClass]="isFavorite ? 'bi-heart-fill' : 'bi-heart'" aria-hidden="true"></i>
+  @if (variant === 'page') {
+    <span>{{ isFavorite ? 'Saved' : 'Save' }}</span>
+  }
+</button>

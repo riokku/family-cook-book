@@ -13,8 +13,14 @@
 
   .carousel-item{
     // Bootstrap sets display:block on the active item; the card host is a flex
-    // item, so give it a row to sit in.
-    &.active{
+    // item, so give it a row to sit in. The two in-transition classes are here
+    // for the same reason: the incoming slide is only marked .active once the
+    // slide has finished, so covering .active alone left the card spending the
+    // whole transition as a block child, where its h-100 had no definite height
+    // to resolve against and it sat a margin short of its settled height.
+    &.active,
+    &.carousel-item-next,
+    &.carousel-item-prev{
       display: flex;
     }
   }

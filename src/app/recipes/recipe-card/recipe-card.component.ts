@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Recipe } from 'src/app/shared/models/recipe.model';
+import { ImageVariantsService } from 'src/app/shared/services/image-variants.service';
 
 @Component({
     selector: 'app-recipe-card',
@@ -8,7 +9,7 @@ import { Recipe } from 'src/app/shared/models/recipe.model';
     standalone: false
 })
 
-export class RecipeCardComponent {
+export class RecipeCardComponent implements OnInit {
   @Input() recipe: Recipe;
   @Input() index: number;
   // Which tags are currently filtered on, so a card can show its own tags as
@@ -24,6 +25,20 @@ export class RecipeCardComponent {
   // rendering a broken-image icon.
   readonly placeholderImage: string = 'assets/images/recipe-placeholder.png';
 
+  srcset: string | null = null;
+
+  constructor(private imageVariants: ImageVariantsService){}
+
+  ngOnInit(): void {
+    // Every card asks; the service only ever makes the one request, and the
+    // answer is the same for every image in the bucket.
+    this.imageVariants.checkAvailability(this.recipe?.image_path).then(available => {
+      if(available){
+        this.srcset = this.imageVariants.srcsetFor(this.recipe.image_path);
+      }
+    });
+  }
+
   get imageSource(): string {
     return this.recipe.image_path || this.placeholderImage;
   }
@@ -35,10 +50,21 @@ export class RecipeCardComponent {
 
   onImageError(event: Event){
     const img = event.target as HTMLImageElement;
+    // A failed resize should cost the smaller file, not the photo: drop the
+    // srcset and let the browser fall back to the original in src.
+    if(this.srcset && img.srcset){
+      this.srcset = null;
+      img.srcset = '';
+      return;
+    }
     // Guard against looping if the placeholder itself ever fails to load.
     if(!img.src.endsWith(this.placeholderImage)){
       img.src = this.placeholderImage;
     }
+  }
+
+  onTagClick(tag: string){
+    this.tagSelected.emit(tag);
   }
 
   isTagActive(tag: string): boolean {
@@ -49,7 +75,4 @@ export class RecipeCardComponent {
     return this.isTagActive(tag) ? `Remove ${tag} filter` : `Filter by ${tag}`;
   }
 
-  onTagClick(tag: string){
-    this.tagSelected.emit(tag);
-  }
 }

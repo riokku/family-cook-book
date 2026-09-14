@@ -37,10 +37,10 @@ const TOLERANCE = 0.02;
 
 export function toAmountParts(
   incomingQuantity: number | string | null | undefined,
-  doubled: boolean = false
+  scale: number = 1
 ): AmountParts {
 
-  // Checked before the doubling, because null * 2 is 0 — a missing amount would
+  // Checked before the scaling, because null * 2 is 0 — a missing amount would
   // otherwise come back as "0" rather than as nothing at all.
   if(incomingQuantity === null || incomingQuantity === undefined){
     return EMPTY;
@@ -55,7 +55,11 @@ export function toAmountParts(
     return EMPTY;
   }
 
-  const quantity = doubled ? parsedQuantity * 2 : parsedQuantity;
+  // A scale of 0, or one that is not a number at all, would silently blank the
+  // whole ingredient list, so anything unusable falls back to the recipe as
+  // written rather than to nothing.
+  const factor = isFinite(scale) && scale > 0 ? scale : 1;
+  const quantity = parsedQuantity * factor;
 
   const sign = quantity < 0 ? '-' : '';
   const magnitude = Math.abs(quantity);
