@@ -399,65 +399,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="form-group-wrapper">
-          <h2 class="mb-3">
-            Ingredients:
-          </h2>
-          <div class="row">
-            <label class="required">
-              Ingredients
-            </label>
-            <div class="col-12 ingredients-wrapper" formArrayName="ingredients">
-              @for (ingredientControl of recipeIngredientControls; track ingredientControl; let i = $index) {
-                <div
-                  class="row"
-                  [formGroupName]="i">
-                  <div class="col-sm-12 col-md-5">
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="ingredientName"
-                      placeholder="Ingredient name">
-                  </div>
-                  <div class="col-sm-6 col-md-3">
-                    <input
-                      type="number"
-                      class="form-control"
-                      formControlName="ingredientAmount"
-                      placeholder="Ingredient amount">
-                  </div>
-                  <div class="col-sm-6 col-md-3">
-                    <select name="ingredientMeasurementType" id="ingredientMeasurementType" formControlName="ingredientMeasurementType" class="form-select">
-                      <option [ngValue]="null" [disabled]="true">Amount type</option>
-                      @for (ingredientMeasurementType of ingredientAmountTypeOptions; track ingredientMeasurementType) {
-                        <option [value]="ingredientMeasurementType">
-                          {{ ingredientMeasurementType }}
-                        </option>
-                      }
-                    </select>
-                  </div>
-                  <div class="col-sm-1">
-                    <button
-                      type="button"
-                      class="btn-remove"
-                      (click)="onDeleteIngredient(i)"
-                      [attr.aria-label]="'Remove ingredient ' + (i + 1)">
-                      <i class="bi bi-trash" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-              }
-              <div class="row">
-                <div class="col-12">
-                  <button
-                    type="button"
-                    class="btn-add"
-                    (click)="onAddIngredient()"><i class="bi bi-plus-square"></i> Add ingredient</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
           <div class="form-group-wrapper">
             <h2 class="mb-3">
               Instructions:
@@ -508,7 +449,7 @@
                                 formControlName="ingredientName"
                                 (change)="onStepIngredientNameChange(i, j)">
                                 <option [ngValue]="null" disabled>Select ingredient</option>
-                                @for (ing of allIngredients; track ing) {
+                                @for (ing of allIngredients; track ing.name) {
                                   <option [value]="ing.name">{{ ing.name }}</option>
                                 }
                               </select>

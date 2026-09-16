@@ -116,10 +116,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     this.discardPendingImages();
   }
 
-  get recipeIngredientControls() {
-    return (this.editRecipeForm.get('ingredients') as FormArray).controls;
-  }
-
   get recipeStepsControls() {
     return (this.editRecipeForm.get('steps') as FormArray).controls;
   }
@@ -250,16 +246,6 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   }
 
-  onAddIngredient() {
-    (<FormArray>this.editRecipeForm.get('ingredients')).push(
-      new FormGroup({
-        'ingredientName': new FormControl(null, Validators.required),
-        'ingredientAmount': new FormControl(null, Validators.required),
-        'ingredientMeasurementType': new FormControl(null, Validators.required)
-      })
-    );
-  }
-
   onAddStep() {
     (<FormArray>this.editRecipeForm.get('steps')).push(
       new FormGroup({
@@ -271,9 +257,18 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   // ── Step ingredients ──────────────────────────────────────────────────────
 
-  /** Flat list of all named ingredients across every ingredient group in the form. */
+  /** Last list handed out by allIngredients, reused while the ingredients are unchanged. */
+  private allIngredientsCache: { name: string; amount: number; unit: string }[] = [];
+
+  /**
+   * Flat list of all named ingredients across every ingredient group in the form,
+   * one entry per name. The getter runs on every change detection pass, so it hands
+   * back the previous array whenever nothing has changed: a fresh array of fresh
+   * objects each pass would tear down and rebuild every option bound to it.
+   */
   get allIngredients(): { name: string; amount: number; unit: string }[] {
     const result: { name: string; amount: number; unit: string }[] = [];
+    const seen = new Set<string>();
     const groups = this.recipeIngredientGroupControls;
     for (let i = 0; i < groups.length; i++) {
       const grp = groups.at(i) as FormGroup;
@@ -281,7 +276,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
       for (let j = 0; j < ings.length; j++) {
         const ing = ings.at(j) as FormGroup;
         const name = ing.get('ingredientName').value;
-        if (name) {
+        if (name && !seen.has(name)) {
+          seen.add(name);
           result.push({
             name,
             amount: ing.get('ingredientAmount').value,
@@ -290,6 +286,18 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
         }
       }
     }
+
+    const cached = this.allIngredientsCache;
+    const unchanged = cached.length === result.length
+      && result.every((ing, i) =>
+        ing.name === cached[i].name
+        && ing.amount === cached[i].amount
+        && ing.unit === cached[i].unit);
+
+    if (unchanged) {
+      return cached;
+    }
+    this.allIngredientsCache = result;
     return result;
   }
 
