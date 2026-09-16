@@ -102,7 +102,6 @@ ol{
     // run past and push its own name along, but everything ordinary lines up.
     // Kept just wide enough to hold the common amounts — any wider and "3" is
     // separated from "eggs" by a gap you read as a gap.
-    min-width: 5.25rem;
     // Guarantees the separation when an amount fills the column exactly, where
     // the single space in the markup is all there would otherwise be.
     padding-right: 0.35rem;
@@ -258,7 +257,21 @@ ol{
     color: $purple;
     border: 1px solid #ded7fa;
     border-radius: 999px;
-    padding: 0.16rem 0.7rem;
+    // A stacked fraction sets its numerator and denominator to line-height 0 so
+    // they cannot stretch the line they sit on — which is what keeps a list of
+    // ingredients evenly spaced, but means the raised numerator reaches above
+    // the line box here with only the padding to reach into. The line height and
+    // the padding are both stated so the chips stand a consistent height whether
+    // or not there is a fraction in them.
+    //
+    // The extra on top is optical rather than arithmetic: measured against the
+    // chip, the text of a plain pill already sat about 1.5px low and a raised
+    // numerator some 4px, both for the same reason — a line box is positioned
+    // by the baseline, and everything that hangs below one is counted while
+    // what a fraction pushes above is not. Equal padding here reads as less on
+    // top, which is what this makes up.
+    padding: 0.42rem 0.75rem 0.3rem;
+    line-height: 1.3;
     font-size: 0.8rem;
     font-weight: 600;
     white-space: nowrap;
