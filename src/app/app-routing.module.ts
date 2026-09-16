@@ -36,7 +36,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
+  // 'disabled' hands the scrolling to RouteScrollService rather than turning it
+  // off: the router's own restoration scrolls to the top on every navigation,
+  // including the ones that only write a serving size or a filter into the URL.
+  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'disabled'})],
   exports: [RouterModule]
 })
 

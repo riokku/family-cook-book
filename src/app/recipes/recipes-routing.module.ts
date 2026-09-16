@@ -25,7 +25,12 @@ const routes: Routes = [
       {
         path: ":slug",
         component: RecipeComponent,
-        resolve: [RecipesResolverService]
+        resolve: [RecipesResolverService],
+        // Without this the router's default, paramsOrQueryParamsChange, re-runs
+        // the resolver whenever a query parameter changes — so picking a
+        // portion refetched every recipe in the table to render the same one
+        // at a different scale. The recipe depends on :slug and nothing else.
+        runGuardsAndResolvers: "pathParamsChange"
       },
       {
         path: ":slug/edit",

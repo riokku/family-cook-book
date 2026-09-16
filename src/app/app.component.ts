@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouteScrollService } from './shared/services/route-scroll.service';
 
 @Component({
     selector: 'app-root',
@@ -9,6 +10,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
   title = 'family-cook-book';
+
+  // The shell is the one place that outlives every navigation, so it is where
+  // the thing listening to all of them starts.
+  constructor(routeScroll: RouteScrollService){
+    routeScroll.init();
+  }
 
   private static readonly INTRO_SEEN_KEY = 'gogos-intro-seen';
 
