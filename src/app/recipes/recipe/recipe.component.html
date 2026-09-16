@@ -85,25 +85,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Cook mode says what it did rather than only looking different: the
-             larger type is obvious, the screen lock is not. The wrapper is
-             always in the DOM, empty or not — a live region announces what
-             changes inside it, so one that appears along with its own message
-             has nothing to announce. -->
-        <div class="col-12" role="status" aria-live="polite">
-          @if (cookMode) {
-            <p class="cook-note">
-              <i class="bi bi-fire me-1" aria-hidden="true"></i>
-              Cook mode is on — bigger text, and steps fade as you tick them off.
-              @if (screenHeldAwake) {
-                Your screen will stay awake.
-              } @else if (keepAwakeFailed) {
-                Your screen may still sleep — the browser turned the request down.
-              }
-            </p>
-          }
-        </div>
       </div>
     </div>
 
@@ -246,6 +227,28 @@
                 <i class="bi" [ngClass]="cookMode ? 'bi-fire' : 'bi-egg-fried'" aria-hidden="true"></i>
                 Cook mode
               </button>
+            </div>
+
+            <!-- Cook mode says what it did rather than only looking different:
+                 the larger type is obvious, the screen lock is not. It sits
+                 against the steps, under the button that turns it on — on a
+                 phone the panes stack, so a note up by the header photo is a
+                 screenful away from what you are reading. The wrapper is always
+                 in the DOM, empty or not — a live region announces what changes
+                 inside it, so one that appears along with its own message has
+                 nothing to announce. -->
+            <div role="status" aria-live="polite">
+              @if (cookMode) {
+                <p class="cook-note">
+                  <i class="bi bi-fire me-1" aria-hidden="true"></i>
+                  Cook mode is on — bigger text, and steps fade as you tick them off.
+                  @if (screenHeldAwake) {
+                    Your screen will stay awake.
+                  } @else if (keepAwakeFailed) {
+                    Your screen may still sleep — the browser turned the request down.
+                  }
+                </p>
+              }
             </div>
             <ol class="pe-3 check-list">
               @for (step of recipe.steps; track step; let stepIndex = $index) {

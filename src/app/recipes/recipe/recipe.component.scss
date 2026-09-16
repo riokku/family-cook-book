@@ -245,10 +245,11 @@ ol{
   }
 }
 
-// Sits inside the white card now, directly under the photo, so it needs its
-// own breathing room rather than the page gutter it used to sit in.
+// Sits in the steps pane now, between the heading row and the first step. The
+// heading's own margin sets the gap above it; the gap below is this note's to
+// keep, so it does not butt up against step one.
 .cook-note{
-  margin: 1rem 0 0;
+  margin: 0 0 1rem;
   padding: 0.6rem 0.9rem;
   border-radius: 0.25rem;
   background-color: $purple-tint;
