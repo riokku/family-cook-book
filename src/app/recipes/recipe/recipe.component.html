@@ -41,9 +41,21 @@
             'background': 'linear-gradient(211deg, rgba(87,75,144,1) 0%, rgba(255,255,255,1) 40%, rgba(100,87,168,1) 100%);'
           }">
             <div class="recipe-header-info p-4">
-              <h1>
-                {{ recipe.name }}
-              </h1>
+              <!-- The title and the save button share the top line of the
+                   panel. In the flow rather than pinned to the corner: the
+                   panel is sized by its own content, so an absolute button
+                   would sit over the end of a long title instead of beside it.
+                   The wrapper is what gets laid out — the button's own host is
+                   display:contents and has no box of its own. -->
+              <div class="header-title-row">
+                <h1>
+                  {{ recipe.name }}
+                </h1>
+                <div class="header-save">
+                  <app-favorite-button [slug]="recipe.slug" [recipeName]="recipe.name"
+                    variant="page"></app-favorite-button>
+                </div>
+              </div>
               <p>
                 Author: {{ recipe.author }} @if (recipe.link) {
                 <span><a href="{{recipe.link}}" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a></span>
@@ -79,10 +91,6 @@
                 }
               </ul>
             }
-            <div class="header-actions mt-3">
-              <app-favorite-button [slug]="recipe.slug" [recipeName]="recipe.name"
-                variant="page"></app-favorite-button>
-            </div>
           </div>
         </div>
       </div>
@@ -131,14 +139,23 @@
                   </div>
                 }
               </div>
-            </fieldset>
 
-            @if (isScaled) {
-              <p class="scaled-text">
-                <i class="bi bi-asterisk"></i> Showing quantities for
-                <u>&times;{{ scaleLabel(scale) }}</u> the recipe:
-              </p>
-            }
+              <!-- What the chosen scale actually works out to, under the
+                   control that chose it: picking a portion and then hunting
+                   elsewhere on the page for the servings it made is two steps
+                   for one question. Doubles as the notice that the amounts
+                   below are no longer the ones the recipe was written with. -->
+              @if (isScaled || servings) {
+                <p class="scale-caption" [class.scale-caption--scaled]="isScaled">
+                  @if (isScaled) {
+                    <i class="bi bi-asterisk" aria-hidden="true"></i>
+                    Amounts are &times;{{ scaleLabel(scale) }} the recipe as written@if (servings) {, about {{ servings }} servings}.
+                  } @else {
+                    Makes about {{ servings }} servings.
+                  }
+                </p>
+              }
+            </fieldset>
 
             @for (ingredientGroup of recipe.ingredient_groups; track ingredientGroup; let last = $last; let groupIndex = $index) {
               <div class="ingredient-group" [ngClass]="{'last-group': last}">
@@ -147,7 +164,7 @@
                     {{ ingredientGroup.ingredientGroupName }}
                   </h4>
                 }
-                <ul class="ps-1 check-list">
+                <ul class="check-list">
                   @for (ingredient of ingredientGroup.ingredients; track ingredient; let ingredientIndex = $index) {
                     <li [class.checked]="cookMode && isIngredientChecked(groupIndex, ingredientIndex)">
                       <!-- The ingredient itself, written once and rendered into
@@ -184,7 +201,6 @@
                       </li>
                     }
                   </ul>
-                  <hr class="mt-4 mb-4" />
                 </div>
               }
 
@@ -192,8 +208,9 @@
                 <button class="shopping-toggle" type="button"
                         data-bs-toggle="modal" data-bs-target="#shoppingListModal"
                         (click)="openShoppingList()">
-                  <i class="bi bi-cart3 me-1" aria-hidden="true"></i>
-                  Create shopping list
+                  <i class="bi bi-cart3" aria-hidden="true"></i>
+                  <span>Create shopping list</span>
+                  <span class="shopping-count">{{ ingredientCount }} {{ ingredientCount === 1 ? 'item' : 'items' }}</span>
                 </button>
               </div>
 
@@ -250,14 +267,21 @@
                 </p>
               }
             </div>
-            <ol class="pe-3 check-list">
+            <ol class="pe-3 check-list step-list">
               @for (step of recipe.steps; track step; let stepIndex = $index) {
-                <li [class.checked]="cookMode && isStepChecked(stepIndex)">
+                <li class="step-row"
+                    [class.checked]="cookMode && isStepChecked(stepIndex)"
+                    [class.current]="stepIndex === currentStepIndex">
                   <!-- $index, not indexOf(step): identical step text appears in
                        plenty of recipes ("Repeat with the remaining dough"), and
                        indexOf finds the first of them for every one after it. -->
-                  <div aria-hidden="true">
-                    {{ stepIndex + 1 + '.'}}
+                  <!-- The number is a medallion on the rail that runs down the
+                       list: the rail is what makes a set of instructions read as
+                       a sequence with a start and an end, and it fills in behind
+                       you as you tick steps off. Decorative — the <ol> already
+                       tells a screen reader which step this is. -->
+                  <div class="step-marker" aria-hidden="true">
+                    <span class="step-num">{{ stepIndex + 1 }}</span>
                   </div>
                   <div class="step-body">
                     <ng-template #stepLine>

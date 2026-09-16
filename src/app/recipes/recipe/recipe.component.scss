@@ -21,45 +21,144 @@ ul{
 }
 ol{
   padding-left: 0;
-  li{
-    display: flex;
-    padding-left: 0.25rem;
-    div{
-      &:first-child{
-        font-size: 2rem;
-        color: $purple;
-        text-shadow: 2px 2px 2px #efefef;
-        padding-right: 1rem;
-        min-width: 40px;
-        text-align: right;
-        margin-top: -6px;
-      }
-    }
-    &:not(:last-child){
-      margin-bottom: 1rem;
-    }
-  }
+  margin-bottom: 0;
 }
 .ingredient-pane{
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  // The header was near-black, which made the heaviest mark on the page a bar
+  // that says nothing and belongs to no other part of the design. In the brand
+  // purple it reads as the same family as the step medallions opposite.
   .ingredient-header{
-    background-color: $ink;
-    color: #fff;
+    background-color: #453a78;
+    color: $white;
   }
+
+  // Lightened a shade now that the ingredients sit on white panels: this is
+  // the ground they are laid on rather than the surface itself.
   .ingredient-content{
-    background-color: #f0eef6;
+    background-color: #f5f3fb;
     flex: 1;
-    .ingredient-group{
-      hr{
-        max-width: 25%;
-      }
-      &.last-group{
-        hr{
-          display: none;
-        }
-      }
+  }
+
+  // A quiet label rather than a heading competing with "Ingredients:" above
+  // it. Groups are told apart by the gap and the label, which is what the
+  // 25%-wide rule under each group used to be doing badly.
+  .ingredient-group{
+    & + .ingredient-group{
+      margin-top: 1.5rem;
+    }
+
+    h4{
+      margin: 0 0 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: $purple;
+    }
+  }
+}
+
+// --- The ingredients themselves ----------------------------------------------
+//
+// One white panel per group with hairline-divided rows, rather than loose text
+// on the pane. The amounts hang in a column of their own so a cook can run an
+// eye down the quantities without reading the names.
+
+.ingredient-content .check-list{
+  background-color: $white;
+  border: 1px solid #eae5f8;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1.15rem;
+  margin: 0;
+
+  li{
+    padding: 0.55rem 0;
+    // Beats the component's own "ul li:not(:last-child)" spacing rule, which
+    // would otherwise add a rag of margin inside every divided row.
+    &, &:not(:last-child){
+      margin-bottom: 0;
+    }
+
+    &:not(:last-child){
+      border-bottom: 1px solid #f1eefb;
+    }
+  }
+}
+
+// Ordinary inline text, not a flex row. As a row the name was a box of its own
+// and wrapped inside it, stacking into a narrow column beside the amount; left
+// to flow, the first line still starts after the amount and every line after it
+// runs the full width of the row, under the amount.
+.ingredient-content .check-text{
+  strong{
+    // inline-block for the width; the baseline it sits on is still the text's,
+    // so a stacked fraction lines up with the name beside it.
+    display: inline-block;
+    // A minimum rather than a width: a longer amount than this is allowed to
+    // run past and push its own name along, but everything ordinary lines up.
+    // Kept just wide enough to hold the common amounts — any wider and "3" is
+    // separated from "eggs" by a gap you read as a gap.
+    min-width: 5.25rem;
+    // Guarantees the separation when an amount fills the column exactly, where
+    // the single space in the markup is all there would otherwise be.
+    padding-right: 0.35rem;
+    color: $purple;
+  }
+}
+
+@media (max-width: 400px){
+  .ingredient-content .check-text strong{
+    min-width: 4.5rem;
+  }
+}
+
+// A ticked ingredient goes grey all through: the amount keeping its brand
+// colour made a struck-out row look half-live.
+.ingredient-content li.checked .check-text strong{
+  color: inherit;
+}
+
+@media print{
+  // The panel is a surface, and paper already is one.
+  .ingredient-content .check-list{
+    background-color: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+
+    li:not(:last-child){
+      border-bottom: 0 !important;
+    }
+  }
+
+  // The global sheet hides the whole scale control, which is right for the
+  // radios — a printed radio reads as a form someone is meant to fill in —
+  // but the caption inside it is the only thing on the page saying these
+  // amounts are not the ones the recipe was written with. Two class names
+  // deep so it beats that rule wherever the two end up in the cascade.
+  .ingredient-content .scale-control{
+    display: block !important;
+    margin: 0 !important;
+  }
+
+  .scale-control legend,
+  .scale-options,
+  .scale-caption{
+    display: none !important;
+  }
+
+  .scale-caption--scaled{
+    display: block !important;
+    margin: 0 0 0.75rem !important;
+    color: #000 !important;
+    font-weight: 700;
+
+    i{
+      color: #000 !important;
     }
   }
 }
@@ -94,16 +193,37 @@ ol{
 }
 
 .notes-card{
-  padding: 1rem;
-  background-color: #fff;
-  border-top: 3px solid $purple;
-  border-radius: 0.25rem;
+  padding: 0.9rem 1.1rem;
+  background-color: $white;
+  // On the side rather than across the top: the same accent the rest of the
+  // pane uses, and it does not read as a card that has been underlined.
+  border-left: 3px solid $purple;
+  border-radius: 0.5rem;
+
+  h5{
+    font-size: 0.95rem;
+  }
 }
 
-.scaled-text{
-  background-color: #fdcb6e;
-  border-radius: 0.25rem;
-  padding: 0.5rem 0.75rem;
+// Sits under the scale buttons, inside the fieldset, because it is the answer
+// to the question those buttons ask. The amber that used to fill a whole slab
+// is down to the asterisk: enough to flag that these are not the amounts the
+// recipe was written with, without a highlighter across the pane.
+.scale-caption{
+  margin: 0.55rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: $grey-600;
+}
+
+.scale-caption--scaled{
+  color: $ink;
+  font-weight: 600;
+
+  i{
+    color: #c98a00;
+    margin-right: 0.15rem;
+  }
 }
 
 .btn-edit {
@@ -134,11 +254,13 @@ ol{
   padding: 0;
 
   li {
-    background-color: #4a3f7a;
-    color: #fff;
-    border-radius: 0.4rem;
-    padding: 0.2rem 0.75rem;
-    font-size: 0.82rem;
+    background-color: $purple-tint;
+    color: $purple;
+    border: 1px solid #ded7fa;
+    border-radius: 999px;
+    padding: 0.16rem 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 600;
     white-space: nowrap;
     // The global "ul li:not(:last-child) { margin-bottom: 1rem }" rule has higher
     // specificity than "li { margin-bottom: 0 }", so override the pseudo-class too.
@@ -289,9 +411,16 @@ ol{
   }
 }
 
+// A segmented control rather than four separate buttons: the scales are one
+// choice with four positions, and a single track says that where a row of
+// detached boxes does not.
 .scale-options{
   display: flex;
-  gap: 0.35rem;
+  gap: 2px;
+  padding: 3px;
+  background-color: $white;
+  border: 1px solid #e4dff7;
+  border-radius: 0.65rem;
 }
 
 .scale-option{
@@ -311,33 +440,42 @@ ol{
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 44px;
+    // 44px of tappable height survives from the old buttons — the one number
+    // here that was never the problem.
+    min-height: 40px;
     border-radius: 0.5rem;
-    border: 2px solid $grey-200;
-    background-color: $white;
-    color: $ink;
+    border: 0;
+    background-color: transparent;
+    color: $grey-600;
     font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    transition: background-color 0.18s ease, color 0.18s ease;
   }
 
   label:hover{
-    border-color: $purple-light;
     background-color: $purple-tint;
+    color: $purple;
   }
 
   // The ring goes on the label, because the input it belongs to is invisible.
   input:focus-visible + label{
     outline: 3px solid $focus-on-light;
-    outline-offset: 2px;
+    // Inside the track rather than around it, so the ring is not clipped by
+    // the segment next to it.
+    outline-offset: -1px;
   }
 
+  // Flat fill. The gradient and the drop shadow under it were doing the work a
+  // solid colour does, in the visual language of a 2013 button.
   input:checked + label{
-    background: linear-gradient(135deg, $purple-light 0%, $purple 45%, #453a78 100%);
-    border-color: #453a78;
+    background-color: $purple;
     color: $white;
-    box-shadow: 0 4px 12px rgba(87, 75, 144, 0.3);
+  }
+
+  input:checked + label:hover{
+    background-color: #453a78;
+    color: $white;
   }
 }
 
@@ -352,9 +490,26 @@ ol{
   font-weight: 700;
 }
 
-.header-actions{
+// Title left, save button right, on one line. flex-start rather than centre:
+// a title that wraps to two or three lines should grow downwards away from the
+// button, not drag it into the middle of itself.
+.header-title-row{
   display: flex;
-  gap: 0.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+
+  h1{
+    // The h1 is what gives up room when the two together are wider than the
+    // panel; the button has a label and cannot be squeezed.
+    min-width: 0;
+  }
+}
+
+.header-save{
+  flex: none;
+  // Sits the pill against the cap height of the title rather than its line box.
+  margin-top: 0.35rem;
 }
 
 // --- Checking things off ----------------------------------------------------
@@ -429,17 +584,169 @@ ol{
   }
 }
 
-// The steps list keeps its number column, so the checkbox belongs to the body
-// beside it rather than to the row.
-.steps-pane{
-  .step-body{
-    flex: 1;
+// --- The steps ---------------------------------------------------------------
+//
+// A recipe is a sequence, and the list is drawn as one: a rail runs down the
+// left with a numbered medallion on it for each step, and the step itself sits
+// in a card beside it. The rail fills in behind you as you tick steps off, so
+// how far along you are is something you can see from across the kitchen
+// rather than something you have to read.
+
+.step-row{
+  display: flex;
+  gap: 0.9rem;
+  padding-left: 0.25rem;
+
+  &:not(:last-child){
+    margin-bottom: 0.6rem;
+  }
+}
+
+// Stretches to the full height of the row — it is the flex item the rail is
+// drawn against, and the rail has to reach the next medallion.
+.step-marker{
+  flex: none;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 38px;
+}
+
+.step-num{
+  position: relative;
+  // Above the rail, so the line runs behind the medallion rather than into it.
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: $white;
+  border: 2px solid $purple-tint;
+  color: $purple;
+  font-size: 1.05rem;
+  font-weight: 700;
+  // Two-digit steps should not shuffle the medallion's contents around.
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+              color 0.18s ease, box-shadow 0.18s ease;
+}
+
+// The rail: from the bottom of this medallion down into the gap, where the
+// next one picks it up. The last step has nothing to connect to.
+.step-row:not(:last-child) .step-marker::after{
+  content: '';
+  position: absolute;
+  top: 38px;
+  bottom: -0.6rem;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background-color: #ded7fa;
+  transition: background-color 0.18s ease;
+}
+
+.step-row .step-body{
+  flex: 1;
+  // Without this a long unbroken word in a step stretches the card past the
+  // pane instead of wrapping inside it.
+  min-width: 0;
+  padding: 0.8rem 1.05rem;
+  border: 1px solid #eeebf8;
+  border-radius: 0.75rem;
+  background-color: #faf9fe;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+              box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+// Where you are: the one card in white, lifted off the wash the others sit in.
+// Only ever set in cook mode — reading the recipe through, no step is "current".
+.step-row.current{
+  .step-num{
+    border-color: $purple;
+    box-shadow: 0 0 0 4px rgba(87, 75, 144, 0.14);
   }
 
-  li.checked{
-    div:first-child{
-      opacity: 0.45;
-    }
+  .step-body{
+    background-color: $white;
+    border-color: $purple-light;
+    box-shadow: 0 2px 10px rgba(87, 75, 144, 0.12);
+  }
+}
+
+// Done: the card recedes and the rail behind it goes solid, so the finished
+// run of the recipe is one continuous line rather than a set of ticks.
+.step-row.checked{
+  .step-num{
+    background-color: $purple;
+    border-color: $purple;
+    color: $white;
+  }
+
+  .step-marker::after{
+    background-color: $purple;
+  }
+
+  .step-body{
+    background-color: $grey-100;
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 575px){
+  .step-row{
+    gap: 0.65rem;
+  }
+
+  .step-marker{
+    width: 30px;
+  }
+
+  .step-num{
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .step-row:not(:last-child) .step-marker::after{
+    top: 30px;
+  }
+
+  .step-row .step-body{
+    padding: 0.7rem 0.85rem;
+  }
+}
+
+// On paper the rail and the cards are ink for nothing: what prints is a
+// numbered list with a box to tick beside each instruction.
+@media print{
+  .step-row .step-body{
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 0 0 0.25rem !important;
+    opacity: 1 !important;
+  }
+
+  .step-marker::after{
+    display: none !important;
+  }
+
+  .step-num{
+    width: auto;
+    height: auto;
+    border: 0;
+    background-color: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    font-size: 1rem;
+  }
+
+  .step-marker{
+    width: auto;
   }
 }
 
@@ -455,29 +762,53 @@ ol{
 .shopping-toggle{
   display: flex;
   align-items: center;
+  // Cart, label and count run together as one centred phrase — the count set
+  // in a pill so it reads as a figure attached to the label, not part of it.
   justify-content: center;
+  gap: 0.5rem;
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
   padding: 0.5rem 0.9rem;
-  border-radius: 0.5rem;
-  border: 2px solid $purple;
+  border-radius: 0.65rem;
+  border: 0;
   background-color: $purple;
   color: $white;
   font-weight: 600;
-  font-size: 0.9rem;
-  box-shadow: 0 4px 12px rgba(87, 75, 144, 0.24);
-  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  font-size: 0.95rem;
+  // Kept, but well under the old one: enough to lift the button off the pane,
+  // short of the coloured smudge underneath it.
+  box-shadow: 0 2px 8px rgba(87, 75, 144, 0.18);
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
   @include focus-ring($focus-on-light);
+
+  i{
+    font-size: 1.05rem;
+  }
 
   &:hover{
     background-color: #453a78;
-    border-color: #453a78;
     color: $white;
-    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(87, 75, 144, 0.26);
   }
 
   &:active{
-    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(87, 75, 144, 0.2);
+  }
+}
+
+// How long the list will be, before you open it.
+.shopping-count{
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.18);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+@media (max-width: 400px){
+  // No room for the badge to float clear of a two-word label down here.
+  .shopping-count{
+    display: none;
   }
 }
 
@@ -627,8 +958,47 @@ ol{
     }
   }
 
+  .step-row:not(:last-child){
+    margin-bottom: 0.8rem;
+  }
+
+  .step-row:not(:last-child) .step-marker::after{
+    bottom: -0.8rem;
+  }
+
+  // Only above phone width: down there the larger type already eats the line,
+  // and spending another 0.5rem a side on padding costs a word per line.
+  @media (min-width: 576px){
+    // The cards carry more text at this size, so they get the room for it, and
+    // the medallions grow with them to keep the rail in proportion.
+    .step-row .step-body{
+      padding: 1rem 1.2rem;
+    }
+
+    .step-marker,
+    .step-num{
+      width: 44px;
+    }
+
+    .step-num{
+      height: 44px;
+      font-size: 1.15rem;
+    }
+
+    .step-row:not(:last-child) .step-marker::after{
+      top: 44px;
+    }
+  }
+
   .ingredient-content{
     font-size: 1.08rem;
+  }
+
+  // The larger type and the checkbox together take enough off the row that the
+  // amount column has to give a little back, or names wrap for want of ten
+  // pixels.
+  .ingredient-content .check-text strong{
+    min-width: 5rem;
   }
 
   .check-list .check-box{

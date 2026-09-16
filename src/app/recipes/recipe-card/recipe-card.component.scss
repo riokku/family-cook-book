@@ -86,14 +86,17 @@
   }
 }
 
+// Moved to the left edge to clear the save button, which now has the right
+// corner. Mirrored with it: the ribbon is flush to whichever edge it runs off,
+// so the rounded corners are the two facing into the card.
 .featured{
   z-index: 2;
   position: absolute;
-  right: 0;
+  left: 0;
   top: 10px;
   padding: 0.25rem 0.5rem;
   background-color: $purple;
   color: $white;
-  border-radius: 0.25rem 0 0 0.25rem;
+  border-radius: 0 0.25rem 0.25rem 0;
 }
 

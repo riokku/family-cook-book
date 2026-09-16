@@ -163,6 +163,16 @@ export class RecipeComponent implements OnInit, OnDestroy {
       return scaledServings(this.recipe, this.scale);
     }
 
+    /**
+     * How many lines the shopping list will come to, shown on the button that
+     * builds it. Scaling changes the amounts but never the number of
+     * ingredients, so this does not depend on the scale.
+     */
+    get ingredientCount(): number {
+      return (this.recipe?.ingredient_groups ?? [])
+        .reduce((total, group) => total + (group.ingredients?.length ?? 0), 0);
+    }
+
     // --- Checking things off -------------------------------------------------
 
     ingredientKey(groupIndex: number, ingredientIndex: number): string {
@@ -198,6 +208,24 @@ export class RecipeComponent implements OnInit, OnDestroy {
 
     get stepsDone(): number {
       return this.checkedSteps.size;
+    }
+
+    /**
+     * The step to draw attention to while cooking: the first one not yet ticked
+     * off. Looking up from the pan to find your place is the moment the steps
+     * list exists for, so one row is marked rather than leaving a wall of
+     * equals. -1 outside cook mode, and once every step is done.
+     */
+    get currentStepIndex(): number {
+      if(!this.cookMode || !this.recipe?.steps){
+        return -1;
+      }
+      for(let i = 0; i < this.recipe.steps.length; i++){
+        if(!this.checkedSteps.has(i)){
+          return i;
+        }
+      }
+      return -1;
     }
 
     resetProgress(): void {

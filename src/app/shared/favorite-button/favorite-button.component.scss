@@ -1,5 +1,9 @@
 @use '../../../styles/tokens' as *;
 
+// Saved is the one state on this button with a colour of its own, used at both
+// sizes and in both the resting and the hover case.
+$saved: #d63031;
+
 // The host generates no box of its own, so the button inside positions against
 // the card rather than against a wrapper, and an absolutely positioned button
 // leaves no empty line box behind in the card's flow.
@@ -26,14 +30,14 @@
   }
 }
 
-// On a card: a round chip floated over the photo's top-left. It has to read
-// against whatever the photo happens to be, so it carries its own surface
-// rather than sitting directly on the image.
+// On a card: a round chip floated over the photo's top-right, opposite the
+// featured ribbon. It has to read against whatever the photo happens to be, so
+// it carries its own surface rather than sitting directly on the image.
 .favorite:not(.favorite--page){
   position: absolute;
   z-index: 3;
   top: 10px;
-  left: 10px;
+  right: 10px;
   width: 38px;
   height: 38px;
   border-radius: 999px;
@@ -47,33 +51,51 @@
   }
 }
 
-// On the recipe page it sits in a row of real buttons, so it is one too.
+// On the recipe page: the same chip as on a card, given a label and the room
+// for it. It used to be a translucent pill on the dark panel under the title,
+// which had that panel to read against; in the corner of the photo it has only
+// whatever was cooked that day behind it, so it brings its own surface.
 .favorite--page{
   min-height: 38px;
-  padding: 0.3rem 0.85rem;
-  border-radius: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  color: $white;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.92);
+  border: none;
+  color: $ink;
   font-size: 0.85rem;
   font-weight: 600;
   white-space: nowrap;
-  @include focus-ring($focus-on-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  @include focus-ring($focus-on-light);
 
   &:hover{
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: $white;
   }
 }
 
 // Saved. Red rather than the brand purple: a heart that fills in any other
 // colour reads as a decoration rather than as a state.
 .favorite--on{
-  color: #d63031;
+  color: $saved;
 
+  // The chip's resting colour is set by `.favorite:not(.favorite--page)`, and a
+  // :not() carries the specificity of whatever it holds — two classes against
+  // this rule's one. Unmatched, the ink won and a saved heart on a card filled
+  // in dark instead of red, which is the one thing this colour exists to say.
+  &.favorite:not(.favorite--page){
+    color: $saved;
+  }
+
+  // Saved: the heart turns, the label stays legible ink — the same split the
+  // card chip makes. The colour has to be restated here because the rule above
+  // would otherwise carry the red through to the word beside the heart.
   &.favorite--page{
     background-color: $white;
-    border-color: $white;
-    color: #d63031;
+    color: $ink;
+
+    i{
+      color: $saved;
+    }
 
     &:hover{
       background-color: $white;
