@@ -1,118 +1,257 @@
 @use '../../styles/tokens' as *;
 
-nav{
-  background-color: $purple;
-
-  // Dark brand bar: the light-surface default would be near invisible here.
-  a,
-  button,
-  .navbar-toggler{
-    @include focus-ring($focus-on-dark);
-  }
-
-  .home-link-wrapper{
-    display: flex;
-    align-items: center;
-  }
-
-  img{
-    &.hero{
-      max-height: 40px;
-      min-height: 40px;
-    }
-  }
-
-  // Set as initials, so give them the spacing and weight of a monogram rather
-  // than of a truncated word.
-  .site-title{
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #fff;
-  }
-
-  a{
-    color: #fff;
-  }
-
-  .navbar-brand{
-    font-size: 1.5rem;
-  }
-
-  .nav-item{
-    display: flex;
-    align-items: center;
-    position: relative;
-    &:not(:last-child){
-      margin-right: 1rem;
-    }
-    a{
-      &.active-link{
-        background-color: $purple-light;
-        border-radius: 0.25rem;
-        &:after{
-          content: none;
-        }
-      }
-      &:after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        transform: scaleX(0);
-        height: 3px;
-        bottom: 0;
-        left: 0;
-        background-color: #fff;
-        transform-origin: bottom right;
-        transition: transform 0.25s ease-out;
-      }
-      &:hover:after {
-        transform: scaleX(1);
-        transform-origin: bottom left;
-      }
-      @media (max-width: 991px){
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-    }
-    @media (max-width: 991px){
-      width: fit-content;
-      &:first-child{
-        margin-top: 1rem;
-      }
-    }
-  }
-
-  .nav-logout-btn {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 0.25rem;
-    color: #fff;
-    cursor: pointer;
-    font-size: 0.9rem;
-    /* calc(nav-link-padding - border-width) keeps total height identical */
-    padding: calc(0.5rem - 1px) 0.6rem;
-    line-height: 1.5;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.15);
-      border-color: #fff;
-    }
-
-    @media (max-width: 991px) {
-      margin-left: 1rem;
-      margin-bottom: 1rem;
-    }
-  }
-
-  .navbar-toggler{
-    color: #fff;
-    border: 2px solid #fff;
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-  }
-
+// ── The awning ───────────────────────────────────────────────────────────────
+// Stripes, then a row of scallops hanging off their bottom edge. Each scallop
+// is a half-circle the width of one stripe, in that stripe's colour, so the
+// edge reads as the same fabric cut wavy rather than as a border.
+.awning{
+  --stripe: 56px;
+  --stripe-height: 88px;
 }
 
+.awning-stripes{
+  height: var(--stripe-height);
+  background: repeating-linear-gradient(
+    90deg,
+    $awning 0 var(--stripe),
+    $white var(--stripe) calc(var(--stripe) * 2)
+  );
+}
+
+.awning-scallops{
+  --r: calc(var(--stripe) / 2);
+  height: var(--r);
+  // Casts a soft shadow on the wall, so the awning stands off the shop front.
+  filter: drop-shadow(0 6px 5px rgba(59, 42, 42, 0.25));
+  background:
+    radial-gradient(circle at var(--r) 0, $awning var(--r), transparent calc(var(--r) + 0.5px))
+      0 0 / calc(var(--stripe) * 2) 100% repeat-x,
+    radial-gradient(circle at var(--r) 0, $white var(--r), transparent calc(var(--r) + 0.5px))
+      var(--stripe) 0 / calc(var(--stripe) * 2) 100% repeat-x;
+}
+
+// ── The bar under it ─────────────────────────────────────────────────────────
+.navbar{
+  // Bootstrap's navbar padding and centring would push the sign off the
+  // awning it hangs from.
+  padding: 0;
+  align-items: flex-start;
+}
+
+.shop-bar{
+  // Same measure as the page sections under it, so the sign hangs directly
+  // above the left edge of the content rather than Bootstrap's wider container.
+  max-width: 1200px;
+  padding-left: 24px;
+  padding-right: 24px;
+  align-items: flex-start;
+  gap: 16px;
+  // Keeps the sign's chains tucked under the scallops.
+  margin-top: -2px;
+}
+
+// ── The hanging sign (the logo) ──────────────────────────────────────────────
+.shop-sign{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // Hung from the middle of its top edge, and swinging gently from there.
+  transform-origin: 50% 0;
+  animation: sign-swing 5s ease-in-out infinite;
+  color: $white;
+  @include focus-ring($focus-on-light, 3px);
+  &:hover{
+    color: $white;
+  }
+}
+
+.sign-chains{
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  height: 30px;
+  // Two cords, drawn as the left and right borders of an empty box.
+  border-left: 3px solid $cocoa;
+  border-right: 3px solid $cocoa;
+}
+
+.sign-board{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  background-color: $awning;
+  border: 3px solid $cocoa;
+  border-radius: 14px;
+  box-shadow: 0 6px 0 rgba(59, 42, 42, 0.2);
+}
+
+.sign-icon{
+  flex-shrink: 0;
+}
+
+.sign-text{
+  display: flex;
+  flex-direction: column;
+}
+
+.site-title{
+  margin: 0;
+  font-family: $font-display;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.1;
+  color: $white;
+}
+
+.sign-tagline{
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@keyframes sign-swing{
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}
+
+// ── Pill nav ─────────────────────────────────────────────────────────────────
+.navbar-nav{
+  gap: 8px;
+  // Lines the pills up with the middle of the sign rather than its chains.
+  padding-top: 26px;
+}
+
+.nav-item{
+  display: flex;
+  align-items: center;
+}
+
+.nav-link,
+.nav-logout-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 0;
+  background-color: transparent;
+  color: $cocoa;
+  font-weight: 800;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  @include focus-ring($focus-on-light, 3px);
+  &:hover,
+  &:focus{
+    background-color: rgba(59, 42, 42, 0.08);
+    color: $cocoa;
+  }
+}
+
+// The page you are on is the pill that is filled in.
+.nav-link.active-link{
+  background-color: $cocoa;
+  color: $butter;
+  &:hover,
+  &:focus{
+    background-color: $cocoa;
+    color: $butter;
+  }
+}
+
+.nav-logout-btn{
+  min-width: 44px;
+  padding: 0 14px;
+  border: 2px solid rgba(59, 42, 42, 0.35);
+  cursor: pointer;
+  font-size: 1.05rem;
+  &:hover{
+    border-color: $cocoa;
+  }
+}
+
+.navbar-toggler{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  // Level with the sign board.
+  margin-top: 40px;
+  padding: 0;
+  border: 2px solid $cocoa;
+  border-radius: 999px;
+  background-color: $white;
+  color: $cocoa;
+  font-size: 1.6rem;
+  line-height: 1;
+  box-shadow: 0 3px 0 rgba(59, 42, 42, 0.2);
+  // Bootstrap gives the toggler its own box-shadow focus; one ring style only.
+  &:focus{
+    box-shadow: 0 3px 0 rgba(59, 42, 42, 0.2);
+  }
+  @include focus-ring($focus-on-light, 3px);
+}
+
+// ── Below Bootstrap's lg, where the nav collapses ────────────────────────────
+@media (max-width: 991.98px){
+  .navbar-toggler{
+    display: inline-flex;
+  }
+
+  .navbar-collapse{
+    flex-basis: 100%;
+  }
+
+  // An open menu drops down as a stack of pills under the sign.
+  .navbar-nav{
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 4px 0 12px;
+  }
+}
+
+// ── Phones ───────────────────────────────────────────────────────────────────
+@media (max-width: 575.98px){
+  // A shorter awning: at full height it would take a fifth of the screen
+  // before the page had started.
+  .awning{
+    --stripe: 40px;
+    --stripe-height: 44px;
+  }
+
+  .sign-chains{
+    width: 120px;
+    height: 20px;
+  }
+
+  .sign-board{
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+  }
+
+  .sign-icon{
+    width: 30px;
+    height: 30px;
+  }
+
+  .site-title{
+    font-size: 20px;
+  }
+
+  .sign-tagline{
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .navbar-toggler{
+    margin-top: 28px;
+  }
+
+  .shop-bar{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}

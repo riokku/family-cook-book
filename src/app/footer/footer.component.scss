@@ -1,21 +1,83 @@
 @use '../../styles/tokens' as *;
 
-section{
-  background-color: $ink;
-  color: $white;
+// The shop floor: cocoa ground with a checkerboard of tiles along its top.
+.shop-floor{
+  background-color: $cocoa;
+  color: $butter;
 
   a{
-    @include focus-ring($focus-on-dark);
+    @include focus-ring($focus-on-dark, 3px);
   }
-  .footer-info{
-    display: flex;
-    justify-content: space-between;
+}
+
+.floor-tiles{
+  height: 72px;
+  background: repeating-conic-gradient($cocoa 0 25%, $butter 0 50%) 0 0 / 48px 48px;
+}
+
+.footer-info{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 28px 0 36px;
+  font-weight: 700;
+}
+
+.footer-brand{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+}
+
+.footer-name{
+  font-family: $font-display;
+  font-weight: 400;
+  font-size: 22px;
+}
+
+.footer-links{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.footer-link{
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  &:hover{
+    color: $white;
   }
+}
+
+.logo-wrapper{
+  display: flex;
+  align-items: center;
+  gap: 10px;
   small{
-    display: block;
+    font-size: 0.8rem;
   }
-  img{
-    max-height: 30px;
-    float: right;
+}
+
+.logo-link{
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+img{
+  max-height: 30px;
+}
+
+@media (max-width: 575.98px){
+  .floor-tiles{
+    height: 48px;
+    background-size: 32px 32px;
   }
 }

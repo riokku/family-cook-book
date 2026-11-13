@@ -1,15 +1,17 @@
-<section>
+<section class="shop-floor">
+  <!-- The checkerboard shop floor the footer stands on. Decoration only. -->
+  <div class="floor-tiles" aria-hidden="true"></div>
   <div class="container">
-    <footer class="pt-3 pb-3">
-      <div class="footer-info mx-auto text-center">
-        <small>
-          <a [routerLink]="'/auth'">Manage</a>
-        </small>
+    <footer class="footer-info">
+      <div class="footer-brand">
+        <span class="footer-name">Gogo&rsquo;s Kitchen</span>
+        <span class="footer-tagline">Family recipes for you</span>
+      </div>
+      <div class="footer-links">
+        <a class="footer-link" [routerLink]="'/auth'">Manage</a>
         <div class="logo-wrapper">
-          <small class="mb-1">
-            &copy; 2026 Studio Rio
-          </small>
-          <a href="https://www.studiorioconsulting.com/" target="_blank">
+          <small>&copy; 2026 Studio Rio</small>
+          <a class="logo-link" href="https://www.studiorioconsulting.com/" target="_blank">
             <img src="../../assets/images/studio-rio-logo.webp" alt="Studio Rio Consulting">
           </a>
         </div>
