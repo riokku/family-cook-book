@@ -1,22 +1,48 @@
 @use './styles/tokens' as *;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+// Yeseva One for the shop's signwriting, Nunito for everything you read.
+// Nunito is requested at the four weights the site actually sets, so nothing
+// bolder is ever synthesised from a lighter face.
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Yeseva+One&display=swap');
+
+// Bootstrap reads these for <body> and for everything that inherits from it,
+// so form controls, modals and tables pick up the bakery type and ink without
+// each needing to be told.
+:root{
+  --bs-body-font-family: #{$font-text};
+  --bs-body-color: #{$cocoa};
+  --bs-body-bg: #{$butter};
+  --bs-emphasis-color: #{$cocoa};
+}
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: 'Poppins', sans-serif;
 }
 
 html, body {
   height: 100%;
-  background-color: #000;
+  // The butter-coloured wall of the shop. Pages that paint their own surface
+  // sit on top of it; anything taller than its own background falls through
+  // to this rather than to a black void.
+  background-color: $butter;
+  color: $cocoa;
+  font-family: $font-text;
   // Bootstrap 5 sets scroll-behavior: smooth on :root, which makes Angular's
   // router scroll-to-top on navigation look like an animated slide rather than
   // an instant page change. Override to auto for correct SPA behaviour.
   scroll-behavior: auto !important;
 }
+
+// Nunito is loaded at 400, 600, 700 and 800. Bootstrap's default heading
+// weight is 500, which would fall back to the regular face and read as body
+// text in a heavier size; the mockup's headings that are not in Yeseva are
+// set heavy.
+h1, h2, h3, h4, h5, h6{
+  font-weight: 800;
+}
+
 a{
   text-decoration: none;
   color: inherit;
@@ -103,23 +129,31 @@ summary,
 // Previously Submit and "Add ingredient" were both solid green, so the one
 // action that finishes the form looked identical to the one that repeats.
 
+// The bakery's counter button: a cherry pill with a darker pressed edge under
+// it, the same shape as "Explore recipes" on the home page, so the one action
+// that finishes a form reads as the shop's primary action everywhere.
 .btn-submit{
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   min-height: 44px;
   padding: 0.5rem 1.5rem;
-  border: 2px solid $purple;
-  border-radius: 0.25rem;
-  background-color: $purple;
+  border: 2px solid $cherry;
+  border-radius: 999px;
+  background-color: $cherry;
   color: $white;
-  font-weight: 600;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-  @include focus-ring($focus-on-light);
+  font-weight: 800;
+  box-shadow: 0 4px 0 $cherry-deep;
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  @include focus-ring($focus-on-light, 3px);
   &:hover:not(:disabled){
-    background-color: $purple-light;
-    border-color: $purple-light;
+    filter: brightness(1.08);
     color: $white;
+  }
+  // Pressed: the button sinks onto its edge.
+  &:active:not(:disabled){
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 $cherry-deep;
   }
   &:disabled{
     opacity: 0.55;
@@ -133,13 +167,13 @@ summary,
   align-items: center;
   gap: 0.4rem;
   min-height: 38px;
-  padding: 0.35rem 0.85rem;
-  border: 1px dashed rgba(87, 75, 144, 0.5);
-  border-radius: 0.25rem;
-  background-color: transparent;
+  padding: 0.35rem 0.95rem;
+  border: 2px dashed rgba(87, 75, 144, 0.55);
+  border-radius: 999px;
+  background-color: $white;
   color: $purple;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 800;
   transition: background-color 0.15s ease, border-color 0.15s ease;
   @include focus-ring($focus-on-light);
   &:hover:not(:disabled){
@@ -153,7 +187,7 @@ summary,
   }
   &.btn-add-sm{
     min-height: 30px;
-    padding: 0.2rem 0.6rem;
+    padding: 0.2rem 0.65rem;
     font-size: 0.78rem;
   }
 }
@@ -164,17 +198,16 @@ summary,
   gap: 0.4rem;
   min-height: 44px;
   padding: 0.5rem 1.25rem;
-  border: 1px solid #c9c9c9;
-  border-radius: 0.25rem;
+  border: 2px solid $cocoa;
+  border-radius: 999px;
   background-color: $white;
-  color: $ink;
-  font-weight: 600;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-  @include focus-ring($focus-on-light);
+  color: $cocoa;
+  font-weight: 800;
+  transition: background-color 0.15s ease;
+  @include focus-ring($focus-on-light, 3px);
   &:hover{
-    background-color: $grey-100;
-    border-color: #9d9d9d;
-    color: $ink;
+    background-color: $butter;
+    color: $cocoa;
   }
 }
 
@@ -666,8 +699,7 @@ summary,
   .shopping,
   app-favorite-button,
   app-related-recipes,
-  .cook-note,
-  .featured-carousel .carousel-nav{
+  .cook-note{
     display: none !important;
   }
 
@@ -684,16 +716,10 @@ summary,
   main,
   main section,
   .home-wrapper,
+  .case-band,
   .all-recipes-wrapper{
     background-image: none !important;
     background-color: $white !important;
-  }
-
-  // The home page's Ken Burns layer and its scrim are pseudo elements, so they
-  // are not reachable by the rule above.
-  .home-wrapper::before,
-  .home-wrapper::after{
-    display: none !important;
   }
 
   a{
