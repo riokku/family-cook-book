@@ -179,7 +179,9 @@
   min-width: 0;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  // Centred on each other, so the card sits level with the middle of the
+  // stand however many lines the recipe's name runs to.
+  align-items: center;
   justify-content: center;
   gap: 20px;
 }
