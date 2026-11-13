@@ -464,9 +464,20 @@
                       <p class="step-ingredients-label mb-2">
                         <i class="bi bi-list-check me-1"></i> Ingredients used in this step:
                       </p>
+                      <!-- Its own drop list, nested inside the step's: the order here is
+                           the order the chips appear under the step on the recipe page. -->
+                      <div class="step-ingredient-list"
+                        cdkDropList
+                        (cdkDropListDropped)="dropStepIngredient($event, i)">
                       @for (si of getStepIngredients(i).controls; track si; let j = $index) {
                         <div class="step-ingredient-row"
-                          [formGroupName]="j">
+                          [formGroupName]="j"
+                          cdkDrag>
+                          <button type="button" class="drag-handle" cdkDragHandle
+                            title="Drag to reorder ingredient in this step"
+                            aria-label="Drag to reorder ingredient in this step">
+                            <i class="bi bi-grip-vertical" aria-hidden="true"></i>
+                          </button>
                           <div class="row align-items-center g-2 mb-2">
                             <div class="col-sm-12 col-md-5">
                               <select class="form-select form-select-sm"
@@ -509,8 +520,10 @@
                               </button>
                             </div>
                           </div>
+                          <div *cdkDragPlaceholder class="drag-placeholder drag-placeholder--step-ingredient"></div>
                         </div>
                       }
+                      </div>
                       <button type="button"
                         class="btn-add btn-add-sm"
                         (click)="addStepIngredient(i)"

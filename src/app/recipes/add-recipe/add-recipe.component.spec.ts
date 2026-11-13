@@ -158,4 +158,19 @@ describe('AddRecipeComponent', () => {
       expect(importSpy).not.toHaveBeenCalled();
     });
   });
+
+  it('reorders the ingredients within a step when one is dropped', () => {
+    fixture.detectChanges();
+    component.onAddStep();
+    const stepIndex = (component.recipeForm.get('steps') as FormArray).length - 1;
+    const stepIngredients = component.getStepIngredients(stepIndex);
+    stepIngredients.push(component.createStepIngredient('Beef', 1, 'Pounds'));
+    stepIngredients.push(component.createStepIngredient('Onion', 1, null));
+    stepIngredients.push(component.createStepIngredient('Garlic', 2, 'Cloves'));
+
+    component.dropStepIngredient({ previousIndex: 2, currentIndex: 0 } as any, stepIndex);
+
+    expect(stepIngredients.value.map((si: any) => si.ingredientName))
+      .toEqual(['Garlic', 'Beef', 'Onion']);
+  });
 });

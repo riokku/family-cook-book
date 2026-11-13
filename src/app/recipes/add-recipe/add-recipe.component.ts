@@ -425,6 +425,14 @@ export class AddRecipeComponent implements OnInit, OnDestroy {
     this.recipeIngredientGroupControls.removeAt(index);
   }
 
+  dropStepIngredient(event: CdkDragDrop<FormGroup[]>, stepIndex: number): void {
+    this.moveArrayItem(
+      this.getStepIngredients(stepIndex),
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
   dropIngredientGroup(event: CdkDragDrop<FormGroup[]>): void {
     this.moveArrayItem(
       this.recipeIngredientGroupControls,
