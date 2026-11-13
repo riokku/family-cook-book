@@ -2,15 +2,15 @@
 
 .auth-wrapper{
   height: 100%;
-  background: url('../../assets/images/hero-background.png');
-  background-size: cover;
+  background-color: $butter;
 }
 
 .unlogged-wrapper{
-  background-color: #fff;
+  background-color: $white;
   padding: 2rem;
-  border: 1px solid $purple-light;
-  border-radius: 0.25rem;
+  border: 2px solid $cocoa;
+  border-radius: 18px;
+  box-shadow: 0 6px 0 rgba(59, 42, 42, 0.18);
 }
 
 .button-wrapper{
@@ -19,18 +19,32 @@
   flex-wrap: wrap;
   gap: 0.25rem;
   button{
+    min-height: 44px;
+    border-radius: 999px;
+    font-weight: 800;
     &:not(.btn-light){
-      color: #fff;
-      background-color: $purple;
+      color: $white;
+      background-color: $cherry;
+      border-color: $cherry;
+      box-shadow: 0 4px 0 $cherry-deep;
+      &:hover{
+        filter: brightness(1.08);
+      }
+    }
+    &.btn-light{
+      border: 2px solid $cocoa;
+      background-color: $white;
+      color: $cocoa;
     }
   }
 }
 
 .logged-wrapper{
-  background-color: $purple-light;
-  color: #fff;
-  padding: 1rem;
-  border-radius: 0.25rem;
+  background-color: $purple;
+  color: $white;
+  padding: 1rem 1.25rem;
+  border: 2px solid $cocoa;
+  border-radius: 14px;
   display: flex;
   justify-content: space-between;
   gap: 0.25rem;

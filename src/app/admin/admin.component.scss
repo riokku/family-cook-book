@@ -3,8 +3,7 @@
 
 .admin-wrapper{
   height: 100%;
-  background: url('../../assets/images/hero-background.png');
-  background-repeat: no-repeat;
+  background-color: $butter;
 }
 
 .google-btn {
@@ -60,12 +59,14 @@
 }
 
 .banner{
-  background-color: $ink;
-  border-radius: 0 0 0.25rem 0.25rem;
+  background-color: $cocoa;
+  border-radius: 0 0 14px 14px;
   h1 {
-    color: #fff;
+    color: $butter;
     margin: 0;
     padding: 0.5em;
+    font-family: $font-display;
+    font-weight: 400;
   }
 }
 
@@ -114,12 +115,13 @@ a{
 }
 
 .recipe-blade{
-  background-color: $grey-100;
-  border-radius: 0.25rem;
+  background-color: $white;
+  border: 2px solid $cocoa;
+  border-radius: 12px;
   padding: 1rem 2rem;
   min-height: 70px;
   &:not(:last-child){
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
   }
   .recipe-name{
     line-height: 1.3;
@@ -169,24 +171,24 @@ a{
 }
 
 .modal-header{
-  background-color: #8b0000;
-  color: #fff;
+  background-color: $cherry;
+  color: $white;
 }
 
 button{
   border: none;
   &.delete-confirmation{
-    color: #fff;
-    background-color: #8b0000;
+    color: $white;
+    background-color: $cherry;
     &:hover{
-      background-color: #d70000;
+      background-color: $cherry-deep;
     }
   }
 }
 
 .deleted-recipe-name{
   padding: 0.5rem 1rem;
-  background-color: $grey-100;
+  background-color: $butter;
 }
 
 
