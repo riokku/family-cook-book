@@ -9,7 +9,9 @@
         [attr.title]="label"
         (click)="onClick($event)">
   <i class="bi" [ngClass]="isFavorite ? 'bi-heart-fill' : 'bi-heart'" aria-hidden="true"></i>
+  <!-- The page button is a round heart like the card's, larger; its words
+       stay for anything that reads the content rather than the label. -->
   @if (variant === 'page') {
-    <span>{{ isFavorite ? 'Saved' : 'Save' }}</span>
+    <span class="visually-hidden">{{ isFavorite ? 'Saved' : 'Save' }}</span>
   }
 </button>

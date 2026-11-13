@@ -68,6 +68,31 @@ describe('RecipeComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('photo', () => {
+    it('shows the recipe photo when there is one', () => {
+      expect(component.showPhoto).toBeTrue();
+      expect(fixture.nativeElement.querySelector('.recipe-photo-frame img')).toBeTruthy();
+    });
+
+    it('draws the stand-in when the photo fails to load', () => {
+      component.onPhotoError();
+      fixture.detectChanges();
+      expect(component.showPhoto).toBeFalse();
+      expect(fixture.nativeElement.querySelector('.photo-fallback')).toBeTruthy();
+    });
+
+    it('gives a different photo its own chance after one has failed', () => {
+      component.onPhotoError();
+      component.recipe = makeRecipe({ image_path: 'https://example.test/other.jpg' });
+      expect(component.showPhoto).toBeTrue();
+    });
+
+    it('draws the stand-in when the recipe has no photo', () => {
+      component.recipe = makeRecipe({ image_path: undefined });
+      expect(component.showPhoto).toBeFalse();
+    });
+  });
+
   it('loads the recipe named by the route', () => {
     expect(component.recipe.slug).toBe('test-recipe');
   });

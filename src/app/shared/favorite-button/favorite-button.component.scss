@@ -1,9 +1,5 @@
 @use '../../../styles/tokens' as *;
 
-// Saved is the one state on this button with a colour of its own, used at both
-// sizes and in both the resting and the hover case.
-$saved: #d63031;
-
 // The host generates no box of its own, so the button inside positions against
 // the card rather than against a wrapper, and an absolutely positioned button
 // leaves no empty line box behind in the card's flow.
@@ -11,18 +7,31 @@ $saved: #d63031;
   display: contents;
 }
 
+// A round white chip with a cocoa outline and a cherry heart: the same at
+// both sizes, so saving looks like one action wherever it is offered. It
+// carries its own surface because on a card it sits over whatever photo is
+// behind it.
 .favorite{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  border: none;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid $cocoa;
+  border-radius: 50%;
+  background-color: $white;
+  color: $cherry;
+  font-size: 1.15rem;
+  line-height: 1;
   cursor: pointer;
-  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease;
-  @include focus-ring($focus-on-light);
+  transition: transform 0.18s ease, background-color 0.18s ease;
+  @include focus-ring($focus-on-light, 3px);
 
   &:hover{
     transform: scale(1.08);
+    background-color: $butter;
   }
 
   &:active{
@@ -30,75 +39,28 @@ $saved: #d63031;
   }
 }
 
-// On a card: a round chip floated over the photo's top-right, opposite the
-// featured ribbon. It has to read against whatever the photo happens to be, so
-// it carries its own surface rather than sitting directly on the image.
+// On a card: floated over the photo's top-right, opposite the ribbon.
 .favorite:not(.favorite--page){
   position: absolute;
   z-index: 3;
   top: 10px;
   right: 10px;
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.92);
-  color: $ink;
-  font-size: 1.05rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-
-  &:hover{
-    background-color: $white;
-  }
 }
 
-// On the recipe page: the same chip as on a card, given a label and the room
-// for it. It used to be a translucent pill on the dark panel under the title,
-// which had that panel to read against; in the corner of the photo it has only
-// whatever was cooked that day behind it, so it brings its own surface.
+// On the recipe page: larger, beside the title, standing on a hard shadow.
 .favorite--page{
-  min-height: 38px;
-  padding: 0.3rem 0.9rem;
-  border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.92);
-  border: none;
-  color: $ink;
-  font-size: 0.85rem;
-  font-weight: 600;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  @include focus-ring($focus-on-light);
-
-  &:hover{
-    background-color: $white;
-  }
+  width: 52px;
+  height: 52px;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 0 rgba(59, 42, 42, 0.2);
 }
 
-// Saved. Red rather than the brand purple: a heart that fills in any other
-// colour reads as a decoration rather than as a state.
+// Saved: the heart fills and the chip blushes, so the state is carried by
+// shape and colour rather than by colour alone. aria-pressed says it to
+// assistive tech.
 .favorite--on{
-  color: $saved;
-
-  // The chip's resting colour is set by `.favorite:not(.favorite--page)`, and a
-  // :not() carries the specificity of whatever it holds — two classes against
-  // this rule's one. Unmatched, the ink won and a saved heart on a card filled
-  // in dark instead of red, which is the one thing this colour exists to say.
-  &.favorite:not(.favorite--page){
-    color: $saved;
-  }
-
-  // Saved: the heart turns, the label stays legible ink — the same split the
-  // card chip makes. The colour has to be restated here because the rule above
-  // would otherwise carry the red through to the word beside the heart.
-  &.favorite--page{
-    background-color: $white;
-    color: $ink;
-
-    i{
-      color: $saved;
-    }
-
-    &:hover{
-      background-color: $white;
-    }
+  background-color: #ffe3e8;
+  &:hover{
+    background-color: #ffd3db;
   }
 }

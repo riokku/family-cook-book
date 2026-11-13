@@ -6,7 +6,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $purple;
+  // The awning's purple, with its stripes faintly in the cloth.
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 56px, transparent 56px 112px),
+    $awning;
   position: fixed;
   z-index: 10;
   top: 0;
@@ -28,7 +31,7 @@
   aspect-ratio: 1;
   // Thinner and a touch warm rather than plain white: at this size a heavy
   // ring reads as a border, a fine one reads as a mark.
-  border: 0.045em solid rgba(255, 248, 238, 0.85);
+  border: 0.045em solid rgba(255, 246, 223, 0.9);
   border-radius: 50%;
   // Barely there, and doing real work — it separates the disc from the flat
   // purple so the ring is the edge of something rather than a line on nothing.
@@ -50,7 +53,7 @@
   content: '';
   position: absolute;
   inset: 0.085em;
-  border: 0.013em solid rgba(255, 248, 238, 0.45);
+  border: 0.013em solid rgba(255, 246, 223, 0.45);
   border-radius: 50%;
 }
 
@@ -59,12 +62,11 @@
 // the pair off-centre in the ring.
 .monogram {
   margin: 0 -0.2em 0 0;
-  color: #fff8ee;
+  color: $butter;
+  // The shop sign's lettering. Yeseva One has a single weight, so it is set
+  // at it: wide tracking carries a monogram better than a faked bold would.
+  font-family: $font-display;
   font-size: 1em;
-  // Poppins is loaded at 400 and nothing else, so every bolder weight on this
-  // site is the browser smearing that one — which at splash size is exactly
-  // where it shows. Wide tracking at the real weight carries a monogram
-  // better than a faked bold does anyway.
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.2em;

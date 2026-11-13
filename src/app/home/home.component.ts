@@ -23,6 +23,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   categories: string[] = [];
   stats: HomeStat[] = [];
   recentRecipes: Recipe[] = [];
+  // The recipe on the cake stand at the top of the page.
+  todaysSpecial: Recipe | null = null;
 
   private countUpFrame: number;
 
@@ -47,6 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ];
 
     this.recentRecipes = this.findRecentRecipes();
+    this.todaysSpecial = this.pickTodaysSpecial();
 
     this.seo.setPage(
       'Home',
@@ -94,6 +97,23 @@ export class HomeComponent implements OnInit, OnDestroy {
       .filter((recipe): recipe is Recipe => !!recipe)
       // Three keeps it to one row beside the rest of the page's furniture.
       .slice(0, 3);
+  }
+
+  /**
+   * One featured recipe, the same one all day and a different one tomorrow,
+   * so "Today's special" means what it says without a server deciding it.
+   * Falls back to the whole collection when nothing is featured, so the cake
+   * stand is never empty while there are recipes to put on it.
+   */
+  private pickTodaysSpecial(): Recipe | null {
+    const featured = this.recipes.filter(recipe => recipe.featured);
+    const pool = featured.length ? featured : this.recipes;
+    if(!pool.length){
+      return null;
+    }
+    const now = new Date();
+    const day = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+    return pool[day % pool.length];
   }
 
   surpriseMe(){

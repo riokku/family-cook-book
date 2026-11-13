@@ -1,50 +1,33 @@
-<!-- No container/row here: this sits inside a column of the home page's hero
-row, so it fills whatever width it is given. -->
+<!-- The glass display case: every featured recipe on a plate on a wooden
+     shelf, each with a little tent card saying what it is. -->
 @if (featuredRecipes.length) {
-  <section class="featured">
-    <h2 class="featured-heading" id="featured-heading">
-      Featured recipes
-    </h2>
-    @if (!useCarousel) {
-      <app-recipe-card [recipe]="featuredRecipes[0]" [index]="0"
-      [tagsLinkToFilter]="true"></app-recipe-card>
-    }
-    <!-- No autoplay, so nothing slides away while it is being read. Every recipe
-    stays reachable via the arrows or the indicators. -->
-    @if (useCarousel) {
-      <div class="carousel slide featured-carousel" id="featuredCarousel"
-        data-bs-interval="false" data-bs-ride="false" aria-labelledby="featured-heading">
-        <div class="carousel-inner">
-          @for (recipe of featuredRecipes; track recipe; let i = $index) {
-            <div class="carousel-item"
-              [class.active]="i === 0">
-              <app-recipe-card [recipe]="recipe" [index]="i" [tagsLinkToFilter]="true"></app-recipe-card>
-            </div>
-          }
-        </div>
-        <!-- Controls sit below the card rather than over it: in a narrow column,
-        edge arrows would either cover the photo or eat the card's width. -->
-        <div class="carousel-nav">
-          <button class="nav-arrow" type="button" data-bs-target="#featuredCarousel"
-            data-bs-slide="prev" aria-label="Previous featured recipe">
-            <i class="bi bi-chevron-left" aria-hidden="true"></i>
-          </button>
-          <!-- Keeps Bootstrap's class name: its JS finds .carousel-indicators to
-          move the active state. The positioning is overridden in the SCSS. -->
-          <div class="carousel-indicators">
-            @for (recipe of featuredRecipes; track recipe; let i = $index) {
-              <button type="button"
-                data-bs-target="#featuredCarousel" [attr.data-bs-slide-to]="i"
-                [class.active]="i === 0" [attr.aria-current]="i === 0"
-              [attr.aria-label]="'Show ' + recipe.name"></button>
-            }
-          </div>
-          <button class="nav-arrow" type="button" data-bs-target="#featuredCarousel"
-            data-bs-slide="next" aria-label="Next featured recipe">
-            <i class="bi bi-chevron-right" aria-hidden="true"></i>
-          </button>
-        </div>
+  <section class="case-band" aria-labelledby="featured-heading">
+    <div class="case-inner">
+      <div class="case-head">
+        <h2 class="case-heading" id="featured-heading">In the case today</h2>
+        <a class="see-all" routerLink="/recipes">See all recipes</a>
       </div>
-    }
+
+      <div class="case">
+        <ul class="shelves">
+          @for (recipe of featuredRecipes; track recipe.slug; let i = $index) {
+            <li class="shelf-slot">
+              <a class="case-item" [routerLink]="['/recipes', recipe.slug]" [appRevealOnScroll]="(i % 3) * 80">
+                <app-recipe-photo class="plate" [recipe]="recipe" [lazy]="i > 2" sizes="168px"></app-recipe-photo>
+                <span class="tent-card">
+                  @if (recipe.tags?.length) {
+                    <span class="tent-kicker">{{ recipe.tags[0] }}</span>
+                  }
+                  <span class="tent-name">{{ recipe.name }}</span>
+                  <span class="tent-meta">
+                    {{ recipe.total_time | timeFormat }} &middot; {{ recipe.serving_size }} servings
+                  </span>
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
   </section>
 }

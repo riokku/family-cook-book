@@ -1,3 +1,5 @@
+@use '../../../styles/tokens' as *;
+
 .lds-default {
   display: inline-block;
   position: relative;
@@ -8,9 +10,13 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  background: black;
+  // Cocoa on the butter wall, alternating with cherry like sprinkles.
+  background: $cocoa;
   border-radius: 50%;
   animation: lds-default 1.2s linear infinite;
+}
+.lds-default div:nth-child(odd) {
+  background: $cherry;
 }
 .lds-default div:nth-child(1) {
   animation-delay: 0s;

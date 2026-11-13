@@ -1,9 +1,11 @@
 @use '../../../styles/tokens' as *;
 
-// ── Page background (prevents black body from bleeding through) ───────────────
+// ── Page background ──────────────────────────────────────────────────────────
 
 section {
-  background-color: $white;
+  // The butter wall, like every other page; the form panels are the white
+  // surfaces on it.
+  background-color: $butter;
   min-height: 100%;
 }
 
@@ -154,9 +156,11 @@ $scan-control-height: 2.375rem;
 }
 
 .form-group-wrapper{
-  background-color: $grey-100;
+  background-color: $white;
+  border: 2px solid $cocoa;
+  box-shadow: 0 6px 0 rgba(59, 42, 42, 0.18);
   padding: 2rem;
-  border-radius: 0.5rem;
+  border-radius: 18px;
   &:not(:last-child){
     margin-bottom: 1rem;
   }

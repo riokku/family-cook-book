@@ -28,9 +28,11 @@ export class IntroComponent implements OnInit, OnDestroy {
   // count the whole shower stays cheap on the compositor.
   private static readonly SPRINKLE_COUNT = 180;
 
+  // The bakery's own sprinkles: cherry, strawberry, butter, caramel, mint and
+  // icing, bright enough to show against the purple awning behind them.
   private static readonly SPRINKLE_COLORS = [
-    '#ff6b81', '#ffd32a', '#00d2d3', '#ff6348',
-    '#1dd1a1', '#a29bfe', '#fd79a8', '#ffffff'
+    '#e8536b', '#f7a8b8', '#fff6df', '#f4dfc0',
+    '#9ed9cc', '#ffd93d', '#ffffff', '#f28b6b'
   ];
 
   // Four fall paths, each with its own drift and spin. Picking from a handful

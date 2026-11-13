@@ -1,9 +1,11 @@
 @use '../../../styles/tokens' as *;
 
-// Without this the black body background shows through and the breadcrumb
-// above the banner is unreadable. add-recipe already carried the same fix.
+// Stated rather than inherited from <body>, as add-recipe does, so the page
+// keeps its ground whatever the body is painted.
 section {
-  background-color: $white;
+  // The butter wall, like every other page; the form panels are the white
+  // surfaces on it.
+  background-color: $butter;
   min-height: 100%;
 }
 
@@ -20,9 +22,11 @@ section {
 }
 
 .form-group-wrapper{
-  background-color: $grey-100;
+  background-color: $white;
+  border: 2px solid $cocoa;
+  box-shadow: 0 6px 0 rgba(59, 42, 42, 0.18);
   padding: 2rem;
-  border-radius: 0.5rem;
+  border-radius: 18px;
   &:not(:last-child){
     margin-bottom: 1rem;
   }

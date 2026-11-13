@@ -1,127 +1,145 @@
-<section>
-  <div class="container pt-5 pb-5">
-    <div class="row">
-      <div class="col-12 pb-2 recipe-toolbar">
-        <!-- preserve keeps whatever filters brought you here, so going back lands
-             on the same filtered grid rather than the full list. -->
-        <a class="breadcrumb" [routerLink]="['/recipes']" queryParamsHandling="preserve">
-          <i class="bi bi-chevron-double-left me-1"></i> Back to all recipes
+<section class="recipe-page">
+  <div class="shop-width recipe-toolbar">
+    <!-- preserve keeps whatever filters brought you here, so going back lands
+         on the same filtered grid rather than the full list. -->
+    <a class="breadcrumb" [routerLink]="['/recipes']" queryParamsHandling="preserve">
+      <i class="bi bi-chevron-left" aria-hidden="true"></i> Back to all recipes
+    </a>
+    <div class="toolbar-actions">
+      <!-- Only while the ticks are on screen. Outside cook mode this would
+           offer to clear something the page is not showing. -->
+      @if (cookMode && checkedCount) {
+        <button class="btn-quiet" type="button" (click)="resetProgress()">
+          <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+          Clear {{ checkedCount }} checked
+        </button>
+      }
+      <button class="btn-quiet" type="button" (click)="print()">
+        <i class="bi bi-printer" aria-hidden="true"></i>
+        Print
+      </button>
+      @if (isAdmin) {
+        <a class="btn-edit" [routerLink]="['/recipes', recipe.slug, 'edit']">
+          <i class="bi bi-pencil-square" aria-hidden="true"></i> Edit recipe
         </a>
-        <div class="toolbar-actions">
-          <!-- Only while the ticks are on screen. Outside cook mode this would
-               offer to clear something the page is not showing. -->
-          @if (cookMode && checkedCount) {
-            <button class="btn-quiet" type="button" (click)="resetProgress()">
-              <i class="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i>
-              Clear {{ checkedCount }} checked
-            </button>
-          }
-          <button class="btn-quiet" type="button" (click)="print()">
-            <i class="bi bi-printer me-1" aria-hidden="true"></i>
-            Print
-          </button>
-          @if (isAdmin) {
-            <a class="btn-edit" [routerLink]="['/recipes', recipe.slug, 'edit']">
-              <i class="bi bi-pencil-square me-1"></i> Edit recipe
-            </a>
+      }
+    </div>
+  </div>
+
+  <div class="recipe-wrapper" [class.cooking]="cookMode">
+    <!-- ── The recipe's header: a framed photo beside its title card ── -->
+    <div class="recipe-header-wrapper shop-width">
+      <div class="recipe-photo-col">
+        <div class="recipe-photo-frame">
+          @if (showPhoto) {
+            <img [src]="recipe.image_path" [alt]="recipe.name" decoding="async" (error)="onPhotoError()">
+          } @else {
+            <!-- No photo yet: an empty plate on the counter rather than a
+                 blank box, in the shop's own colours. Decoration only. -->
+            <div class="photo-fallback" aria-hidden="true">
+              <span class="fallback-plate">
+                <svg width="64" height="64" viewBox="0 0 32 32" fill="none" stroke="currentColor"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M3 15h26a13 13 0 0 1-26 0z"></path>
+                  <path d="M17 15 27 4"></path>
+                  <path d="M17 15c-3-2-3-6 0-7 3 0 4 4 0 7z"></path>
+                </svg>
+              </span>
+            </div>
           }
         </div>
       </div>
-    </div>
 
-    <div class="recipe-wrapper" [class.cooking]="cookMode">
-      <div class="row">
-        <div class="col-12">
-          <div class="recipe-header-wrapper" [ngStyle]="recipe.image_path ? {
-            'background': 'url('+recipe.image_path+')',
-            'background-size': 'cover',
-            'background-position-x': 'center',
-            'background-position-y': 'center'
-          } : {
-            'background': 'linear-gradient(211deg, rgba(87,75,144,1) 0%, rgba(255,255,255,1) 40%, rgba(100,87,168,1) 100%);'
-          }">
-            <div class="recipe-header-info p-4">
-              <!-- The title and the save button share the top line of the
-                   panel. In the flow rather than pinned to the corner: the
-                   panel is sized by its own content, so an absolute button
-                   would sit over the end of a long title instead of beside it.
-                   The wrapper is what gets laid out — the button's own host is
-                   display:contents and has no box of its own. -->
-              <div class="header-title-row">
-                <h1>
-                  {{ recipe.name }}
-                </h1>
-                <div class="header-save">
-                  <app-favorite-button [slug]="recipe.slug" [recipeName]="recipe.name"
-                    variant="page"></app-favorite-button>
-                </div>
-              </div>
-              <p>
-                Author: {{ recipe.author }} @if (recipe.link) {
-                <span><a href="{{recipe.link}}" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a></span>
-              }
-            </p>
-            <ul class="ps-0 mb-3">
-              <li class="mb-1">
-                <i class="bi bi-clock me-1"></i> {{ recipe.total_time | timeFormat }} (@if (recipe.prep_time) {
-                <span>{{ recipe.prep_time | timeFormat }} prep</span>
-                }@if (recipe.chill_time) {
-                <span> / {{ recipe.chill_time | timeFormat }} chill</span>
-                }@if (recipe.cook_time) {
-                <span> / {{ recipe.cook_time | timeFormat }} cook</span>
-                })
+      <div class="recipe-header-info">
+        @if (recipe.tags?.length) {
+          <ul class="tag-list">
+            @for (tag of recipe.tags; track $index) {
+              <li>
+                <a class="price-tag" [routerLink]="['/recipes']" [queryParams]="{ category: tag }"
+                  [attr.aria-label]="'Browse ' + tag + ' recipes'"><span class="tag-hole" aria-hidden="true"></span>{{ tag }}</a>
               </li>
-              <li class="servings">
-                <i class="bi bi-person me-1"></i> {{ servings }} servings
+            }
+          </ul>
+        }
+
+        <!-- The title and the save button share the top line. In the flow
+             rather than pinned to a corner, so a long title wraps beside the
+             button instead of running under it. The wrapper is what gets laid
+             out — the button's own host is display:contents. -->
+        <div class="header-title-row">
+          <h1>{{ recipe.name }}</h1>
+          <div class="header-save">
+            <app-favorite-button [slug]="recipe.slug" [recipeName]="recipe.name"
+              variant="page"></app-favorite-button>
+          </div>
+        </div>
+
+        <p class="author">
+          From the kitchen of {{ recipe.author }}
+          @if (recipe.link) {
+            <a class="author-link" href="{{recipe.link}}" target="_blank" rel="noopener"
+              aria-label="Original recipe (opens in a new tab)" title="Original recipe">
+              <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+            </a>
+          }
+        </p>
+
+        <p class="description">{{ recipe.description }}</p>
+
+        <!-- The times as little oven-timer tickets: only the stages this
+             recipe has, then the total, picked out, then how many it serves. -->
+        <dl class="time-tickets">
+          @if (recipe.prep_time) {
+            <div class="ticket"><dt>Prep</dt><dd>{{ recipe.prep_time | timeFormat }}</dd></div>
+          }
+          @if (recipe.chill_time) {
+            <div class="ticket"><dt>Chill</dt><dd>{{ recipe.chill_time | timeFormat }}</dd></div>
+          }
+          @if (recipe.cook_time) {
+            <div class="ticket"><dt>Cook</dt><dd>{{ recipe.cook_time | timeFormat }}</dd></div>
+          }
+          <div class="ticket ticket--total"><dt>Total</dt><dd>{{ recipe.total_time | timeFormat }}</dd></div>
+          @if (servings) {
+            <div class="ticket servings">
+              <dt>Serves</dt>
+              <dd>
+                {{ servings }}
                 @if (isScaled) {
                   <span class="servings-scaled">at &times;{{ scaleLabel(scale) }}</span>
                 }
-              </li>
-            </ul>
-            <p class="mb-0">
-              {{ recipe.description }}
-            </p>
-            @if (recipe.tags?.length) {
-              <ul class="tag-list mt-3 mb-0">
-                @for (tag of recipe.tags; track $index) {
-                  <li>
-                    <a [routerLink]="['/recipes']" [queryParams]="{ category: tag }"
-                      [attr.aria-label]="'Browse ' + tag + ' recipes'">{{ tag }}</a>
-                  </li>
-                }
-              </ul>
-            }
-          </div>
-        </div>
+              </dd>
+            </div>
+          }
+        </dl>
       </div>
     </div>
 
-    <!-- Phone-only, and only worth the room it takes because the two panes sit
-         one above the other there: without it, checking an ingredient against a
-         step means scrolling the length of the list each time. -->
-    <nav class="jump-nav" aria-label="Jump to a section">
-      <button type="button" (click)="jumpTo('ingredients')">
-        <i class="bi bi-basket me-1" aria-hidden="true"></i> Ingredients
-      </button>
-      <button type="button" (click)="jumpTo('steps')">
-        <i class="bi bi-list-ol me-1" aria-hidden="true"></i>
-        Steps
-        @if (cookMode && stepsDone) {
-          <span class="jump-progress">{{ stepsDone }}/{{ recipe.steps.length }}</span>
-        }
-      </button>
-    </nav>
+    <!-- ── Ingredients on an order ticket, steps on the counter ── -->
+    <div class="recipe-body">
+      <div class="shop-width">
+        <!-- Phone-only, and only worth the room it takes because the two panes
+             sit one above the other there: without it, checking an ingredient
+             against a step means scrolling the length of the list each time. -->
+        <nav class="jump-nav" aria-label="Jump to a section">
+          <button type="button" (click)="jumpTo('ingredients')">
+            <i class="bi bi-basket" aria-hidden="true"></i> Ingredients
+          </button>
+          <button type="button" (click)="jumpTo('steps')">
+            <i class="bi bi-list-ol" aria-hidden="true"></i>
+            Steps
+            @if (cookMode && stepsDone) {
+              <span class="jump-progress">{{ stepsDone }}/{{ recipe.steps.length }}</span>
+            }
+          </button>
+        </nav>
 
-    <div class="row">
-      <div class="col-12 col-sm-12 col-md-5 col-lg-4">
-        <div class="ingredient-pane">
-          <div class="ingredient-header p-4">
-            <h3 class="mb-0" id="ingredients" tabindex="-1">
-              Ingredients:
-            </h3>
-          </div>
-          <div class="ingredient-content p-4">
-
+        <div class="recipe-body-inner">
+          <div class="ingredient-pane">
+            <div class="ingredient-ticket">
+              <div class="ingredient-header">
+                <h2 id="ingredients" tabindex="-1">Ingredients</h2>
+              </div>
+              <div class="ingredient-content">
             <!-- Radios rather than buttons: the scales are mutually exclusive,
                  and a real radio group gets arrow-key navigation and "3 of 4"
                  announcements without any of it being written here. -->
@@ -157,12 +175,14 @@
               }
             </fieldset>
 
+            <div class="ticket-rule" aria-hidden="true"></div>
+
             @for (ingredientGroup of recipe.ingredient_groups; track ingredientGroup; let last = $last; let groupIndex = $index) {
               <div class="ingredient-group" [ngClass]="{'last-group': last}">
                 @if (recipe.ingredient_groups.length > 1) {
-                  <h4>
+                  <h3>
                     {{ ingredientGroup.ingredientGroupName }}
-                  </h4>
+                  </h3>
                 }
                 <ul class="check-list">
                   @for (ingredient of ingredientGroup.ingredients; track ingredient; let ingredientIndex = $index) {
@@ -214,25 +234,21 @@
                 </button>
               </div>
 
-              @if (recipe.notes) {
-                <div class="notes-card fst-italic mt-4">
-                  <h5 class="fw-bold">
-                    Notes for this recipe:
-                  </h5>
-                  <p class="mb-0">
-                    {{ recipe.notes }}
-                  </p>
-                </div>
-              }
+              </div>
             </div>
+            <div class="ticket-tear" aria-hidden="true"></div>
+
+            @if (recipe.notes) {
+              <div class="notes-card">
+                <h3>Notes for this recipe</h3>
+                <p>{{ recipe.notes }}</p>
+              </div>
+            }
           </div>
-        </div>
-        <div class="col-12 col-sm-12 col-md-7 col-lg-8">
-          <div class="steps-pane p-4">
-            <div class="steps-header mb-3">
-              <h3 class="mb-0" id="steps" tabindex="-1">
-                Steps:
-              </h3>
+
+          <div class="steps-pane">
+            <div class="steps-header">
+              <h2 id="steps" tabindex="-1">Steps</h2>
               <!-- One button in two states, so aria-pressed rather than a label
                    that changes out from under a screen reader. It sits here
                    rather than up in the page toolbar because the steps are what
@@ -257,7 +273,7 @@
             <div role="status" aria-live="polite">
               @if (cookMode) {
                 <p class="cook-note">
-                  <i class="bi bi-fire me-1" aria-hidden="true"></i>
+                  <i class="bi bi-fire" aria-hidden="true"></i>
                   Cook mode is on — bigger text, and steps fade as you tick them off.
                   @if (screenHeldAwake) {
                     Your screen will stay awake.
@@ -267,7 +283,7 @@
                 </p>
               }
             </div>
-            <ol class="pe-3 check-list step-list">
+            <ol class="check-list step-list">
               @for (step of recipe.steps; track step; let stepIndex = $index) {
                 <li class="step-row"
                     [class.checked]="cookMode && isStepChecked(stepIndex)"
@@ -303,7 +319,7 @@
                       <ng-container *ngTemplateOutlet="stepLine"></ng-container>
                     }
                     @if (step.stepIngredients?.length) {
-                      <ul class="step-ingredient-list ps-0 mt-2">
+                      <ul class="step-ingredient-list">
                         @for (si of step.stepIngredients; track si) {
                           <li><app-ingredient-amount [amount]="si.ingredientAmount" [scale]="scale"></app-ingredient-amount>@if (si.ingredientMeasurementType && si.ingredientMeasurementType !== 'Count') {
                             {{ si.ingredientMeasurementType | ingredientSanitizer: si.ingredientAmount : scale | lowercase }}
@@ -319,12 +335,14 @@
         </div>
       </div>
     </div>
+  </div>
 
+  <div class="shop-width">
     <app-related-recipes [recipe]="recipe"></app-related-recipes>
 
-    <!-- Outside .recipe-wrapper on purpose: that card sets overflow:hidden to
-         clip the header photo's corners, and a dialog is not something to put
-         inside a box whose job is to cut things off at its edges. -->
+    <!-- Outside .recipe-wrapper on purpose: a dialog should not inherit the
+         cook-mode type sizes, or sit inside a box that might one day clip its
+         edges. -->
     <div class="modal fade" id="shoppingListModal" tabindex="-1"
       aria-labelledby="shoppingListModalTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

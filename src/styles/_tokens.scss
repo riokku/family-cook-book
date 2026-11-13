@@ -12,6 +12,35 @@ $purple-tint: #ede9ff;
 $ink: #2d3436;
 $ink-hover: #3a4345;
 
+// ── The Display Case ─────────────────────────────────────────────────────────
+// The bakery palette. The site is meant to feel like standing inside the shop:
+// a butter-coloured wall, cocoa lettering, a cherry button on the counter, a
+// wooden display case with glass in front. The brand purple stays as the
+// awning and the hanging sign.
+$awning: $purple;
+$butter: #fff6df;        // the wall: page background
+$cocoa: #3b2a2a;         // text, outlines, the shop floor
+$cherry: #b8263e;        // the one primary action
+$cherry-deep: #7d1528;   // the cherry button's pressed-down edge
+$crust: #6b4f3a;         // secondary text (6.9:1 on butter, 7.5:1 on white)
+$caramel: #f4dfc0;       // the band behind the display case
+$wood: #8a5a33;          // case frame and shelves
+$glass: #dcebea;         // the case's glass
+$cream-line: #e2cfa8;    // the cake stand's rim
+$plate-rim: #c9b48a;     // the dashed line round a plate
+$receipt-ink: #5e4e3a;   // small print on the till receipt
+$receipt-dots: #9c8a72;  // leader dots on the receipt
+
+// Type. Yeseva One only comes in one weight, so it is always set at 400:
+// anything bolder is the browser smearing it.
+$font-display: 'Yeseva One', Georgia, serif;
+$font-text: 'Nunito', 'Trebuchet MS', sans-serif;
+
+// The shared hard shadows that make things look like cut-out card and
+// painted wood rather than floating UI.
+$shadow-card: 5px 5px 0 rgba(59, 42, 42, 0.18);
+$shadow-lift: 0 14px 24px rgba(59, 42, 42, 0.22);
+
 // Neutrals
 $white: #fff;
 $grey-100: #f2f2f2;
@@ -22,6 +51,8 @@ $danger: #b3261e;
 // Focus indicators need 3:1 against the surface behind them, and no single
 // colour clears that on both the purple panel and a white card — so there is
 // one per surface rather than one for the app.
+// Purple clears 6.9:1 on the butter wall and 7.5:1 on white card; the yellow
+// is for the cocoa floor and the purple sign and awning.
 $focus-on-dark: #ffd93d;
 $focus-on-light: $purple;
 

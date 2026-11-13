@@ -1,115 +1,135 @@
 @use '../../../styles/tokens' as *;
 
-// Shared on/off language for the category toggles, so "this one is applied"
-// looks identical wherever it appears in the panel.
-@mixin panel-toggle {
+// "Find a recipe" in The Display Case: a white order counter holding the
+// search and filters, category price tags beneath it, and the cards standing
+// on shelves below. The page sits on the butter wall the body paints.
+
+// Every control on the counter is a pill with the same cocoa outline, so they
+// read as one row of buttons rather than four kinds of control.
+@mixin counter-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  min-height: 40px;
-  padding: 0.35rem 0.7rem;
-  border: 2px solid transparent;
-  border-radius: 0.25rem;
-  background-color: $ink;
-  color: $white;
-  font-size: 0.8rem;
-  @include focus-ring($focus-on-dark);
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 2px solid $cocoa;
+  border-radius: 999px;
+  background-color: $white;
+  color: $cocoa;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  @include focus-ring($focus-on-light, 3px);
   &:hover{
-    background-color: $ink-hover;
+    background-color: $purple-tint;
   }
-  // Selected state carries colour, a border and weight, so it never depends on
-  // a single cue that could be missed or confused with focus.
-  &.active{
-    background-color: $white;
-    border-color: $white;
-    color: $ink;
-    font-weight: 600;
-    &:hover{
-      background-color: $grey-200;
-    }
-  }
+}
+
+@mixin count-badge($bg, $fg) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background-color: $bg;
+  color: $fg;
+  font-size: 13px;
 }
 
 .all-recipes-wrapper{
-  height: 100%;
-  background: url('../../../assets/images/hero-background.png');
-  background-repeat: no-repeat;
-  background-size: cover;
+  color: $cocoa;
 }
 
-// Title and live result count share one slim row rather than stacking a tall
-// banner above a separate "Showing N results" line.
+.shop-width{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.page-head > div{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// Title and live result count share one line.
 .banner{
-  background-color: $ink;
-  border-radius: 0.25rem 0.25rem 0 0;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  padding: 0.75rem 1.5rem;
-  h1 {
-    color: $white;
+  gap: 8px 18px;
+  h1{
     margin: 0;
-    font-size: 1.75rem;
+    font-family: $font-display;
+    font-weight: 400;
+    font-size: clamp(40px, 4.6vw, 60px);
+    line-height: 1.05;
   }
   .result-count{
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.875rem;
-    font-weight: 600;
     margin: 0;
+    font-weight: 800;
+    color: $crust;
   }
 }
 
+// ── The order counter ───────────────────────────────────────────────────────
 .search-filter-wrapper{
-  background-color: $purple;
-  color: $white;
-  padding: 0.875rem 1.5rem;
-  border-radius: 0 0 0.25rem 0.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
+  gap: 16px;
+  padding: 18px;
+  background-color: $white;
+  border: 2px solid $cocoa;
+  border-radius: 18px;
+  box-shadow: 0 6px 0 rgba(59, 42, 42, 0.18);
 
-  // Search, sort and the category toggle share a single row; the search field
-  // takes the slack and the other two stay at their natural width.
   .toolbar{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem;
+    gap: 12px;
   }
 
   .search-wrapper{
-    flex: 1 1 16rem;
+    flex: 999 1 280px;
     min-width: 0;
   }
 
   .search-input-wrapper{
     display: flex;
     align-items: center;
-    background-color: $white;
-    border-radius: 0.25rem;
-    padding: 0 0.75rem;
-    // Mirrors the input's own focus ring so the whole control reads as focused.
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 6px 0 16px;
+    background-color: $butter;
+    border: 2px solid $cocoa;
+    border-radius: 999px;
+    // Mirrors the input's own focus ring so the whole pill reads as focused.
     &:focus-within{
-      outline: 3px solid $focus-on-dark;
-      outline-offset: 2px;
+      outline: 3px solid $focus-on-light;
+      outline-offset: 3px;
     }
     .search-icon{
-      color: $grey-600;
+      color: $cocoa;
       flex-shrink: 0;
+      font-size: 1.1rem;
     }
     input{
       flex: 1 1 auto;
       min-width: 0;
-      min-height: 44px;
+      height: 44px;
       border: none;
       background: transparent;
-      color: $ink;
-      padding: 0.5rem;
-      font-size: 0.9375rem;
+      color: $cocoa;
+      font: inherit;
+      font-size: 17px;
       &::placeholder{
-        color: $grey-600;
+        // 6.9:1 on butter: a placeholder still has to be read.
+        color: $crust;
+        opacity: 1;
       }
       &:focus{
         outline: none;
@@ -124,119 +144,87 @@
       min-width: 44px;
       min-height: 44px;
       border: none;
+      border-radius: 999px;
       background: transparent;
-      color: $ink;
-      border-radius: 0.25rem;
-      @include focus-ring($focus-on-dark);
+      color: $cocoa;
+      @include focus-ring($focus-on-light);
       &:hover{
-        color: #000;
+        background-color: rgba(59, 42, 42, 0.08);
       }
     }
   }
 
   .sort-select{
-    min-height: 44px;
-    padding: 0.5rem 0.75rem;
-    border: none;
-    border-radius: 0.25rem;
-    background-color: $white;
-    color: $ink;
-    font-size: 0.875rem;
-    font-weight: 600;
-    @include focus-ring($focus-on-dark);
+    flex: 1 1 200px;
+    min-height: 48px;
+    padding: 0 40px 0 14px;
+    border: 2px solid $cocoa;
+    border-radius: 999px;
+    // Bootstrap's chevron, redrawn in cocoa; the native arrow is turned off so
+    // the pill looks the same in every browser.
+    appearance: none;
+    background: $white url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%233b2a2a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.4' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") no-repeat right 16px center / 14px 12px;
+    color: $cocoa;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    @include focus-ring($focus-on-light, 3px);
+  }
+
+  // Saved and Categories are deliberately the same shape: two filters, and one
+  // looking like a different kind of control would suggest it does a
+  // different kind of thing.
+  .saved-toggle{
+    @include counter-pill;
+    .bi{
+      color: $cherry;
+    }
+    .count-badge{
+      @include count-badge($cocoa, $white);
+    }
+    // On: filled cherry, so "showing only saved" is unmistakable and matches
+    // the filled hearts on the cards it is filtering to.
+    &.active{
+      background-color: $cherry;
+      color: $white;
+      .bi{
+        color: $white;
+      }
+      .count-badge{
+        @include count-badge($white, $cherry-deep);
+      }
+      &:hover{
+        filter: brightness(1.08);
+      }
+    }
   }
 
   .filter-toggle{
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    min-height: 44px;
-    padding: 0.5rem 0.875rem;
-    border: 2px solid $white;
-    border-radius: 0.25rem;
-    background-color: transparent;
-    color: $white;
-    font-size: 0.875rem;
-    font-weight: 600;
-    @include focus-ring($focus-on-dark);
-    &:hover{
-      background-color: $purple-light;
+    @include counter-pill;
+    .count-badge{
+      @include count-badge($purple, $white);
     }
     // Filled once categories are on, so the collapsed panel still signals that
     // a filter is applied.
     &.has-selection{
-      background-color: $white;
-      color: $purple;
-      &:hover{
-        background-color: $grey-200;
-      }
-    }
-    .count-badge{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 1.25rem;
-      height: 1.25rem;
-      padding: 0 0.25rem;
-      border-radius: 999px;
       background-color: $purple;
       color: $white;
-      font-size: 0.75rem;
-    }
-  }
-
-  // Deliberately the same shape as .filter-toggle beside it: they are two
-  // filters, and one of them looking like a different kind of control would
-  // suggest it does a different kind of thing.
-  .saved-toggle{
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    min-height: 44px;
-    padding: 0.5rem 0.875rem;
-    border: 2px solid $white;
-    border-radius: 0.25rem;
-    background-color: transparent;
-    color: $white;
-    font-size: 0.875rem;
-    font-weight: 600;
-    @include focus-ring($focus-on-dark);
-    &:hover{
-      background-color: $purple-light;
-    }
-    &.active{
-      background-color: $white;
-      // The heart keeps its red when the button fills, so the on state is the
-      // same red as the hearts on the cards it is filtering to.
-      color: #d63031;
-      &:hover{
-        background-color: $grey-200;
-      }
       .count-badge{
-        background-color: #d63031;
+        @include count-badge($white, $purple);
       }
-    }
-    .count-badge{
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 1.25rem;
-      height: 1.25rem;
-      padding: 0 0.25rem;
-      border-radius: 999px;
-      background-color: $purple;
-      color: $white;
-      font-size: 0.75rem;
+      &:hover{
+        background-color: $purple-light;
+      }
     }
   }
 
+  // ── Category price tags ──
   .filter-options{
-    padding: 0.75rem;
-    background-color: $purple-light;
-    border-radius: 0.25rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 2px dashed $plate-rim;
     // A class selector beats the [hidden] UA rule, so restate it here or the
     // panel stays visible when collapsed.
     &[hidden]{
@@ -245,34 +233,75 @@
   }
 
   .filter-option{
-    @include panel-toggle;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 0 18px 0 12px;
+    background-color: $white;
+    color: $cocoa;
+    border: 2px solid $cocoa;
+    border-radius: 6px 22px 22px 6px;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+    @include focus-ring($focus-on-light, 3px);
+    &:hover{
+      transform: rotate(-2deg) scale(1.04);
+      background-color: $purple-tint;
+    }
     img{
       max-height: 20px;
       max-width: 20px;
-    }
-    // The category art is solid white line-work on transparent, so it
-    // disappears against the white selected chip. Flipping it to black keeps
-    // the icon readable without needing a second set of files.
-    &.active img{
+      // The category art is white line-work on transparent, so on a white tag
+      // it is turned dark; on the purple selected tag it keeps its white.
       filter: brightness(0);
+      opacity: 0.8;
+    }
+    // Selected state carries colour, a check mark and weight, so it never
+    // depends on a single cue that could be missed or confused with focus.
+    &.active{
+      background-color: $purple;
+      color: $white;
+      img{
+        filter: none;
+        opacity: 1;
+      }
+      &:hover{
+        background-color: $purple-light;
+      }
     }
     .check-icon{
-      font-size: 0.8rem;
+      font-size: 1rem;
+      -webkit-text-stroke: 0.5px currentColor;
     }
   }
 
+  .tag-hole{
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid $cocoa;
+    background-color: $butter;
+  }
+
+  // ── Active filters ──
   .panel-footer{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem 0.75rem;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 2px dashed $plate-rim;
   }
 
   .chip-list{
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 8px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -281,84 +310,92 @@
   .chip{
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    min-height: 36px;
-    padding: 0.25rem 0.7rem;
-    border: none;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    background-color: $purple-tint;
+    border: 2px solid $purple;
     border-radius: 999px;
-    background-color: $white;
-    color: $ink;
-    font-size: 0.8rem;
-    font-weight: 600;
-    @include focus-ring($focus-on-dark);
+    color: $cocoa;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    @include focus-ring($focus-on-light, 3px);
     &:hover{
-      background-color: $grey-200;
+      background-color: $white;
     }
     .bi{
-      font-size: 0.7rem;
+      font-size: 0.75rem;
+      -webkit-text-stroke: 0.5px currentColor;
     }
   }
 
   .clear-all{
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    min-height: 36px;
-    padding: 0.25rem 0.7rem;
-    border: 2px solid $white;
-    border-radius: 0.25rem;
-    background-color: transparent;
-    color: $white;
-    font-size: 0.8rem;
-    font-weight: 600;
-    @include focus-ring($focus-on-dark);
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 6px;
+    background: transparent;
+    border: 0;
+    color: $cherry;
+    font: inherit;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+    @include focus-ring($focus-on-light, 3px);
     &:hover{
-      background-color: $white;
-      color: $purple;
+      color: $cherry-deep;
     }
   }
 }
 
+// ── The cards ───────────────────────────────────────────────────────────────
 .recipe-grid{
-  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 36px 28px;
+  margin-top: 40px;
 }
 
-h5{
-  font-size: 1rem;
+.grid-cell{
+  display: flex;
+  min-width: 0;
 }
 
-.list-inline-item{
-  &:not(:last-child){
-    margin-bottom: 0.25rem;
-  }
+.grid-cell-wide{
+  grid-column: 1 / -1;
 }
 
 // Holds the grid's shape while the fetch is in flight so results don't cause
-// the page to jump.
+// the page to jump. Drawn as an empty card on its shelf.
 .skeleton-card{
   width: 100%;
   background-color: $white;
-  border-radius: 0.375rem;
+  border: 2px solid $cocoa;
+  border-bottom: 12px solid $wood;
+  border-radius: 16px 16px 6px 6px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 14px rgba(59, 42, 42, 0.12);
   .skeleton-image{
     aspect-ratio: 16/9;
   }
   .skeleton-body{
-    padding: 1.5rem;
+    padding: 18px 20px 20px;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 12px;
   }
   .skeleton-line{
     height: 0.75rem;
-    border-radius: 0.25rem;
+    border-radius: 999px;
     &.title{
-      height: 1.25rem;
+      height: 1.4rem;
       width: 70%;
     }
     &.meta{
-      width: 50%;
+      width: 45%;
     }
     &.short{
       width: 40%;
@@ -366,7 +403,7 @@ h5{
   }
   .skeleton-image,
   .skeleton-line{
-    background: linear-gradient(90deg, #ececec 25%, #f5f5f5 37%, #ececec 63%);
+    background: linear-gradient(90deg, #f3e7d2 25%, #fbf4e6 37%, #f3e7d2 63%);
     background-size: 400% 100%;
     animation: skeleton-shimmer 1.4s ease infinite;
   }
@@ -377,61 +414,90 @@ h5{
   100% { background-position: 0 50%; }
 }
 
+// An empty shelf: a card propped up saying so, rather than a bare message.
 .empty-state{
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 40px 28px;
   background-color: $white;
-  border: 2px dashed #b0aac9;
-  border-radius: 0.25rem;
-  padding: 3rem 1.5rem;
+  border: 2px dashed $cocoa;
+  border-radius: 18px;
   text-align: center;
-  color: $ink;
-  margin-bottom: 1.5rem;
+  color: $cocoa;
   .bi{
-    font-size: 2rem;
-    color: $purple;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: $butter;
+    border: 2px solid $cocoa;
+    font-size: 1.6rem;
+    color: $cherry;
   }
   .empty-state-title{
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin: 1rem 0 0.5rem;
+    margin: 16px 0 6px;
+    font-family: $font-display;
+    font-size: 26px;
+    line-height: 1.15;
   }
   .empty-state-hint{
-    margin-bottom: 1.5rem;
+    margin-bottom: 20px;
+    color: $crust;
+    font-weight: 600;
   }
   .clear-all{
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    min-height: 44px;
-    padding: 0.375rem 0.875rem;
-    border: 2px solid $purple;
-    border-radius: 0.25rem;
-    background-color: transparent;
-    color: $purple;
-    font-weight: 600;
-    @include focus-ring($focus-on-light);
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 999px;
+    background-color: $cherry;
+    color: $white;
+    font: inherit;
+    font-weight: 800;
+    box-shadow: 0 4px 0 $cherry-deep;
+    cursor: pointer;
+    @include focus-ring($focus-on-light, 3px);
+    .bi{
+      // The icon inside the button, not the big medallion above.
+      width: auto;
+      height: auto;
+      border: 0;
+      background: none;
+      font-size: 1rem;
+      color: inherit;
+    }
     &:hover{
-      background-color: $purple;
-      color: $white;
+      filter: brightness(1.08);
     }
   }
 }
 
-@media (max-width: 390px){
-  .banner{
-    padding: 0.75rem;
-    h1{
-      font-size: 1.5rem;
-    }
+@media (max-width: 575.98px){
+  .shop-width{
+    padding: 28px 16px 56px;
   }
   .search-filter-wrapper{
-    padding: 0.75rem;
+    padding: 14px;
     .filter-options{
-      gap: 0.4rem;
+      gap: 8px;
     }
     // Search and sort stop competing for a single cramped row.
     .sort-select{
       flex: 1 1 100%;
     }
+    .saved-toggle,
+    .filter-toggle{
+      flex: 1 1 auto;
+      justify-content: center;
+    }
+  }
+  .recipe-grid{
+    margin-top: 28px;
+    gap: 28px;
   }
 }
-

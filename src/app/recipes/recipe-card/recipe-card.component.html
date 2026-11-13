@@ -1,4 +1,5 @@
-<div class="card mb-4 h-100">
+<!-- A card standing on its own stretch of wooden shelf. -->
+<div class="recipe-card">
   @if (recipe.featured) {
     <div class="featured">
       Featured
@@ -18,8 +19,8 @@
       sizes="(min-width: 1200px) 33vw, (min-width: 768px) 50vw, 100vw"
       decoding="async" (error)="onImageError($event)">
   </div>
-  <div class="info-container p-4  pb-0">
-    <h5 class="fw-bold mb-3">
+  <div class="info-container">
+    <h5 class="card-title">
       <!-- Stretched link: the whole card is clickable, but the tag buttons below
       sit above it rather than being nested inside an anchor.
 
@@ -33,18 +34,14 @@
         {{ recipe.name }}
       </a>
     </h5>
-    <ul class="list-inline mb-3">
-      <li class="list-inline-item">
-        <i class="bi bi-clock" aria-hidden="true"></i> {{ recipe.total_time | timeFormat }}
-      </li>
-      <li class="list-inline-item servings">
-        <i class="bi bi-person" aria-hidden="true"></i> {{ recipe.serving_size }} servings
-      </li>
+    <ul class="meta">
+      <li>{{ recipe.total_time | timeFormat }}</li>
+      <li class="servings">{{ recipe.serving_size }} servings</li>
     </ul>
-    <p class="mb-3">
+    <p class="description">
       {{ recipe.description }}
     </p>
-    <ul class="list-inline tag-list mb-0">
+    <ul class="tag-list">
       @for (tag of recipe.tags; track $index) {
         <li>
           <!-- On a page that filters in place the tag toggles the filter; anywhere
@@ -54,14 +51,14 @@
               [class.active]="isTagActive(tag)"
               [attr.aria-pressed]="isTagActive(tag)"
               [attr.aria-label]="tagLabel(tag)">
-              {{ tag }}
+              <span class="tag-hole" aria-hidden="true"></span>{{ tag }}
             </button>
           }
           @if (tagsLinkToFilter) {
             <a class="tag" [routerLink]="['/recipes']"
               [queryParams]="{ category: tag }"
               [attr.aria-label]="'Browse ' + tag + ' recipes'">
-              {{ tag }}
+              <span class="tag-hole" aria-hidden="true"></span>{{ tag }}
             </a>
           }
         </li>

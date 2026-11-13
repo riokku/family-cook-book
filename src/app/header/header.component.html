@@ -1,38 +1,58 @@
-<nav class="navbar navbar-expand-lg navbar-light shadow">
-  <div class="container pt-2 pb-2">
-    <a routerLink="/"  class="home-link-wrapper">
-      <img class="hero me-2" src="../../assets/icons/hero.png" alt="" aria-hidden="true">
-      <h1 class="site-title m-0">
-        <!-- Initials on screen, full name for screen readers and the document
-             outline, so shortening it costs nothing in meaning. -->
-        <span aria-hidden="true">GK</span>
-        <span class="visually-hidden">Gogo&rsquo;s Kitchen</span>
-      </h1>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul id="navbarUl" class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="closeNavOnClick()">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/recipes" routerLinkActive="active-link" (click)="closeNavOnClick()">Recipes</a>
-        </li>
-        @if (userIsAdmin) {
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/admin" routerLinkActive="active-link" (click)="closeNavOnClick()">Admin</a>
-          </li>
-        }
-        @if (userIsAdmin) {
-          <li class="nav-item">
-            <button class="nav-logout-btn" (click)="onLogout()" title="Log out" aria-label="Log out">
-              <i class="bi bi-box-arrow-right"></i>
-            </button>
-          </li>
-        }
-      </ul>
-    </div>
+<header class="shop-front">
+  <!-- The shop's awning: stripes and a scalloped edge, purely decoration. -->
+  <div class="awning" aria-hidden="true">
+    <div class="awning-stripes"></div>
+    <div class="awning-scallops"></div>
   </div>
-</nav>
+
+  <nav class="navbar navbar-expand-lg" aria-label="Main">
+    <div class="container shop-bar">
+      <!-- The logo is the shop sign hanging under the awning. The name on it is
+           real text inside the h1, so screen readers and the document outline
+           get the full site name rather than an image of it. -->
+      <a routerLink="/" class="shop-sign">
+        <span class="sign-chains" aria-hidden="true"></span>
+        <span class="sign-board">
+          <!-- Whisk and bowl. -->
+          <svg class="sign-icon" aria-hidden="true" focusable="false" width="38" height="38" viewBox="0 0 32 32"
+            fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 15h26a13 13 0 0 1-26 0z"></path>
+            <path d="M17 15 27 4"></path>
+            <path d="M17 15c-3-2-3-6 0-7 3 0 4 4 0 7z"></path>
+          </svg>
+          <span class="sign-text">
+            <h1 class="site-title">Gogo&rsquo;s Kitchen</h1>
+            <span class="sign-tagline">Family recipes for you</span>
+          </span>
+        </span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list" aria-hidden="true"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul id="navbarUl" class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="closeNavOnClick()">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/recipes" routerLinkActive="active-link" (click)="closeNavOnClick()">Recipes</a>
+          </li>
+          @if (userIsAdmin) {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin" routerLinkActive="active-link" (click)="closeNavOnClick()">Admin</a>
+            </li>
+          }
+          @if (userIsAdmin) {
+            <li class="nav-item">
+              <button class="nav-logout-btn" (click)="onLogout()" title="Log out" aria-label="Log out">
+                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+              </button>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

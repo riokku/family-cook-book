@@ -1,7 +1,7 @@
 <section class="all-recipes-wrapper">
-  <div class="container pt-5 pb-5">
-    <div class="row">
-      <div class="col-12">
+  <div class="shop-width">
+    <div class="page-head">
+      <div>
         <div class="banner">
           <h1>
             Find a recipe
@@ -12,6 +12,8 @@
             </p>
           }
         </div>
+        <!-- The order counter: search, sort and both filters on one white
+             panel, with the category price tags folding out beneath. -->
         <div class="search-filter-wrapper">
 
           <div class="toolbar">
@@ -76,11 +78,12 @@
                 (click)="toggleCategory(category)"
                 [class.active]="isCategorySelected(category)"
                 [attr.aria-pressed]="isCategorySelected(category)">
+                <span class="tag-hole" aria-hidden="true"></span>
+                <img [src]="'../../../assets/icons/categories/' + category + '.png'" alt="" aria-hidden="true">
+                {{ category }}
                 @if (isCategorySelected(category)) {
                   <i class="bi bi-check-lg check-icon" aria-hidden="true"></i>
                 }
-                <img [src]="'../../../assets/icons/categories/' + category + '.png'" alt="" aria-hidden="true">
-                {{ category }}
               </button>
             }
           </div>
@@ -130,10 +133,10 @@
       </div>
     </div>
 
-    <div class="row recipe-grid">
+    <div class="recipe-grid">
       @if (isLoading) {
         @for (placeholder of skeletonCards; track placeholder) {
-          <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4">
+          <div class="grid-cell">
             <div class="skeleton-card" aria-hidden="true">
               <div class="skeleton-image"></div>
               <div class="skeleton-body">
@@ -150,13 +153,13 @@
       @if (!isLoading) {
         @if (selectedRecipes.length) {
           @for (recipe of selectedRecipes; track recipe; let i = $index) {
-            <div class="col-12 col-sm-12 col-md-6 col-xl-4 d-flex mb-4">
+            <div class="grid-cell">
               <app-recipe-card [recipe]="recipe" [index]="i" [activeTags]="selectedCategories"
               (tagSelected)="toggleCategory($event)"></app-recipe-card>
             </div>
           }
         } @else {
-          <div class="col-12">
+          <div class="grid-cell grid-cell-wide">
             <div class="empty-state">
               <!-- Nothing saved yet is not the same as nothing matching, and
                    "try a different search term" is no help at all when the

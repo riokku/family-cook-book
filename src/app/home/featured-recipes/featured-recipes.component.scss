@@ -1,82 +1,161 @@
 @use '../../../styles/tokens' as *;
 
-.featured-heading{
-  color: $white;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
+// The band of caramel the case stands in.
+.case-band{
+  background-color: $caramel;
+  padding: 64px 24px 72px;
 }
 
-// Card presentation comes from app-recipe-card, so the home page and the
-// recipes page stay in step. Only the carousel chrome lives here.
-.featured-carousel{
+.case-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
 
-  .carousel-item{
-    // Bootstrap sets display:block on the active item; the card host is a flex
-    // item, so give it a row to sit in. The two in-transition classes are here
-    // for the same reason: the incoming slide is only marked .active once the
-    // slide has finished, so covering .active alone left the card spending the
-    // whole transition as a block child, where its h-100 had no definite height
-    // to resolve against and it sat a margin short of its settled height.
-    &.active,
-    &.carousel-item-next,
-    &.carousel-item-prev{
-      display: flex;
+.case-head{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.case-heading{
+  margin: 0;
+  font-family: $font-display;
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1.1;
+}
+
+.see-all{
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  @include focus-ring($focus-on-light, 3px);
+}
+
+// Wooden frame, glass front with a streak of reflection across it.
+.case{
+  border: 10px solid $wood;
+  border-radius: 28px 28px 8px 8px;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.75) 0 18%, rgba(255, 255, 255, 0.35) 18% 22%, rgba(255, 255, 255, 0.6) 22% 100%),
+    $glass;
+  box-shadow: 0 18px 30px rgba(59, 42, 42, 0.2);
+  padding: 36px 20px 0;
+  overflow: hidden;
+}
+
+.shelves{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  column-gap: 0;
+  row-gap: 36px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Each slot's bottom border is its stretch of shelf; side by side they read as
+// one plank running the width of the case.
+.shelf-slot{
+  display: flex;
+  justify-content: center;
+  padding: 0 14px;
+  border-bottom: 16px solid $wood;
+}
+
+.case-item{
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  // The reveal directive owns transform while it runs; the lift on hover is
+  // applied to the children so the two never fight over the same property.
+  @include focus-ring($focus-on-light, 3px);
+  .plate,
+  .tent-card{
+    transition: transform 0.2s ease;
+  }
+  &:hover{
+    .plate,
+    .tent-card{
+      transform: translateY(-8px);
+    }
+    .tent-name{
+      text-decoration: underline;
+      text-underline-offset: 4px;
     }
   }
+}
 
-  .carousel-nav{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 0.75rem;
+// A plate: white rim, dashed edge just outside it.
+.plate{
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  border: 6px solid $white;
+  outline: 2px dashed $plate-rim;
+  outline-offset: 5px;
+  background-color: $caramel;
+  // The outline sits outside the box, so leave it room under the glass top.
+  margin-top: 7px;
+}
+
+.tent-card{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px 14px;
+  background-color: $white;
+  border: 2px solid $cocoa;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  text-align: center;
+}
+
+.tent-kicker{
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $purple;
+}
+
+.tent-name{
+  font-family: $font-display;
+  font-size: 21px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.tent-meta{
+  font-size: 14px;
+  font-weight: 700;
+  color: $crust;
+}
+
+@media (max-width: 575.98px){
+  .case-band{
+    padding: 48px 16px 56px;
   }
 
-  .nav-arrow{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    background-color: rgba(255, 255, 255, 0.12);
-    color: $white;
-    transition: background-color 0.2s ease;
-    @include focus-ring($focus-on-dark);
-    &:hover{
-      background-color: rgba(255, 255, 255, 0.26);
-      border-color: $white;
-    }
+  .case-heading{
+    font-size: 34px;
   }
 
-  // Bootstrap positions .carousel-indicators absolutely over the slide; here
-  // they belong inline in the control row beneath it.
-  .carousel-indicators{
-    position: static;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin: 0;
-    padding: 0;
-    button{
-      width: 0.6rem;
-      height: 0.6rem;
-      flex-shrink: 0;
-      padding: 0;
-      border-radius: 999px;
-      border: none;
-      background-color: rgba(255, 255, 255, 0.45);
-      opacity: 1;
-      text-indent: 0;
-      transition: background-color 0.2s ease, transform 0.2s ease;
-      @include focus-ring($focus-on-dark);
-      &.active{
-        background-color: $white;
-        transform: scale(1.25);
-      }
-    }
+  .case{
+    border-width: 8px;
+    border-radius: 22px 22px 6px 6px;
+    padding: 28px 12px 0;
   }
 }
