@@ -26,6 +26,15 @@
     <link rel="apple-touch-icon" href="assets/icons/pwa/icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Gogo's">
+
+    <!-- Vercel Web Analytics: cookieless visitor and page-view counts, shown
+         in the project's Analytics tab. The script is served by Vercel on the
+         deployed site only, so it is simply absent when running locally. The
+         first line queues anything recorded before the script has loaded. -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body>
     <app-root></app-root>
