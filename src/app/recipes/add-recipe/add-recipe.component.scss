@@ -413,6 +413,30 @@ small{
   min-height: 80px;
 }
 
+// A step's ingredient row: the grip sits outside the Bootstrap row so adding
+// it does not push the row's columns past twelve.
+.step-ingredient-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+
+  > .row {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  > .drag-handle {
+    flex-shrink: 0;
+    // Lines the grip up with the small inputs beside it.
+    margin-top: 0.3rem;
+  }
+}
+
+.drag-placeholder--step-ingredient {
+  flex: 1 1 100%;
+  min-height: 38px;
+}
+
 // Card shown while an item is actively being dragged
 .cdk-drag-preview {
   background: #fff;
@@ -430,6 +454,7 @@ small{
 
 .cdk-drop-list-dragging .step-item:not(.cdk-drag-placeholder),
 .cdk-drop-list-dragging .ingredient-item:not(.cdk-drag-placeholder),
+.cdk-drop-list-dragging .step-ingredient-row:not(.cdk-drag-placeholder),
 .cdk-drop-list-dragging .ingredient-group-item:not(.cdk-drag-placeholder) {
   transition: transform 220ms cubic-bezier(0, 0, 0.2, 1);
 }

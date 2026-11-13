@@ -55,24 +55,6 @@
   font-size: 22px;
 }
 
-.footer-links{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 24px;
-}
-
-.footer-link{
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  &:hover{
-    color: $white;
-  }
-}
-
 .footer-copyright{
   font-size: 0.8rem;
 }
