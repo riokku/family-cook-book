@@ -4,17 +4,24 @@
   <div class="container">
     <footer class="footer-info">
       <div class="footer-brand">
-        <span class="footer-name">Gogo&rsquo;s Kitchen</span>
-        <span class="footer-tagline">Family recipes for you</span>
+        <!-- The mark: a mixing bowl with a whisk in it and a heart rising off
+             the top. Decorative, since the name is written right beside it. -->
+        <svg class="footer-mark" aria-hidden="true" focusable="false" viewBox="0 0 48 48" fill="none"
+          stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="24" r="22"></circle>
+          <path d="M26 25 35 12"></path>
+          <path d="M12 25h24a12 12 0 0 1-24 0z" fill="currentColor"></path>
+          <path d="M19 21c-2.700-1.900-4.200-3.400-4.200-5.100a2.200 2.200 0 0 1 4.200-.900 2.200 2.200 0 0 1 4.200.900c0 1.700-1.500 3.200-4.200 5.100z" fill="currentColor" stroke="none"></path>
+          <path d="M19 40h10"></path>
+        </svg>
+        <span class="footer-wordmark">
+          <span class="footer-name">Gogo&rsquo;s Kitchen</span>
+          <span class="footer-tagline">Family recipes for you</span>
+        </span>
       </div>
       <div class="footer-links">
         <a class="footer-link" [routerLink]="'/auth'">Manage</a>
-        <div class="logo-wrapper">
-          <small>&copy; 2026 Studio Rio</small>
-          <a class="logo-link" href="https://www.studiorioconsulting.com/" target="_blank">
-            <img src="../../assets/images/studio-rio-logo.webp" alt="Studio Rio Consulting">
-          </a>
-        </div>
+        <small class="footer-copyright">&copy; 2026 Studio Rio</small>
       </div>
     </footer>
   </div>

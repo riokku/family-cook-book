@@ -112,6 +112,10 @@
 
 .tent-card{
   width: 100%;
+  // Grows to fill its slot, so the card always stands on the shelf. A row is
+  // as tall as its longest name, and a shorter card left at its own height
+  // would hang in the air above the plank.
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
