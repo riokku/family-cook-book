@@ -255,7 +255,7 @@ ol{
     background-color: $purple-tint;
     color: $purple;
     border: 1px solid #ded7fa;
-    border-radius: 999px;
+    border-radius: 1rem;
     // A stacked fraction sets its numerator and denominator to line-height 0 so
     // they cannot stretch the line they sit on — which is what keeps a list of
     // ingredients evenly spaced, but means the raised numerator reaches above
@@ -273,7 +273,11 @@ ol{
     line-height: 1.3;
     font-size: 0.8rem;
     font-weight: 600;
-    white-space: nowrap;
+    // Short ingredients stay on one line, but a long one ("2 15-ounce cans black
+    // beans, rinsed and drained") wraps inside its chip rather than running off
+    // the side of the card on a phone.
+    max-width: 100%;
+    overflow-wrap: anywhere;
     // The global "ul li:not(:last-child) { margin-bottom: 1rem }" rule has higher
     // specificity than "li { margin-bottom: 0 }", so override the pseudo-class too.
     &, &:not(:last-child) {

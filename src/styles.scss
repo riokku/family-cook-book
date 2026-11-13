@@ -427,6 +427,19 @@ summary,
   }
 }
 
+// iOS zooms the page in whenever a focused control's text is under 16px, and
+// does not zoom back out. Component styles (the recipe search at 0.9375rem, the
+// sort dropdown at 0.875rem) are scoped by Angular and would outrank a plain
+// element selector, hence !important. Limited to touch screens so desktop keeps
+// the designed sizes.
+@media (pointer: coarse){
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea{
+    font-size: max(1rem, 16px) !important;
+  }
+}
+
 // ── The recipe forms below Bootstrap's md ─────────────────────────────────────
 // A recipe row is one line from 768px up, where col-md-* applies. Below that
 // the col-sm-* classes leave it sprawling over four or five lines with the
