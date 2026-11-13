@@ -5,6 +5,7 @@ import { TimeFormatPipe } from './pipes/time-format.pipe';
 import { RecipeCardComponent } from '../recipes/recipe-card/recipe-card.component';
 import { RevealOnScrollDirective } from './directives/reveal-on-scroll.directive';
 import { FavoriteButtonComponent } from './favorite-button/favorite-button.component';
+import { RecipePhotoComponent } from './recipe-photo/recipe-photo.component';
 
 // RecipeCardComponent lives here rather than in RecipesModule so the home page
 // can use it too: RecipesModule is lazy-loaded, so importing it eagerly from
@@ -13,8 +14,8 @@ import { FavoriteButtonComponent } from './favorite-button/favorite-button.compo
 // FavoriteButtonComponent is here for the same reason from the other side: the
 // card needs it, and so does the recipe page inside the lazy bundle.
 @NgModule({
-  declarations: [TimeFormatPipe, RecipeCardComponent, RevealOnScrollDirective, FavoriteButtonComponent],
+  declarations: [TimeFormatPipe, RecipeCardComponent, RevealOnScrollDirective, FavoriteButtonComponent, RecipePhotoComponent],
   imports: [CommonModule, RouterModule],
-  exports: [TimeFormatPipe, RecipeCardComponent, RevealOnScrollDirective, FavoriteButtonComponent]
+  exports: [TimeFormatPipe, RecipeCardComponent, RevealOnScrollDirective, FavoriteButtonComponent, RecipePhotoComponent]
 })
 export class SharedModule { }

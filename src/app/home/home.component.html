@@ -1,76 +1,114 @@
-<div class="home-wrapper pt-5 pb-5">
+<div class="home-wrapper">
+  <!-- ── The counter: welcome, and today's special on a cake stand ── -->
   <section class="hero">
-    <div class="container">
-      <div class="row align-items-start g-4">
-        <div class="col-12 col-lg-7">
-          <h1 class="fw-bold mb-3">
-            Welcome to Gogo&rsquo;s Kitchen!
-          </h1>
-          <p class="tagline mb-4">
-            Bringing together our favorite recipes from all over the internet and from our own family cook books.
-          </p>
+    <div class="hero-copy">
+      <span class="open-sign">Yes, we&rsquo;re open</span>
+      <h1 class="hero-title">Welcome to Gogo&rsquo;s Kitchen!</h1>
+      <p class="tagline">
+        Bringing together our favorite recipes from all over the internet and from our own family cook books.
+      </p>
 
-          @if (recipes.length) {
-            <ul class="stat-list mb-4">
-              @for (stat of stats; track stat) {
+      @if (recipes.length) {
+        <ul class="stat-list" aria-label="In the collection">
+          @for (stat of stats; track stat) {
+            <li>
+              <span class="stat-value">{{ stat.display }}</span>
+              {{ stat.label | lowercase }}
+            </li>
+          }
+        </ul>
+      }
+
+      <div class="cta-row">
+        <a routerLink="/recipes" class="cta cta-primary">
+          <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>
+          </svg>
+          Explore recipes
+        </a>
+        <button type="button" class="cta cta-bell" (click)="surpriseMe()" [disabled]="!recipes.length">
+          <!-- A counter bell, which rings when you reach for it. -->
+          <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 18h16"></path><path d="M6 18a6 6 0 0 1 12 0"></path><path d="M12 12V9"></path>
+            <path d="M10 9h4"></path><path d="M3 21h18"></path>
+          </svg>
+          Surprise me
+        </button>
+      </div>
+      <p class="bell-hint">Ring the bell and we&rsquo;ll pick something from the case for you.</p>
+    </div>
+
+    @if (todaysSpecial) {
+      <div class="special">
+        <!-- The stand is a second, mouse-sized way to the same recipe as the
+             tent card beside it, so it is kept out of the tab order and the
+             accessibility tree rather than announced twice. -->
+        <a class="cake-stand" [routerLink]="['/recipes', todaysSpecial.slug]" tabindex="-1" aria-hidden="true">
+          <app-recipe-photo class="stand-photo" [recipe]="todaysSpecial" sizes="280px"></app-recipe-photo>
+          <span class="stand-plate"></span>
+          <span class="stand-stem"></span>
+          <span class="stand-foot"></span>
+        </a>
+        <a class="tent-card special-card" [routerLink]="['/recipes', todaysSpecial.slug]">
+          <span class="tent-kicker">Today&rsquo;s special</span>
+          <span class="tent-name">{{ todaysSpecial.name }}</span>
+          <span class="tent-meta">
+            {{ todaysSpecial.total_time | timeFormat }} &middot; {{ todaysSpecial.serving_size }} servings
+          </span>
+        </a>
+      </div>
+    }
+  </section>
+
+  <!-- ── The display case: featured recipes on shelves ── -->
+  <app-featured-recipes></app-featured-recipes>
+
+  <!-- ── Price tags, and the till receipt ── -->
+  @if (categories.length || recentRecipes.length) {
+    <section class="browse">
+      @if (categories.length) {
+        <div class="categories">
+          <h2 class="section-heading" id="browse-heading">Browse by category</h2>
+          <ul class="tag-list" aria-labelledby="browse-heading">
+            @for (category of categories; track category; let i = $index) {
+              <li [appRevealOnScroll]="i * 40">
+                <a class="price-tag" [routerLink]="['/recipes']" [queryParams]="{ category: category }">
+                  <span class="tag-hole" aria-hidden="true"></span>
+                  {{ category }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
+      <!-- Only ever appears once this device has opened something, so a first
+           visit is not handed a blank receipt. -->
+      @if (recentRecipes.length) {
+        <div class="receipt-wrap">
+          <div class="receipt">
+            <h2 class="receipt-title" id="recent-heading">Your usual</h2>
+            <p class="receipt-sub">Pick up where you left off</p>
+            <div class="receipt-rule" aria-hidden="true"></div>
+            <ul class="receipt-lines" aria-labelledby="recent-heading">
+              @for (recipe of recentRecipes; track recipe.slug) {
                 <li>
-                  <span class="stat-value">{{ stat.display }}</span>
-                  <span class="stat-label">{{ stat.label }}</span>
+                  <a class="receipt-line" [routerLink]="['/recipes', recipe.slug]">
+                    <span class="receipt-name">{{ recipe.name }}</span>
+                    <span class="receipt-dots" aria-hidden="true"></span>
+                    <span class="receipt-time">{{ recipe.total_time | timeFormat }}</span>
+                  </a>
                 </li>
               }
             </ul>
-          }
-
-          <div class="cta-row">
-            <a routerLink="/recipes" class="cta cta-primary">
-              <i class="bi bi-search-heart" aria-hidden="true"></i> Explore recipes
-            </a>
-            <button type="button" class="cta cta-secondary" (click)="surpriseMe()"
-              [disabled]="!recipes.length">
-              <i class="bi bi-shuffle" aria-hidden="true"></i> Surprise me
-            </button>
+            <div class="receipt-rule" aria-hidden="true"></div>
+            <p class="receipt-thanks">Thank you, come again!</p>
           </div>
-
-          @if (categories.length) {
-            <div class="category-links mt-5">
-              <h2 class="section-heading mb-3" id="browse-heading">
-                Browse by category
-              </h2>
-              <ul class="category-list" aria-labelledby="browse-heading">
-                @for (category of categories; track category; let i = $index) {
-                  <li [appRevealOnScroll]="i * 40">
-                    <a [routerLink]="['/recipes']" [queryParams]="{ category: category }">
-                      <img [src]="'../../assets/icons/categories/' + category + '.png'" alt="" aria-hidden="true">
-                      {{ category }}
-                    </a>
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-        </div>
-
-        <div class="col-12 col-lg-5">
-          <app-featured-recipes></app-featured-recipes>
-        </div>
-      </div>
-
-      <!-- Only ever appears once this device has opened something, so a first
-           visit is not given an empty shelf to look at. -->
-      @if (recentRecipes.length) {
-        <div class="row mt-5">
-          <div class="col-12">
-            <h2 class="section-heading mb-3" id="recent-heading">
-              Pick up where you left off
-            </h2>
-          </div>
-          @for (recipe of recentRecipes; track recipe.slug) {
-            <div class="col-12 col-md-6 col-xl-4 d-flex mb-4">
-              <app-recipe-card [recipe]="recipe" [index]="$index" [tagsLinkToFilter]="true"></app-recipe-card>
-            </div>
-          }
+          <div class="receipt-tear" aria-hidden="true"></div>
         </div>
       }
-    </div>
-  </section>
+    </section>
+  }
 </div>
