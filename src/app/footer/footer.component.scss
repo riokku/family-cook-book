@@ -27,9 +27,26 @@
 
 .footer-brand{
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 16px;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer-mark{
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+}
+
+.footer-wordmark{
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.footer-tagline{
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .footer-name{
@@ -56,23 +73,8 @@
   }
 }
 
-.logo-wrapper{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  small{
-    font-size: 0.8rem;
-  }
-}
-
-.logo-link{
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-}
-
-img{
-  max-height: 30px;
+.footer-copyright{
+  font-size: 0.8rem;
 }
 
 @media (max-width: 575.98px){
