@@ -245,7 +245,8 @@ summary,
   // Contains the decorative layers: they sit above this element's own gradient
   // but must not fall behind the page background.
   isolation: isolate;
-  border-radius: 0.5rem;
+  border: 2px solid $cocoa;
+  border-radius: 18px;
   padding: 1.75rem 2rem;
   background: linear-gradient(115deg, #372f5c 0%, $purple 48%, $purple-light 100%);
   color: $white;
@@ -307,8 +308,9 @@ summary,
 
   &__title{
     margin: 0;
+    font-family: $font-display;
     font-size: clamp(1.75rem, 4vw, 2.25rem);
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.1;
     letter-spacing: -0.01em;
   }
@@ -717,6 +719,7 @@ summary,
   main section,
   .home-wrapper,
   .case-band,
+  .recipe-body,
   .all-recipes-wrapper{
     background-image: none !important;
     background-color: $white !important;
@@ -766,9 +769,10 @@ summary,
 
   // Two columns on screen, and they should stay two columns on paper: the
   // ingredients beside the method is how a printed recipe is read.
-  .recipe-wrapper .row{
-    display: flex !important;
-    flex-wrap: nowrap !important;
+  .recipe-body-inner{
+    display: grid !important;
+    grid-template-columns: 36% 1fr !important;
+    gap: 0 1rem !important;
   }
 
   .ingredient-pane{

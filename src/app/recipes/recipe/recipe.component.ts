@@ -41,6 +41,11 @@ export class RecipeComponent implements OnInit, OnDestroy {
     cookMode: boolean = false;
     keepAwakeFailed: boolean = false;
 
+    // The photo URL that failed to load, if one did. Kept as the URL rather
+    // than a flag so moving to another recipe needs nothing reset: a different
+    // recipe's photo is a different URL and gets its own chance to load.
+    failedImage: string | null = null;
+
     shoppingListText: string = '';
     copyState: 'idle' | 'copied' | 'failed' = 'idle';
 
@@ -269,6 +274,15 @@ export class RecipeComponent implements OnInit, OnDestroy {
      * visible. Ctrl+P is not something everyone in a family knows, and on a
      * tablet there is no keyboard to press it on.
      */
+    /** Whether to show the recipe's photo rather than the drawn stand-in. */
+    get showPhoto(): boolean {
+      return !!this.recipe?.image_path && this.recipe.image_path !== this.failedImage;
+    }
+
+    onPhotoError(): void {
+      this.failedImage = this.recipe?.image_path ?? null;
+    }
+
     print(): void {
       window.print();
     }
