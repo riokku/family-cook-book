@@ -30,7 +30,7 @@ export class RecipePhotoComponent implements OnChanges {
   /** How wide the photo is drawn, for choosing from the srcset. */
   @Input() sizes: string = '200px';
 
-  readonly placeholderImage: string = 'assets/images/recipe-placeholder.png';
+  readonly placeholderImage: string = 'assets/images/recipe-placeholder.svg';
 
   srcset: string | null = null;
 

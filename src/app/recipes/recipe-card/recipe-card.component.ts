@@ -23,7 +23,7 @@ export class RecipeCardComponent implements OnInit {
   // image_path is optional on the model, and a stored URL can rot, so both the
   // empty and the broken case fall back to the placeholder rather than
   // rendering a broken-image icon.
-  readonly placeholderImage: string = 'assets/images/recipe-placeholder.png';
+  readonly placeholderImage: string = 'assets/images/recipe-placeholder.svg';
 
   srcset: string | null = null;
 
