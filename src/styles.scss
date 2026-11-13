@@ -837,3 +837,20 @@ summary,
     margin: 1.5cm;
   }
 }
+
+// One measure for the whole shop. Bootstrap's container steps through fixed
+// widths and reaches 1320px on a wide screen, which left the admin pages, the
+// recipe forms, the sign-in page and the footer wider than the home and recipe
+// pages. This is the same 1200px and gutter those pages use.
+body .container{
+  max-width: 1200px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (max-width: 575.98px){
+  body .container{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
